@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Onboarding — Company Periscope</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #050D1A; --blue: #1A6CF6; --teal: #00E5C0;
+      --white: #fff; --dim: rgba(255,255,255,.6); --border: rgba(255,255,255,.08);
+      --glass: rgba(255,255,255,.04);
+      --font: 'Space Grotesk', system-ui, sans-serif;
+      --body: 'Inter', system-ui, sans-serif;
+    }
+    html { font-family: var(--body); background: var(--navy); color: var(--white); }
+    body { overflow-x: hidden; }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 40px;
+      background: rgba(5,13,26,.95); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo img { height: 28px; width: auto; display: block; }
+    .nav-cta { background: linear-gradient(135deg,#1A6CF6,#00C9E5); color: var(--white); font-family: var(--font); font-weight: 600; font-size: .88rem; padding: 10px 22px; border-radius: 100px; text-decoration: none; transition: all .2s; box-shadow: 0 0 20px rgba(26,108,246,.35); }
+    .nav-cta:hover { transform: scale(1.03); }
+
+    /* HERO */
+    .onb-hero {
+      text-align: center; padding: 72px 24px 56px;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(26,108,246,.13) 0%, transparent 70%);
+      border-bottom: 1px solid var(--border);
+    }
+    .eyebrow { font-size: .72rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--teal); margin-bottom: 20px; display: block; }
+    .onb-hero h1 { font-family: var(--font); font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 700; line-height: 1.1; letter-spacing: -.025em; margin-bottom: 18px; }
+    .onb-hero h1 span { background: linear-gradient(135deg,#60AAFF,#00E5C0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .onb-hero p { font-size: 1.05rem; color: var(--dim); max-width: 540px; margin: 0 auto; line-height: 1.75; }
+
+    /* TIMELINE */
+    .timeline-section { padding: 80px 24px; max-width: 760px; margin: 0 auto; }
+    .timeline-section h2 { font-family: var(--font); font-size: clamp(1.5rem,3vw,2rem); font-weight: 700; letter-spacing: -.02em; margin-bottom: 48px; text-align: center; }
+    .timeline { position: relative; display: flex; flex-direction: column; gap: 0; }
+    .timeline::before { content: ''; position: absolute; left: 27px; top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg, rgba(26,108,246,.6) 0%, rgba(0,229,192,.6) 100%); }
+
+    .tl-item { display: flex; gap: 24px; padding-bottom: 44px; position: relative; }
+    .tl-item:last-child { padding-bottom: 0; }
+    .tl-num {
+      width: 56px; height: 56px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; position: relative; z-index: 1;
+      background: linear-gradient(135deg, #0D2040, #0A1830);
+      border: 2px solid rgba(26,108,246,.5);
+      box-shadow: 0 0 20px rgba(26,108,246,.3);
+    }
+    .tl-item.done .tl-num { background: linear-gradient(135deg, #0A2A1A, #0A1A2A); border-color: rgba(0,229,192,.5); box-shadow: 0 0 20px rgba(0,229,192,.3); }
+    .tl-item.active .tl-num { background: linear-gradient(135deg, #1A6CF6, #00C9E5); border-color: transparent; box-shadow: 0 0 28px rgba(26,108,246,.6); }
+    .tl-body { padding-top: 10px; }
+    .tl-tag { font-size: .65rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.3); margin-bottom: 6px; display: block; }
+    .tl-item.done .tl-tag { color: var(--teal); }
+    .tl-item.active .tl-tag { color: #60AAFF; }
+    .tl-body h3 { font-family: var(--font); font-size: 1.05rem; font-weight: 600; color: var(--white); margin-bottom: 6px; }
+    .tl-body p { font-size: .88rem; color: var(--dim); line-height: 1.65; max-width: 500px; }
+
+    /* WHAT TO PREPARE */
+    .prep-section { padding: 0 24px 80px; max-width: 1000px; margin: 0 auto; }
+    .prep-section h2 { font-family: var(--font); font-size: clamp(1.5rem,3vw,2rem); font-weight: 700; letter-spacing: -.02em; margin-bottom: 12px; text-align: center; }
+    .prep-section > p { font-size: 1rem; color: var(--dim); text-align: center; max-width: 480px; margin: 0 auto 48px; line-height: 1.7; }
+    .prep-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 16px; }
+    .prep-card { background: var(--glass); border: 1px solid var(--border); border-radius: 18px; padding: 28px 24px; }
+    .prep-card:hover { border-color: rgba(0,229,192,.2); }
+    .prep-icon { font-size: 1.6rem; margin-bottom: 14px; }
+    .prep-card h3 { font-family: var(--font); font-size: .95rem; font-weight: 600; color: var(--white); margin-bottom: 10px; }
+    .prep-card ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .prep-card li { font-size: .83rem; color: var(--dim); display: flex; gap: 8px; align-items: flex-start; line-height: 1.5; }
+    .prep-card li::before { content: '→'; color: var(--teal); flex-shrink: 0; font-weight: 700; margin-top: 1px; }
+
+    /* FORM CARD */
+    .form-section { padding: 0 24px 100px; max-width: 900px; margin: 0 auto; }
+    .form-header { text-align: center; margin-bottom: 40px; }
+    .form-header h2 { font-family: var(--font); font-size: clamp(1.8rem,4vw,2.6rem); font-weight: 700; letter-spacing: -.02em; margin-bottom: 14px; }
+    .form-header p { font-size: 1rem; color: var(--dim); max-width: 500px; margin: 0 auto; line-height: 1.7; }
+    .form-card { background: var(--glass); border: 1px solid var(--border); border-radius: 24px; overflow: hidden; }
+    .form-card-header { padding: 18px 28px; background: linear-gradient(135deg, rgba(26,108,246,.12), rgba(0,229,192,.06)); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+    .form-card-header .dot { width: 8px; height: 8px; background: var(--teal); border-radius: 50%; animation: blink 1.5s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.25} }
+    .form-card-header span { font-family: var(--font); font-size: .88rem; font-weight: 600; color: var(--white); }
+    .form-card iframe { width: 100%; min-height: 2200px; border: none; display: block; background: transparent; }
+
+    /* SUPPORT STRIP */
+    .support-strip { background: #020810; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 28px 24px; text-align: center; }
+    .support-strip p { font-size: .9rem; color: var(--dim); }
+    .support-strip a { color: var(--teal); text-decoration: none; font-weight: 600; }
+    .support-strip a:hover { text-decoration: underline; }
+
+    /* FOOTER */
+    footer { background: #020810; border-top: 1px solid var(--border); padding: 28px 40px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .f-logo img { height: 22px; width: auto; }
+    footer span { font-size: .78rem; color: rgba(255,255,255,.2); }
+    footer a { color: rgba(255,255,255,.3); font-size: .78rem; text-decoration: none; }
+    footer a:hover { color: rgba(255,255,255,.6); }
+
+    @media (max-width: 768px) {
+      nav, footer { padding: 14px 16px; }
+      .onb-hero { padding: 56px 16px 40px; }
+      .timeline-section, .prep-section, .form-section { padding-left: 16px; padding-right: 16px; }
+      .form-card-header { padding: 14px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="companyperiscope-whitelogo.png" alt="Company Periscope"/>
+  </a>
+  <a href="mailto:support@companyperiscope.com" class="nav-cta">Contact Support →</a>
+</nav>
+
+<!-- HERO -->
+<section class="onb-hero">
+  <span class="eyebrow">Client Onboarding</span>
+  <h1>Let's Get Your<br/><span>AI Live in 48 Hours.</span></h1>
+  <p>This page walks you through everything that happens after you sign up — and includes the intake form your team fills out so we can build and launch your AI receptionist.</p>
+</section>
+
+<!-- WHAT HAPPENS / TIMELINE -->
+<div class="timeline-section">
+  <h2>What Happens After You Sign Up</h2>
+  <div class="timeline">
+
+    <div class="tl-item done">
+      <div class="tl-num">✅</div>
+      <div class="tl-body">
+        <span class="tl-tag">Step 1 · Complete</span>
+        <h3>Payment Confirmed</h3>
+        <p>Your account is set up and a receipt has been sent to your email. Welcome to Company Periscope.</p>
+      </div>
+    </div>
+
+    <div class="tl-item active">
+      <div class="tl-num">📋</div>
+      <div class="tl-body">
+        <span class="tl-tag">Step 2 · You Are Here</span>
+        <h3>Complete the Intake Form</h3>
+        <p>Fill out the form below — your business info, hours, services, AI personality, and call handling preferences. This takes about 10–15 minutes and trains your AI to sound exactly like your team.</p>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-num">🤖</div>
+      <div class="tl-body">
+        <span class="tl-tag">Step 3 · Within 24–48 Hours</span>
+        <h3>We Build Your AI</h3>
+        <p>Our team configures and trains your AI receptionist on your specific business, scripts, and call flows. You'll receive a test call to approve before anything goes live.</p>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-num">📞</div>
+      <div class="tl-body">
+        <span class="tl-tag">Step 4 · Go Live</span>
+        <h3>Your AI Starts Answering</h3>
+        <p>We set up call forwarding and your AI takes over — answering every call, booking appointments, and capturing leads around the clock. You'll have dashboard access to monitor everything in real time.</p>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-num">📊</div>
+      <div class="tl-body">
+        <span class="tl-tag">Step 5 · Day 7</span>
+        <h3>Review &amp; Optimize</h3>
+        <p>We review your first week of call logs together and fine-tune anything that needs adjusting. You're never on your own — ongoing support is always included.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- WHAT TO PREPARE -->
+<div class="prep-section">
+  <h2>Have These Ready</h2>
+  <p>The form below takes 10–15 minutes. Having this info handy speeds things up.</p>
+  <div class="prep-grid">
+    <div class="prep-card">
+      <div class="prep-icon">🏢</div>
+      <h3>Business Basics</h3>
+      <ul>
+        <li>Business name, address, and phone number</li>
+        <li>Website URL</li>
+        <li>Business hours (including holidays)</li>
+        <li>Owner or office manager contact</li>
+      </ul>
+    </div>
+    <div class="prep-card">
+      <div class="prep-icon">📋</div>
+      <h3>Services & Pricing</h3>
+      <ul>
+        <li>Complete list of services you offer</li>
+        <li>Pricing ranges (approximate is fine)</li>
+        <li>Services you do NOT offer</li>
+        <li>Insurance accepted (if applicable)</li>
+      </ul>
+    </div>
+    <div class="prep-card">
+      <div class="prep-icon">🤖</div>
+      <h3>AI Personality & Tone</h3>
+      <ul>
+        <li>How you want your AI to sound (warm, professional, urgent)</li>
+        <li>Name for your AI (or we'll suggest one)</li>
+        <li>Scripts or greetings you'd like used</li>
+        <li>Phrases or tone to avoid</li>
+      </ul>
+    </div>
+    <div class="prep-card">
+      <div class="prep-icon">📞</div>
+      <h3>Call Handling Rules</h3>
+      <ul>
+        <li>Who gets escalated calls (owner, manager, on-call)</li>
+        <li>Emergency vs. routine call definitions</li>
+        <li>How to handle after-hours inquiries</li>
+        <li>Voicemail or text preferences</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- INTAKE FORM -->
+<div class="form-section">
+  <div class="form-header">
+    <span class="eyebrow">Intake Form</span>
+    <h2>Tell Us About<br/>Your Business.</h2>
+    <p>This information directly trains your AI receptionist. The more detail you provide, the better your AI performs from day one.</p>
+  </div>
+  <div class="form-card">
+    <div class="form-card-header">
+      <div class="dot"></div>
+      <span>AI Receptionist Intake Form — Secure &amp; Confidential</span>
+    </div>
+    <iframe
+      src="https://companyperiscope.com/form"
+      title="AI Receptionist Intake Form"
+      loading="lazy"
+      allow="forms"
+    ></iframe>
+  </div>
+</div>
+
+<!-- SUPPORT STRIP -->
+<div class="support-strip">
+  <p>Questions about onboarding? Email us at <a href="mailto:support@companyperiscope.com">support@companyperiscope.com</a> — we typically respond within a few hours.</p>
+</div>
+
+<footer>
+  <a href="index.html" class="f-logo">
+    <img src="companyperiscope-whitelogo.png" alt="Company Periscope"/>
+  </a>
+  <span>© 2026 Company Periscope. Questions? <a href="mailto:support@companyperiscope.com">support@companyperiscope.com</a></span>
+  <div style="display:flex;gap:16px;">
+    <a href="index.html">Home</a>
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+  </div>
+</footer>
+
+</body>
+</html>
