@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pilot Confirmed! | Company Periscope</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- ============================================================
+       TRACKING PIXELS — PILOT PURCHASE CONVERSION ($297)
+       This is your primary purchase conversion event.
+       ============================================================
+
+  Google Tag Manager:
+  <script>(function(w,d,s,l,i){...})(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+
+  Facebook Pixel — Purchase Event:
+  <script>
+    fbq('init', 'YOUR_PIXEL_ID');
+    fbq('track', 'Purchase', {value: 297.00, currency: 'USD'});
+  </script>
+  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID&ev=Purchase&noscript=1"/></noscript>
+
+  Google Ads Purchase Conversion:
+  <script>
+    gtag('event', 'conversion', {
+      'send_to': 'AW-XXXXXXX/XXXXXXX',
+      'value': 297.0,
+      'currency': 'USD',
+      'transaction_id': ''
+    });
+  </script>
+
+  Stripe also supports webhooks for server-side conversion tracking.
+  For ROAS tracking, use both pixel + Stripe webhook for highest accuracy.
+  ============================================================ -->
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #050D1A; --teal: #00E5C0; --green: #00C97A; --blue: #1A6CF6;
+      --white: #fff; --font: 'Montserrat', sans-serif; --body: 'Inter', sans-serif;
+    }
+    html { font-family: var(--body); background: var(--navy); color: var(--white); min-height: 100vh; }
+    body { overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh; }
+
+    nav { display: flex; align-items: center; padding: 20px 48px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    nav img { height: 28px; }
+
+    .main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 72px 24px; text-align: center; }
+
+    .success-icon {
+      width: 88px; height: 88px; border-radius: 50%;
+      background: rgba(0,201,122,0.12); border: 2px solid rgba(0,201,122,0.35);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.2rem; margin: 0 auto 32px;
+      animation: pop 0.5s cubic-bezier(0.175,0.885,0.32,1.275) both;
+    }
+    @keyframes pop { 0%{transform:scale(0);opacity:0} 100%{transform:scale(1);opacity:1} }
+
+    .ty-tag {
+      display: inline-block; font-family: var(--font); font-size: 0.65rem; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--green);
+      background: rgba(0,201,122,0.1); padding: 4px 10px; border-radius: 4px; margin-bottom: 16px;
+    }
+    h1 { font-family: var(--font); font-size: 2.4rem; font-weight: 900; max-width: 600px; margin-bottom: 14px; line-height: 1.1; }
+    h1 span { color: var(--teal); }
+    .ty-sub { font-size: 1rem; color: rgba(255,255,255,0.6); max-width: 480px; line-height: 1.7; margin-bottom: 48px; }
+
+    /* CONFIRMATION CARD */
+    .confirm-card {
+      background: rgba(0,201,122,0.05); border: 1px solid rgba(0,201,122,0.2);
+      border-radius: 16px; padding: 28px 32px; max-width: 520px; width: 100%;
+      text-align: left; margin-bottom: 24px;
+    }
+    .confirm-title {
+      font-family: var(--font); font-weight: 700; font-size: 0.75rem;
+      letter-spacing: 0.12em; text-transform: uppercase; color: var(--green); margin-bottom: 16px;
+    }
+    .confirm-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.06); align-items: center; }
+    .confirm-item:last-child { border-bottom: none; }
+    .confirm-key { font-size: 0.87rem; color: rgba(255,255,255,0.5); }
+    .confirm-val { font-family: var(--font); font-weight: 700; font-size: 0.9rem; }
+    .confirm-val.green { color: var(--green); }
+
+    /* TIMELINE */
+    .timeline-card {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px; padding: 28px 32px; max-width: 520px; width: 100%; text-align: left; margin-bottom: 24px;
+    }
+    .tl-title { font-family: var(--font); font-weight: 700; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 20px; }
+    .tl-row { display: flex; gap: 14px; margin-bottom: 16px; }
+    .tl-row:last-child { margin-bottom: 0; }
+    .tl-dot {
+      flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%;
+      background: rgba(0,229,192,0.12); border: 1px solid rgba(0,229,192,0.3);
+      color: var(--teal); font-family: var(--font); font-weight: 800; font-size: 0.65rem;
+      display: flex; align-items: center; justify-content: center; margin-top: 1px;
+    }
+    .tl-step-title { font-family: var(--font); font-weight: 700; font-size: 0.88rem; margin-bottom: 3px; }
+    .tl-step-desc { font-size: 0.8rem; color: rgba(255,255,255,0.45); line-height: 1.6; }
+
+    /* ACTION */
+    .action-note {
+      max-width: 520px; width: 100%; font-size: 0.87rem;
+      color: rgba(255,255,255,0.4); line-height: 1.7; text-align: center;
+    }
+    .action-note strong { color: var(--teal); }
+
+    footer { padding: 24px 48px; border-top: 1px solid rgba(255,255,255,0.07); text-align: center; margin-top: auto; }
+    footer img { height: 20px; opacity: 0.4; }
+
+    @media (max-width: 640px) {
+      nav { padding: 16px 20px; }
+      h1 { font-size: 1.75rem; }
+      .confirm-card, .timeline-card { padding: 20px; }
+      footer { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html"><img src="companyperiscope-whitelogo.png" alt="Company Periscope"/></a>
+</nav>
+
+<main class="main">
+  <div class="success-icon">🚀</div>
+  <div class="ty-tag">Payment Confirmed</div>
+  <h1>Your pilot is confirmed. <span>You're live in 48 hours.</span></h1>
+  <p class="ty-sub">
+    We've received your $297 payment. A receipt from Stripe is on its way to your inbox, along with a welcome email from us with everything you need for your onboarding call.
+  </p>
+
+  <div class="confirm-card">
+    <div class="confirm-title">Order Summary</div>
+    <div class="confirm-item">
+      <span class="confirm-key">Product</span>
+      <span class="confirm-val">7-Day Pilot Program</span>
+    </div>
+    <div class="confirm-item">
+      <span class="confirm-key">Amount Paid</span>
+      <span class="confirm-val green">$297.00</span>
+    </div>
+    <div class="confirm-item">
+      <span class="confirm-key">Status</span>
+      <span class="confirm-val green">✓ Confirmed</span>
+    </div>
+    <div class="confirm-item">
+      <span class="confirm-key">Stripe Receipt</span>
+      <span class="confirm-val">Sent to your email</span>
+    </div>
+  </div>
+
+  <div class="timeline-card">
+    <div class="tl-title">What Happens Next</div>
+    <div class="tl-row">
+      <div class="tl-dot">1</div>
+      <div>
+        <div class="tl-step-title">Check your email — within the next 30 minutes</div>
+        <div class="tl-step-desc">You'll receive a welcome email with a link to schedule your onboarding call. Pick any available slot — we'll confirm within the hour.</div>
+      </div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-dot">2</div>
+      <div>
+        <div class="tl-step-title">Onboarding call — within 24 hours</div>
+        <div class="tl-step-desc">30 minutes with our team to configure your AI receptionist. We handle the setup — you just answer a few questions about your practice.</div>
+      </div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-dot">3</div>
+      <div>
+        <div class="tl-step-title">You go live — within 48 hours</div>
+        <div class="tl-step-desc">Your AI receptionist is active and handling calls. Your 7-day clock starts the moment we flip the switch.</div>
+      </div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-dot">4</div>
+      <div>
+        <div class="tl-step-title">Performance report — Day 8</div>
+        <div class="tl-step-desc">Full summary of calls handled, inquiries responded to, and revenue protected during your pilot. Then you decide what's next.</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="action-note">
+    Questions before your call? Email us at <strong>support@companyperiscope.com</strong> — we respond same day.
+  </p>
+</main>
+
+<footer>
+  <img src="companyperiscope-whitelogo.png" alt="Company Periscope"/>
+</footer>
+
+</body>
+</html>

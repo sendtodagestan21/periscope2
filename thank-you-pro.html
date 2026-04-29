@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Welcome to Company Periscope — Pro Plan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- ============================================================
+       TRACKING PIXELS — PRO SUBSCRIPTION ($1,000/mo)
+       Highest-value conversion event.
+       ============================================================
+
+  Facebook Pixel — Subscribe Event:
+  <script>
+    fbq('init', 'YOUR_PIXEL_ID');
+    fbq('track', 'Subscribe', {value: 1000.00, currency: 'USD', predicted_ltv: 12000.00});
+  </script>
+
+  Google Ads Conversion — Pro Subscription:
+  <script>
+    gtag('event', 'conversion', {
+      'send_to': 'AW-XXXXXXX/XXXXXXX',
+      'value': 1000.0,
+      'currency': 'USD'
+    });
+  </script>
+
+  Stripe Webhook: invoice.payment_succeeded → track monthly recurring.
+  Recommend server-side event for accurate MRR attribution.
+  ============================================================ -->
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #050D1A; --teal: #00E5C0; --blue: #1A6CF6; --purple: #7B5CF5;
+      --white: #fff; --font: 'Montserrat', sans-serif; --body: 'Inter', sans-serif;
+    }
+    html { font-family: var(--body); background: var(--navy); color: var(--white); min-height: 100vh; }
+    body { overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh; }
+
+    nav { display: flex; align-items: center; padding: 20px 48px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    nav img { height: 28px; }
+
+    .main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 72px 24px; text-align: center; }
+
+    .success-icon {
+      width: 88px; height: 88px; border-radius: 50%;
+      background: rgba(123,92,245,0.12); border: 2px solid rgba(123,92,245,0.35);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.2rem; margin: 0 auto 32px;
+      animation: pop 0.5s cubic-bezier(0.175,0.885,0.32,1.275) both;
+    }
+    @keyframes pop { 0%{transform:scale(0);opacity:0} 100%{transform:scale(1);opacity:1} }
+
+    .ty-tag {
+      display: inline-block; font-family: var(--font); font-size: 0.65rem; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase; color: #a88df9;
+      background: rgba(123,92,245,0.1); padding: 4px 10px; border-radius: 4px; margin-bottom: 16px;
+    }
+    h1 { font-family: var(--font); font-size: 2.4rem; font-weight: 900; max-width: 640px; margin-bottom: 14px; line-height: 1.1; }
+    h1 span { color: var(--teal); }
+    .ty-sub { font-size: 1rem; color: rgba(255,255,255,0.6); max-width: 480px; line-height: 1.7; margin-bottom: 48px; }
+
+    .plan-card {
+      background: rgba(123,92,245,0.06); border: 1px solid rgba(123,92,245,0.2);
+      border-radius: 16px; padding: 28px 32px; max-width: 540px; width: 100%;
+      text-align: left; margin-bottom: 24px; position: relative; overflow: hidden;
+    }
+    .plan-card::before {
+      content: 'PRO';
+      position: absolute; top: 16px; right: 20px;
+      font-family: var(--font); font-weight: 900; font-size: 0.6rem;
+      letter-spacing: 0.2em; color: rgba(123,92,245,0.4);
+    }
+    .plan-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+    .plan-name { font-family: var(--font); font-weight: 800; font-size: 1rem; }
+    .plan-price { font-family: var(--font); font-weight: 800; font-size: 1.4rem; color: var(--teal); }
+    .plan-price span { font-size: 0.8rem; color: rgba(255,255,255,0.4); font-weight: 400; }
+    .plan-features { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .plan-features li { font-size: 0.87rem; color: rgba(255,255,255,0.7); display: flex; align-items: center; gap: 10px; }
+    .plan-features li::before { content: '✓'; color: var(--teal); font-weight: 700; flex-shrink: 0; }
+
+    .dedicated-note {
+      background: rgba(0,229,192,0.06); border: 1px solid rgba(0,229,192,0.15);
+      border-radius: 12px; padding: 18px 20px; max-width: 540px; width: 100%;
+      margin-bottom: 24px; font-size: 0.87rem; color: rgba(255,255,255,0.65);
+      line-height: 1.7; text-align: left;
+    }
+    .dedicated-note strong { color: var(--teal); }
+
+    .next-card {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px; padding: 28px 32px; max-width: 540px; width: 100%;
+      text-align: left; margin-bottom: 24px;
+    }
+    .next-title { font-family: var(--font); font-weight: 700; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 20px; }
+    .next-row { display: flex; gap: 14px; margin-bottom: 16px; }
+    .next-row:last-child { margin-bottom: 0; }
+    .next-dot {
+      flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%;
+      background: rgba(0,229,192,0.1); border: 1px solid rgba(0,229,192,0.25);
+      color: var(--teal); font-family: var(--font); font-weight: 800; font-size: 0.65rem;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .next-step-title { font-family: var(--font); font-weight: 700; font-size: 0.88rem; margin-bottom: 3px; }
+    .next-step-desc { font-size: 0.8rem; color: rgba(255,255,255,0.45); line-height: 1.6; }
+
+    .action-note { max-width: 540px; width: 100%; font-size: 0.87rem; color: rgba(255,255,255,0.4); line-height: 1.7; text-align: center; }
+    .action-note strong { color: var(--teal); }
+
+    footer { padding: 24px 48px; border-top: 1px solid rgba(255,255,255,0.07); text-align: center; margin-top: auto; }
+    footer img { height: 20px; opacity: 0.4; }
+
+    @media (max-width: 640px) {
+      nav { padding: 16px 20px; }
+      h1 { font-size: 1.75rem; }
+      .plan-card, .next-card { padding: 20px; }
+      footer { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html"><img src="companyperiscope-whitelogo.png" alt="Company Periscope"/></a>
+</nav>
+
+<main class="main">
+  <div class="success-icon">⭐</div>
+  <div class="ty-tag">Pro Plan — Confirmed</div>
+  <h1>You're on the Pro Plan. <span>Full coverage starts now.</span></h1>
+  <p class="ty-sub">
+    Your Pro subscription is active. You're getting our full suite — multi-location support, HIPAA compliance, priority onboarding, and a dedicated account contact. We'll be in touch within the hour.
+  </p>
+
+  <div class="plan-card">
+    <div class="plan-header">
+      <div class="plan-name">Pro Plan — Active</div>
+      <div class="plan-price">$1,000<span>/month</span></div>
+    </div>
+    <ul class="plan-features">
+      <li>Everything in Starter</li>
+      <li>Multi-location support</li>
+      <li>HIPAA-compliant call handling</li>
+      <li>Custom integrations (EHR, scheduling software)</li>
+      <li>Priority support — dedicated contact</li>
+      <li>Advanced analytics dashboard</li>
+      <li>Quarterly strategy review calls</li>
+    </ul>
+  </div>
+
+  <div class="dedicated-note">
+    <strong>Dedicated onboarding:</strong> Pro clients get a dedicated Company Periscope account contact — not a shared support queue. You'll receive their direct contact info in your welcome email. They handle your setup personally and are your point of contact for the life of your subscription.
+  </div>
+
+  <div class="next-card">
+    <div class="next-title">Your Priority Onboarding Timeline</div>
+    <div class="next-row">
+      <div class="next-dot">1</div>
+      <div>
+        <div class="next-step-title">Welcome email + dedicated contact info — within 1 hour</div>
+        <div class="next-step-desc">Your account contact reaches out directly with their info and a priority scheduling link for your setup call.</div>
+      </div>
+    </div>
+    <div class="next-row">
+      <div class="next-dot">2</div>
+      <div>
+        <div class="next-step-title">Priority onboarding call — within 24 hours</div>
+        <div class="next-step-desc">60–90 minute call to configure multi-location routing, custom scripts, and any integrations with your existing systems.</div>
+      </div>
+    </div>
+    <div class="next-row">
+      <div class="next-dot">3</div>
+      <div>
+        <div class="next-step-title">Live in 48 hours</div>
+        <div class="next-step-desc">Full Pro configuration deployed. All locations active. Dashboard access confirmed. You'll receive a detailed handoff document.</div>
+      </div>
+    </div>
+    <div class="next-row">
+      <div class="next-dot">4</div>
+      <div>
+        <div class="next-step-title">Ongoing — monthly reports + quarterly reviews</div>
+        <div class="next-step-desc">Monthly performance report from your account contact. Quarterly strategy calls to optimize and expand your setup as the business grows.</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="action-note">
+    Need something before your call? Contact your team directly at <strong>support@companyperiscope.com</strong> — Pro clients move to the front of the queue.
+  </p>
+</main>
+
+<footer>
+  <img src="companyperiscope-whitelogo.png" alt="Company Periscope"/>
+</footer>
+
+</body>
+</html>

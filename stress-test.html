@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Free Response Time Stress Test | Company Periscope</title>
+  <meta name="description" content="We'll contact your office as a patient and send you a private report on exactly how fast you responded — and what it's costing you."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #050D1A; --blue: #1A6CF6; --teal: #00E5C0; --cyan: #00C9E5;
+      --red: #FF4D6A; --green: #00C97A;
+      --white: #fff; --font: 'Montserrat', sans-serif; --body: 'Inter', sans-serif;
+    }
+    html { font-family: var(--body); background: var(--navy); color: var(--white); }
+    body { overflow-x: hidden; position: relative; }
+
+    #bg-canvas { position: fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; }
+
+    .sonar-wrap { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); pointer-events:none; z-index:1; }
+    .sonar-ring {
+      position:absolute; border-radius:50%; animation:sonar-expand 6s ease-out infinite;
+      transform:translate(-50%,-50%);
+    }
+    .sonar-ring:nth-child(1){width:280px;height:280px;border:1px solid rgba(255,77,106,0.14);animation-delay:0s;}
+    .sonar-ring:nth-child(2){width:560px;height:560px;border:1px solid rgba(255,77,106,0.1);animation-delay:1.5s;}
+    .sonar-ring:nth-child(3){width:840px;height:840px;border:1px solid rgba(255,77,106,0.06);animation-delay:3s;}
+    .sonar-ring:nth-child(4){width:1120px;height:1120px;border:1px solid rgba(0,229,192,0.06);animation-delay:4.5s;}
+    @keyframes sonar-expand {
+      0%{opacity:.7;transform:translate(-50%,-50%) scale(.7);}
+      100%{opacity:0;transform:translate(-50%,-50%) scale(1);}
+    }
+
+    nav {
+      position:relative; z-index:100;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:18px 48px; background:rgba(5,13,26,.7); backdrop-filter:blur(20px);
+      border-bottom:1px solid rgba(255,255,255,.07);
+    }
+    .nav-logo img { height:28px; }
+    .nav-back { font-family:var(--font); font-size:.78rem; font-weight:600; color:rgba(255,255,255,.45); text-decoration:none; transition:color .2s; }
+    .nav-back:hover { color:var(--teal); }
+
+    /* TRUST STRIP */
+    .trust-marquee {
+      width:100%; max-width:700px; overflow:hidden; position:relative; margin-top:20px;
+    }
+    .trust-marquee::before, .trust-marquee::after {
+      content:''; position:absolute; top:0; bottom:0; width:72px; z-index:2; pointer-events:none;
+    }
+    .trust-marquee::before { left:0; background:linear-gradient(to right,var(--navy),transparent); }
+    .trust-marquee::after  { right:0; background:linear-gradient(to left,var(--navy),transparent); }
+    .marquee-track { display:flex; width:max-content; animation:marquee-left 32s linear infinite; }
+    @keyframes marquee-left { 0%{transform:translateX(0);} 100%{transform:translateX(-50%);} }
+    .trust-item {
+      display:inline-flex; align-items:center; gap:7px; padding:4px 20px;
+      font-family:var(--font); font-size:.7rem; font-weight:700; letter-spacing:.05em;
+      color:rgba(255,255,255,.36); white-space:nowrap; border-right:1px solid rgba(255,255,255,.06);
+    }
+    .trust-item .ti-icon { width:17px; height:17px; border-radius:4px; background:rgba(0,229,192,.08); display:flex; align-items:center; justify-content:center; font-size:.68rem; flex-shrink:0; }
+    .trust-item.hl { color:rgba(0,229,192,.65); }
+    .trust-item.hl .ti-icon { background:rgba(0,229,192,.12); }
+
+    /* HERO */
+    .hero {
+      position:relative; z-index:10;
+      min-height:calc(100vh - 120px); display:flex; flex-direction:column;
+      align-items:center; justify-content:center; text-align:center; padding:80px 24px;
+      overflow:hidden;
+    }
+    .hero-gradient { position:absolute; inset:0; background:radial-gradient(ellipse 80% 60% at 50% 40%, rgba(255,77,106,.05) 0%, transparent 70%); pointer-events:none; }
+    .hero-badge {
+      display:inline-flex; align-items:center; gap:8px;
+      background:rgba(255,77,106,.1); border:1px solid rgba(255,77,106,.25);
+      color:#ff8096; font-family:var(--font); font-size:.68rem; font-weight:700;
+      letter-spacing:.16em; text-transform:uppercase; padding:7px 16px; border-radius:30px; margin-bottom:28px;
+      position:relative; z-index:2;
+    }
+    .hero-badge .pulse-dot { width:7px; height:7px; background:#ff4d6a; border-radius:50%; box-shadow:0 0 8px #ff4d6a; animation:pulse-dot 2s ease-in-out infinite; }
+    @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.8)} }
+
+    h1 { font-family:var(--font); font-weight:900; font-size:clamp(2.2rem,5vw,3.8rem); line-height:1.06; max-width:820px; margin-bottom:20px; position:relative; z-index:2; letter-spacing:-.02em; }
+    h1 em { font-style:normal; color:var(--teal); }
+    .hero-sub { font-size:clamp(.97rem,2vw,1.1rem); color:rgba(255,255,255,.58); line-height:1.75; max-width:540px; margin-bottom:44px; position:relative; z-index:2; }
+    .cta-wrap { position:relative; z-index:2; display:flex; flex-direction:column; align-items:center; gap:16px; }
+    .cta-btn {
+      display:inline-flex; align-items:center; gap:12px;
+      background:linear-gradient(135deg,var(--teal) 0%,var(--cyan) 100%);
+      color:var(--navy); font-family:var(--font); font-weight:800; font-size:1.05rem;
+      padding:20px 44px; border-radius:14px; border:none; cursor:pointer;
+      animation:cta-glow 3s ease-in-out infinite; transition:transform .2s;
+    }
+    .cta-btn:hover { transform:translateY(-3px); }
+    @keyframes cta-glow { 0%,100%{box-shadow:0 8px 32px rgba(0,229,192,.3),0 0 0 0 rgba(0,229,192,0);} 50%{box-shadow:0 12px 48px rgba(0,229,192,.45),0 0 0 8px rgba(0,229,192,.06);} }
+    .cta-secondary { font-size:.82rem; color:rgba(255,255,255,.38); font-family:var(--font); font-weight:500; }
+    .cta-secondary a { color:rgba(255,255,255,.55); text-decoration:underline; text-underline-offset:3px; transition:color .2s; }
+    .cta-secondary a:hover { color:var(--teal); }
+
+    /* TRANSFORM SECTION */
+    .transform-section { position:relative; z-index:10; padding:96px 48px; background:rgba(255,255,255,.018); border-top:1px solid rgba(255,255,255,.07); border-bottom:1px solid rgba(255,255,255,.07); }
+    .transform-label { text-align:center; margin-bottom:52px; }
+    .section-tag { display:inline-block; font-family:var(--font); font-size:.65rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--teal); background:rgba(0,229,192,.1); padding:5px 12px; border-radius:4px; margin-bottom:14px; }
+    .transform-label h2 { font-family:var(--font); font-size:clamp(1.6rem,3vw,2.2rem); font-weight:800; line-height:1.2; }
+    .transform-label p { font-size:.95rem; color:rgba(255,255,255,.5); margin-top:10px; }
+    .transform-grid { display:grid; grid-template-columns:1fr auto 1fr; gap:0; max-width:900px; margin:0 auto; align-items:start; }
+    .before-card, .after-card { border-radius:20px; overflow:hidden; }
+    .before-card { background:rgba(255,50,80,.04); border:1px solid rgba(255,50,80,.15); }
+    .after-card { background:rgba(0,229,192,.04); border:1px solid rgba(0,229,192,.18); }
+    .card-header { padding:18px 24px; display:flex; align-items:center; gap:10px; }
+    .before-card .card-header { background:rgba(255,50,80,.08); border-bottom:1px solid rgba(255,50,80,.1); }
+    .after-card .card-header { background:rgba(0,229,192,.08); border-bottom:1px solid rgba(0,229,192,.1); }
+    .card-label { font-family:var(--font); font-weight:800; font-size:.78rem; letter-spacing:.1em; text-transform:uppercase; }
+    .before-card .card-label { color:#ff6b82; }
+    .after-card .card-label { color:var(--teal); }
+    .card-dot { width:9px; height:9px; border-radius:50%; }
+    .before-card .card-dot { background:#ff4d6a; box-shadow:0 0 8px rgba(255,77,106,.6); }
+    .after-card .card-dot { background:var(--teal); box-shadow:0 0 8px rgba(0,229,192,.6); animation:pulse-dot 2s infinite; }
+    .card-body { padding:24px; display:flex; flex-direction:column; gap:0; }
+    .step-row { display:flex; gap:14px; align-items:flex-start; padding:12px 0; border-bottom:1px solid rgba(255,255,255,.05); opacity:0; transform:translateY(10px); transition:opacity .45s ease,transform .45s ease; }
+    .step-row:last-child { border-bottom:none; }
+    .step-row.visible { opacity:1; transform:translateY(0); }
+    .step-icon { flex-shrink:0; width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:1rem; }
+    .before-card .step-icon { background:rgba(255,77,106,.1); }
+    .after-card .step-icon { background:rgba(0,229,192,.1); }
+    .step-content { flex:1; padding-top:6px; }
+    .step-title { font-family:var(--font); font-weight:700; font-size:.88rem; margin-bottom:2px; }
+    .step-sub { font-size:.78rem; line-height:1.5; }
+    .before-card .step-sub { color:rgba(255,77,106,.7); }
+    .after-card .step-sub { color:rgba(0,229,192,.65); }
+    .revenue-row { display:flex; align-items:center; justify-content:space-between; padding:16px 20px; border-radius:10px; margin-top:8px; }
+    .before-card .revenue-row { background:rgba(255,77,106,.08); }
+    .after-card .revenue-row { background:rgba(0,229,192,.08); }
+    .rev-label { font-family:var(--font); font-size:.72rem; font-weight:600; color:rgba(255,255,255,.5); }
+    .rev-amount { font-family:var(--font); font-weight:900; font-size:1.5rem; }
+    .before-card .rev-amount { color:#ff4d6a; }
+    .after-card .rev-amount { color:var(--teal); }
+    .vs-divider { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:0 20px; gap:12px; padding-top:80px; }
+    .vs-circle { width:48px; height:48px; border-radius:50%; background:var(--navy); border:2px solid rgba(255,255,255,.1); display:flex; align-items:center; justify-content:center; font-family:var(--font); font-weight:900; font-size:.75rem; color:rgba(255,255,255,.35); }
+    .vs-arrow { display:flex; flex-direction:column; align-items:center; gap:4px; }
+    .vs-arrow-dot { width:6px; height:6px; border-radius:50%; background:rgba(0,229,192,.3); }
+    .vs-arrow-dot:nth-child(2) { background:rgba(0,229,192,.5); }
+    .vs-arrow-dot:nth-child(3) { background:rgba(0,229,192,.3); }
+
+    /* REPORT SECTION */
+    .report-section { position:relative; z-index:10; padding:88px 48px; max-width:960px; margin:0 auto; }
+    h2 { font-family:var(--font); font-size:clamp(1.5rem,3vw,2rem); font-weight:800; margin-bottom:10px; }
+    .section-sub { font-size:.95rem; color:rgba(255,255,255,.52); line-height:1.7; margin-bottom:48px; }
+    .report-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
+    .report-card { background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07); border-radius:16px; padding:28px 22px; display:flex; gap:16px; transition:border-color .3s,background .3s; }
+    .report-card:hover { border-color:rgba(0,229,192,.2); background:rgba(0,229,192,.03); }
+    .report-icon { flex-shrink:0; width:44px; height:44px; border-radius:11px; background:rgba(0,229,192,.1); display:flex; align-items:center; justify-content:center; font-size:1.3rem; }
+    .report-title { font-family:var(--font); font-weight:700; font-size:.92rem; margin-bottom:6px; }
+    .report-desc { font-size:.83rem; color:rgba(255,255,255,.5); line-height:1.6; }
+
+    /* HOW IT WORKS */
+    .steps-section { position:relative; z-index:10; padding:0 48px 88px; max-width:960px; margin:0 auto; }
+    .steps { display:flex; flex-direction:column; gap:0; }
+    .step-item { display:flex; gap:20px; padding:22px 0; border-bottom:1px solid rgba(255,255,255,.06); }
+    .step-item:last-child { border-bottom:none; }
+    .step-num { flex-shrink:0; width:36px; height:36px; border-radius:50%; background:var(--navy); border:2px solid var(--teal); color:var(--teal); font-family:var(--font); font-weight:800; font-size:.85rem; display:flex; align-items:center; justify-content:center; margin-top:2px; }
+    .step-item-title { font-family:var(--font); font-weight:700; font-size:.93rem; margin-bottom:4px; }
+    .step-item-desc { font-size:.86rem; color:rgba(255,255,255,.5); line-height:1.6; }
+
+    /* BOTTOM CTA */
+    .bottom-cta { position:relative; z-index:10; padding:88px 48px; text-align:center; background:rgba(255,255,255,.02); border-top:1px solid rgba(255,255,255,.07); }
+    .bottom-cta h2 { margin-bottom:12px; }
+    .bottom-cta p { color:rgba(255,255,255,.5); margin-bottom:40px; font-size:.97rem; }
+
+    footer { position:relative; z-index:10; padding:28px 48px; border-top:1px solid rgba(255,255,255,.07); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+    footer img { height:22px; opacity:.5; }
+    .footer-links { display:flex; gap:28px; }
+    .footer-links a { font-size:.78rem; color:rgba(255,255,255,.32); text-decoration:none; font-family:var(--font); font-weight:500; transition:color .2s; }
+    .footer-links a:hover { color:var(--teal); }
+
+    /* MODAL */
+    .modal-overlay { position:fixed; inset:0; z-index:999; background:rgba(0,0,0,.8); backdrop-filter:blur(12px); display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity .3s; padding:20px; }
+    .modal-overlay.active { opacity:1; pointer-events:all; }
+    .modal-box { background:linear-gradient(160deg,#0c1628 0%,#09101e 100%); border:1px solid rgba(255,255,255,.1); border-radius:22px; padding:44px; width:100%; max-width:500px; position:relative; transform:translateY(24px) scale(.97); transition:transform .35s cubic-bezier(.175,.885,.32,1.275); max-height:90vh; overflow-y:auto; }
+    .modal-overlay.active .modal-box { transform:translateY(0) scale(1); }
+    .modal-close { position:absolute; top:16px; right:16px; background:rgba(255,255,255,.06); border:none; color:rgba(255,255,255,.4); width:34px; height:34px; border-radius:50%; font-size:1.1rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+    .modal-close:hover { background:rgba(255,255,255,.12); color:white; }
+    .modal-tag { font-family:var(--font); font-size:.65rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--teal); margin-bottom:12px; }
+    .modal-title { font-family:var(--font); font-weight:800; font-size:1.5rem; margin-bottom:8px; }
+    .modal-sub { font-size:.87rem; color:rgba(255,255,255,.52); margin-bottom:28px; line-height:1.65; }
+    .ghl-placeholder { background:rgba(255,255,255,.03); border:2px dashed rgba(0,229,192,.2); border-radius:14px; padding:44px 24px; text-align:center; }
+    .ghl-placeholder .ph-icon { font-size:2rem; margin-bottom:12px; }
+    .ghl-placeholder p { font-size:.85rem; color:rgba(255,255,255,.38); font-family:var(--font); font-weight:600; }
+    .ghl-placeholder code { display:block; font-size:.72rem; color:var(--teal); background:rgba(0,229,192,.06); padding:8px 12px; border-radius:6px; margin-top:10px; font-family:'Courier New',monospace; }
+
+    @media(max-width:768px){
+      nav{padding:16px 20px;} .hero{min-height:auto;padding:60px 20px 64px;}
+      .transform-section{padding:64px 20px;} .transform-grid{grid-template-columns:1fr;gap:16px;}
+      .vs-divider{flex-direction:row;padding-top:0;gap:8px;} .vs-circle{width:36px;height:36px;font-size:.65rem;}
+      .vs-arrow{flex-direction:row;} .report-section,.steps-section{padding:64px 20px;}
+      .report-grid{grid-template-columns:1fr;} .bottom-cta{padding:64px 20px;}
+      footer{padding:24px 20px;flex-direction:column;text-align:center;} .modal-box{padding:28px 20px;}
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<nav>
+  <a href="index.html" class="nav-logo"><img src="companyperiscope-whitelogo.png" alt="Company Periscope"/></a>
+  <a href="index.html" class="nav-back">← Main site</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-gradient"></div>
+  <div class="sonar-wrap">
+    <div class="sonar-ring"></div><div class="sonar-ring"></div>
+    <div class="sonar-ring"></div><div class="sonar-ring"></div>
+  </div>
+  <div class="hero-badge"><span class="pulse-dot"></span>Free Audit — Private Report</div>
+  <h1>We'll Call Your Practice<br>As a Patient. <em>Then Tell You Everything.</em></h1>
+  <p class="hero-sub">A free, honest response time stress test. We contact your office as a prospective patient and send you a private report on exactly what we found — and what it's costing you.</p>
+  <div class="cta-wrap">
+    <button class="cta-btn" onclick="openModal()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 1h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+      Get My Free Stress Test
+    </button>
+    <p class="cta-secondary">Free · Private report in 24–48 hrs · <a href="#what-we-test">See what we test ↓</a></p>
+    <div class="trust-marquee">
+      <div class="marquee-track">
+        <span class="trust-item hl"><span class="ti-icon">🔒</span>HIPAA Compliant</span>
+        <span class="trust-item"><span class="ti-icon">🔍</span>Honest Audit</span>
+        <span class="trust-item hl"><span class="ti-icon">📊</span>Private Report</span>
+        <span class="trust-item"><span class="ti-icon">⚡</span>24–48 Hr Delivery</span>
+        <span class="trust-item hl"><span class="ti-icon">✓</span>Completely Free</span>
+        <span class="trust-item"><span class="ti-icon">🛡️</span>Confidential Results</span>
+        <span class="trust-item hl"><span class="ti-icon">⭐</span>4.9 Star Average</span>
+        <span class="trust-item"><span class="ti-icon">🚀</span>No Strings Attached</span>
+        <span class="trust-item hl"><span class="ti-icon">🌙</span>After-Hours Tested</span>
+        <span class="trust-item"><span class="ti-icon">💳</span>Stripe Secured</span>
+        <!-- duplicate -->
+        <span class="trust-item hl"><span class="ti-icon">🔒</span>HIPAA Compliant</span>
+        <span class="trust-item"><span class="ti-icon">🔍</span>Honest Audit</span>
+        <span class="trust-item hl"><span class="ti-icon">📊</span>Private Report</span>
+        <span class="trust-item"><span class="ti-icon">⚡</span>24–48 Hr Delivery</span>
+        <span class="trust-item hl"><span class="ti-icon">✓</span>Completely Free</span>
+        <span class="trust-item"><span class="ti-icon">🛡️</span>Confidential Results</span>
+        <span class="trust-item hl"><span class="ti-icon">⭐</span>4.9 Star Average</span>
+        <span class="trust-item"><span class="ti-icon">🚀</span>No Strings Attached</span>
+        <span class="trust-item hl"><span class="ti-icon">🌙</span>After-Hours Tested</span>
+        <span class="trust-item"><span class="ti-icon">💳</span>Stripe Secured</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BEFORE / AFTER -->
+<section class="transform-section" id="transform">
+  <div class="transform-label">
+    <div class="section-tag">The Reality Check</div>
+    <h2>What a new patient experiences at your practice right now —<br>vs. what they should experience.</h2>
+    <p>Most owners are shocked. The stress test shows you which column you're actually in.</p>
+  </div>
+  <div class="transform-grid">
+    <div class="before-card">
+      <div class="card-header"><div class="card-dot"></div><div class="card-label">What's Happening Now</div></div>
+      <div class="card-body">
+        <div class="step-row" data-delay="100">
+          <div class="step-icon">📞</div>
+          <div class="step-content"><div class="step-title">New patient calls your office</div><div class="step-sub">Hoping to get in soon. Ready to book.</div></div>
+        </div>
+        <div class="step-row" data-delay="600">
+          <div class="step-icon">🔔</div>
+          <div class="step-content"><div class="step-title">Rings... and rings...</div><div class="step-sub">No one picks up. Put on hold. Dropped.</div></div>
+        </div>
+        <div class="step-row" data-delay="1100">
+          <div class="step-icon">📵</div>
+          <div class="step-content"><div class="step-title">Voicemail. Generic message.</div><div class="step-sub">"Your call is important to us..."</div></div>
+        </div>
+        <div class="step-row" data-delay="1600">
+          <div class="step-icon">⏰</div>
+          <div class="step-content"><div class="step-title">Web form submitted at 9 PM</div><div class="step-sub">No response until 2 days later. If at all.</div></div>
+        </div>
+        <div class="step-row" data-delay="2100">
+          <div class="step-icon">😤</div>
+          <div class="step-content"><div class="step-title">Patient moves on</div><div class="step-sub">You never knew they were interested.</div></div>
+        </div>
+        <div class="revenue-row step-row" data-delay="2600">
+          <div class="rev-label">Response score</div>
+          <div class="rev-amount" id="before-counter">F</div>
+        </div>
+      </div>
+    </div>
+    <div class="vs-divider">
+      <div class="vs-arrow"><div class="vs-arrow-dot"></div><div class="vs-arrow-dot"></div><div class="vs-arrow-dot"></div></div>
+      <div class="vs-circle">VS</div>
+      <div class="vs-arrow"><div class="vs-arrow-dot"></div><div class="vs-arrow-dot"></div><div class="vs-arrow-dot"></div></div>
+    </div>
+    <div class="after-card">
+      <div class="card-header"><div class="card-dot"></div><div class="card-label">What It Should Look Like</div></div>
+      <div class="card-body">
+        <div class="step-row" data-delay="200">
+          <div class="step-icon">📞</div>
+          <div class="step-content"><div class="step-title">New patient calls your office</div><div class="step-sub">Hoping to get in soon. Ready to book.</div></div>
+        </div>
+        <div class="step-row" data-delay="700">
+          <div class="step-icon">⚡</div>
+          <div class="step-content"><div class="step-title">Answered on the first ring</div><div class="step-sub">AI receptionist greets them by name of practice.</div></div>
+        </div>
+        <div class="step-row" data-delay="1200">
+          <div class="step-icon">💬</div>
+          <div class="step-content"><div class="step-title">Question answered immediately</div><div class="step-sub">Hours, insurance, availability — handled.</div></div>
+        </div>
+        <div class="step-row" data-delay="1700">
+          <div class="step-icon">📅</div>
+          <div class="step-content"><div class="step-title">Web form — 4-minute response</div><div class="step-sub">Automated follow-up text. Patient impressed.</div></div>
+        </div>
+        <div class="step-row" data-delay="2200">
+          <div class="step-icon">✅</div>
+          <div class="step-content"><div class="step-title">Patient booked. Happy.</div><div class="step-sub">Probably sends a referral too.</div></div>
+        </div>
+        <div class="revenue-row step-row" data-delay="2700">
+          <div class="rev-label">Response score</div>
+          <div class="rev-amount" id="after-counter">A+</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT'S IN THE REPORT -->
+<section class="report-section" id="what-we-test">
+  <div class="section-tag">Your Report Includes</div>
+  <h2>A private, honest look at your front desk.</h2>
+  <p class="section-sub">We send a full PDF audit report within 24–48 hours. Here's exactly what's in it.</p>
+  <div class="report-grid">
+    <div class="report-card"><div class="report-icon">📞</div><div><div class="report-title">Call Response Time</div><div class="report-desc">How many rings before answer or voicemail. Whether calls are being missed entirely during business hours.</div></div></div>
+    <div class="report-card"><div class="report-icon">💬</div><div><div class="report-title">Text / Web Inquiry Speed</div><div class="report-desc">How fast does someone respond to a web form or SMS? We test and report the exact time to first response.</div></div></div>
+    <div class="report-card"><div class="report-icon">🌙</div><div><div class="report-title">After-Hours Coverage</div><div class="report-desc">What happens when a patient reaches out at 7pm or Saturday morning? We document what they experience.</div></div></div>
+    <div class="report-card"><div class="report-icon">📈</div><div><div class="report-title">Revenue Impact Estimate</div><div class="report-desc">Based on what we found, we estimate the monthly revenue impact of your current response gap — in dollars.</div></div></div>
+  </div>
+</section>
+
+<section class="steps-section">
+  <div class="section-tag">How It Works</div>
+  <h2 style="margin-bottom:10px">We do the work. You get the insight.</h2>
+  <p class="section-sub">No calls to sit in on. No software to install. Fill out the form and we handle everything.</p>
+  <div class="steps">
+    <div class="step-item"><div class="step-num">1</div><div><div class="step-item-title">Submit your practice info</div><div class="step-item-desc">Practice name, phone, contact email, and whether you want us to test text and web inquiry response too.</div></div></div>
+    <div class="step-item"><div class="step-num">2</div><div><div class="step-item-title">We conduct the stress test</div><div class="step-item-desc">We contact your practice within 24 hours as a new prospective patient. We document everything — rings, hold times, voicemail, after-hours behavior.</div></div></div>
+    <div class="step-item"><div class="step-num">3</div><div><div class="step-item-title">You receive your private report</div><div class="step-item-desc">Within 24–48 hours of the test, you get your full audit report by email. Specific findings, not vague advice.</div></div></div>
+  </div>
+</section>
+
+<section class="bottom-cta">
+  <div class="section-tag">Free · Private · No Commitment</div>
+  <h2>Ready to see what a new patient actually experiences?</h2>
+  <p>Free. Private. And most practice owners are surprised by what they find.</p>
+  <div class="cta-wrap">
+    <button class="cta-btn" onclick="openModal()">Get My Free Stress Test</button>
+    <p class="cta-secondary">Results sent only to you · We keep your info private</p>
+  </div>
+</section>
+
+<footer>
+  <img src="companyperiscope-whitelogo.png" alt="Company Periscope"/>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="calculator.html">Revenue Calculator</a>
+    <a href="pilot.html">7-Day Pilot</a>
+  </div>
+</footer>
+
+<div class="modal-overlay" id="opt-in-modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">&#x2715;</button>
+    <div class="modal-tag">Free Stress Test</div>
+    <div class="modal-title">Request Your Practice Audit</div>
+    <p class="modal-sub">Enter your details and we'll conduct your free audit and send the private report within 24–48 hours.</p>
+    <!-- Replace with GHL Stress Test Form embed -->
+    <div class="ghl-placeholder"><div class="ph-icon">🔍</div><p>GoHighLevel Stress Test Form</p><code><!-- Paste GHL embed code here --></code></div>
+  </div>
+</div>
+
+<script>
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  class Particle {
+    constructor() { this.reset(true); }
+    reset(init) {
+      this.x = Math.random() * canvas.width;
+      this.y = init ? Math.random() * canvas.height : (Math.random() < .5 ? -5 : canvas.height + 5);
+      this.vx = (Math.random() - .5) * .35; this.vy = (Math.random() - .5) * .35;
+      this.r = Math.random() * 1.8 + .6; this.alpha = Math.random() * .4 + .1;
+    }
+    update() {
+      this.x += this.vx; this.y += this.vy;
+      if (this.x < -10 || this.x > canvas.width + 10 || this.y < -10 || this.y > canvas.height + 10) this.reset(false);
+    }
+    draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, Math.PI*2); ctx.fillStyle = `rgba(0,229,192,${this.alpha})`; ctx.fill(); }
+  }
+  function initParticles() { particles = []; for (let i = 0; i < 70; i++) particles.push(new Particle()); }
+  function drawConnections() {
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i+1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x, dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx*dx+dy*dy);
+        if (dist < 130) { ctx.beginPath(); ctx.moveTo(particles[i].x,particles[i].y); ctx.lineTo(particles[j].x,particles[j].y); ctx.strokeStyle = `rgba(0,229,192,${(1-dist/130)*.14})`; ctx.lineWidth = .7; ctx.stroke(); }
+      }
+    }
+  }
+  function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>{p.update();p.draw();}); drawConnections(); requestAnimationFrame(animate); }
+  resizeCanvas(); initParticles(); animate();
+  window.addEventListener('resize', () => { resizeCanvas(); initParticles(); });
+
+  const transformSection = document.getElementById('transform');
+  let animTriggered = false;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !animTriggered) {
+        animTriggered = true;
+        transformSection.querySelectorAll('.step-row').forEach(row => {
+          setTimeout(() => row.classList.add('visible'), parseInt(row.dataset.delay)||0);
+        });
+      }
+    });
+  }, { threshold: .2 });
+  observer.observe(transformSection);
+
+  function openModal() { document.getElementById('opt-in-modal').classList.add('active'); document.body.style.overflow = 'hidden'; }
+  function closeModal() { document.getElementById('opt-in-modal').classList.remove('active'); document.body.style.overflow = ''; }
+  document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
+</script>
+</body>
+</html>

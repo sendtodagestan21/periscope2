@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Email Sequences — Company Periscope</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #050D1A; --teal: #00E5C0; --blue: #1A6CF6;
+      --font: 'Montserrat', sans-serif; --body: 'Inter', sans-serif;
+    }
+    html { font-family: var(--body); background: #f0f2f8; color: #1a1a2e; }
+    body { max-width: 900px; margin: 0 auto; padding: 0 0 80px; }
+
+    /* COVER */
+    .cover {
+      background: linear-gradient(160deg, #050D1A, #07111F);
+      color: white; padding: 56px 56px 48px;
+    }
+    .cover-label {
+      font-family: var(--font); font-size: 0.65rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 12px;
+    }
+    .cover-title { font-family: var(--font); font-size: 2.2rem; font-weight: 900; margin-bottom: 10px; color: white; }
+    .cover-title span { color: #00E5C0; }
+    .cover-sub { font-size: 0.97rem; color: rgba(255,255,255,0.55); line-height: 1.7; max-width: 560px; margin-bottom: 32px; }
+    .cover-note {
+      background: rgba(0,229,192,0.08); border: 1px solid rgba(0,229,192,0.2);
+      border-radius: 10px; padding: 16px 20px; font-size: 0.87rem;
+      color: rgba(255,255,255,0.6); line-height: 1.65;
+    }
+    .cover-note strong { color: #00E5C0; }
+
+    /* SEQUENCE BLOCK */
+    .sequence-block { background: white; padding: 48px 56px; border-bottom: 2px solid #e8ecf4; }
+    .sequence-block:last-child { border-bottom: none; }
+    .seq-header { margin-bottom: 40px; }
+    .seq-tag {
+      display: inline-block; font-family: var(--font); font-size: 0.62rem; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase; color: #1A6CF6;
+      background: rgba(26,108,246,0.08); padding: 4px 10px; border-radius: 4px; margin-bottom: 12px;
+    }
+    .seq-tag.teal { color: #007a6a; background: rgba(0,229,192,0.1); }
+    .seq-tag.green { color: #006b40; background: rgba(0,201,122,0.1); }
+    h2 { font-family: var(--font); font-size: 1.5rem; font-weight: 800; color: #050D1A; margin-bottom: 8px; }
+    .seq-sub { font-size: 0.93rem; color: #666688; line-height: 1.7; }
+
+    /* GHL SETUP BOX */
+    .ghl-setup {
+      background: #f8f9fd; border: 1px solid #e0e4f0; border-radius: 10px;
+      padding: 20px 24px; margin-bottom: 32px;
+    }
+    .ghl-setup-title { font-family: var(--font); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #8898b0; margin-bottom: 12px; }
+    .ghl-setup ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .ghl-setup li { font-size: 0.87rem; color: #444466; display: flex; gap: 10px; align-items: flex-start; }
+    .ghl-setup li::before { content: '→'; color: #1A6CF6; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+
+    /* EMAIL CARD */
+    .email-card {
+      border: 1px solid #e8ecf4; border-radius: 14px;
+      margin-bottom: 24px; overflow: hidden;
+    }
+    .email-header {
+      background: #050D1A; padding: 16px 24px;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    }
+    .email-day {
+      font-family: var(--font); font-size: 0.65rem; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase; color: #00E5C0;
+    }
+    .email-timing {
+      font-family: var(--font); font-size: 0.7rem; font-weight: 600;
+      color: rgba(255,255,255,0.4);
+    }
+    .email-meta { padding: 16px 24px; background: #f8f9fd; border-bottom: 1px solid #e8ecf4; }
+    .meta-row { display: flex; gap: 12px; margin-bottom: 8px; align-items: flex-start; }
+    .meta-row:last-child { margin-bottom: 0; }
+    .meta-key {
+      font-family: var(--font); font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase; color: #8898b0;
+      width: 100px; flex-shrink: 0; padding-top: 2px;
+    }
+    .meta-val { font-size: 0.87rem; color: #1a1a2e; font-weight: 500; line-height: 1.4; }
+    .meta-val.subject { font-weight: 700; color: #050D1A; font-size: 0.92rem; }
+
+    .email-body { padding: 28px 28px 24px; }
+    .email-body-content {
+      font-size: 0.92rem; line-height: 1.85; color: #2a2a4a;
+      white-space: pre-wrap; font-family: var(--body);
+    }
+    .email-cta-block {
+      margin-top: 24px; padding-top: 20px; border-top: 1px solid #eaeef8;
+    }
+    .email-cta-label { font-family: var(--font); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #8898b0; margin-bottom: 10px; }
+    .email-cta-btn {
+      display: inline-block; background: #050D1A; color: #00E5C0;
+      font-family: var(--font); font-weight: 700; font-size: 0.88rem;
+      padding: 12px 22px; border-radius: 8px; text-decoration: none;
+    }
+    .email-note {
+      margin-top: 14px; font-size: 0.8rem; color: #8898b0;
+      font-style: italic; line-height: 1.6;
+    }
+
+    /* PLACEHOLDER */
+    .placeholder { color: #c0001a; font-weight: 700; }
+
+    @media (max-width: 640px) {
+      .cover { padding: 40px 24px 32px; }
+      .cover-title { font-size: 1.6rem; }
+      .sequence-block { padding: 40px 20px; }
+      .email-body { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="cover-label">Internal Reference — Company Periscope</div>
+  <h1 class="cover-title">Email Sequences<br><span>Ready for GoHighLevel</span></h1>
+  <p class="cover-sub">
+    Three opt-in sequences (one per lead magnet) plus a post-pilot follow-up. Each email is written, subject-lined, and ready to paste into GHL. Placeholders in red — swap before activating.
+  </p>
+  <div class="cover-note">
+    <strong>GHL Setup:</strong> In GoHighLevel, go to Automation → Create Workflow. Set the trigger to "Contact Tag Added" (or "Form Submitted") for each opt-in. Add Email steps with the delays shown. Use GHL's custom values for <strong>{{contact.first_name}}</strong> and similar merge tags — they're already in the copy below.
+  </div>
+</div>
+
+
+<!-- ============================================================
+     SEQUENCE 1: CALCULATOR OPT-IN
+     ============================================================ -->
+<div class="sequence-block">
+  <div class="seq-header">
+    <div class="seq-tag">Sequence 1 of 3</div>
+    <h2>Missed Call Revenue Calculator</h2>
+    <p class="seq-sub">
+      Triggered when someone submits the calculator opt-in form. 5 emails over 5 days. Goal: deliver the results, build the problem, introduce the trial.
+    </p>
+  </div>
+
+  <div class="ghl-setup">
+    <div class="ghl-setup-title">GHL Automation Settings</div>
+    <ul>
+      <li>Trigger: Form submitted — "Calculator Opt-In" form</li>
+      <li>Tag to add on trigger: <strong>opt-in-calculator</strong></li>
+      <li>Send from: <strong>noreply@companyperiscope.com</strong> (or Dan's email if preferred)</li>
+      <li>From name: <strong>Company Periscope</strong></li>
+      <li>Goal: Lead reaches 2-day free trial or 7-day pilot page</li>
+    </ul>
+  </div>
+
+  <!-- EMAIL 1 -->
+  <div class="email-card">
+    <div class="email-header">
+      <span class="email-day">Email 1 — Deliver Results</span>
+      <span class="email-timing">Send immediately on opt-in</span>
+    </div>
+    <div class="email-meta">
+      <div class="meta-row">
+        <span class="meta-key">Subject</span>
+        <span class="meta-val subject">Here's your missed call revenue estimate, {{contact.first_name}}</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-key">Preview Text</span>
+        <span class="meta-val">The number is probably higher than you think.</span>
+      </div>
+    </div>
+    <div class="email-body">
+      <div class="email-body-content">Hi {{contact.first_name}},
+
+Thanks for using the Missed Call Revenue Calculator.
+
+Based on your practice type and call volume, here's what we found:
+
+<strong>Estimated Monthly Revenue Loss: <span class="placeholder">$[CALCULATED_AMOUNT]</span></strong>
+<strong>Estimated Annual Revenue Loss: <span class="placeholder">$[CALCULATED_AMOUNT × 12]</span></strong>
+
+This isn't a worst-case scenario. It's a conservative estimate based on industry-wide data — the actual number at your practice could be higher.
+
+Here's where that number comes from:
+
+On average, 40% of calls to small practices go unanswered during business hours. Each missed call in dental or medical represents roughly $400 in potential revenue. And 68% of callers who hit voicemail don't leave a message — they call someone else.
+
+That's the gap. And it's happening every day, whether you notice it or not.
+
+Over the next few days, I'll share exactly how other practices have fixed this — and what the difference looks like in practice. Nothing salesy. Just useful.
+
+— The Company Periscope Team</div>
+      <div class="email-cta-block">
+        <div class="email-cta-label">Primary CTA</div>
+        <a href="pilot.html" class="email-cta-btn">See How to Fix It →</a>
+        <p class="email-note">Link to: pilot.html — or to the main site if pilot page isn't live yet.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMAIL 2 -->
+  <div class="email-card">
+    <div class="email-header">
+      <span class="email-day">Email 2 — Deepen the Problem</span>
+      <span class="email-timing">Send 1 day after opt-in</span>
+    </div>
+    <div class="email-meta">
+      <div class="meta-row">
+        <span class="meta-key">Subject</span>
+        <span class="meta-val subject">The patient who called you at 6:47pm last Tuesday</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-key">Preview Text</span>
+        <span class="meta-val">You probably don't know what happened. Here's the likely story.</span>
+      </div>
+    </div>
+    <div class="email-body">
+      <div class="email-body-content">Hi {{contact.first_name}},
+
+Picture this.
+
+It's 6:47pm on a Tuesday. Your office is closed. A new patient — let's call her Maria — just Googled "dentist near me" after her tooth started hurting at dinner.
+
+She found your practice. She called.
+
+It rang six times. Voicemail picked up. The recording said to call back during business hours.
+
+Maria hung up. She didn't leave a message. She scrolled back to Google and called the next practice on the list. That practice had an after-hours AI that answered on the first ring, got her name and symptoms, and booked her for a 9am slot.
+
+You never knew Maria called. She's now someone else's patient — probably for life.
+
+This is happening. Not occasionally. Routinely.
+
+The calculator gave you the monthly number. This is what that number actually looks like in real life: patients who found you, tried to reach you, and went somewhere else because no one picked up.
+
+Company Periscope exists to make sure Maria never gets that voicemail.
+
+Tomorrow I'll show you what the fix actually looks like in practice.
+
+— The Company Periscope Team</div>
+      <div class="email-cta-block">
+        <div class="email-cta-label">Primary CTA</div>
+        <a href="pilot.html" class="email-cta-btn">See the Solution →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMAIL 3 -->
+  <div class="email-card">
+    <div class="email-header">
+      <span class="email-day">Email 3 — How It Works</span>
+      <span class="email-timing">Send 2 days after opt-in</span>
+    </div>
+    <div class="email-meta">
+      <div class="meta-row">
+        <span class="meta-key">Subject</span>
+        <span class="meta-val subject">What Company Periscope actually does (in plain English)</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-key">Preview Text</span>
+        <span class="meta-val">Not a bot. Not a phone tree. Here's what it really is.</span>
+      </div>
+    </div>
+    <div class="email-body">
+      <div class="email-body-content">Hi {{contact.first_name}},
+
+A lot of people hear "AI receptionist" and picture one of those phone trees that make you press 1 for billing and 2 for appointments.
+
+That's not what this is.
+
+Company Periscope is a custom AI trained on your practice — your hours, your services, your specific patient flow. It handles inbound calls the way a great human receptionist would: naturally, helpfully, and with full context.
+
+Here's what that looks like:
+
+→ A new patient calls at 7pm asking about a root canal. Your AI answers, explains what to expect, and offers to schedule a consultation for tomorrow morning.
+
+→ A current patient texts to ask if you take their insurance. Your AI pulls up the answer and responds in under a minute.
+
+→ Someone calls on Saturday asking about your hours. They get an immediate, friendly response — not voicemail.
+
+→ A missed call during a busy afternoon? Your AI sends an automatic follow-up text within 5 minutes. Most people respond.
+
+You see every conversation. Nothing gets missed. You're in the loop without being on the line.
+
+That's the whole thing.
+
+Tomorrow: what it looks like to get started — and how low the bar actually is.
+
+— The Company Periscope Team</div>
+      <div class="email-cta-block">
+        <div class="email-cta-label">Primary CTA</div>
+        <a href="index.html" class="email-cta-btn">See How It Works →</a>
+        <p class="email-note">Link to main site or the How It Works section.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMAIL 4 -->
+  <div class="email-card">
+    <div class="email-header">
+      <span class="email-day">Email 4 — The Offer</span>
+      <span class="email-timing">Send 3 days after opt-in</span>
+    </div>
+    <div class="email-meta">
+      <div class="meta-row">
+        <span class="meta-key">Subject</span>
+        <span class="meta-val subject">Try it for 2 days. No cost, no commitment.</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-key">Preview Text</span>
+        <span class="meta-val">See what happens when your calls actually get answered.</span>
+      </div>
+    </div>
+    <div class="email-body">
+      <div class="email-body-content">Hi {{contact.first_name}},
+
+The easiest way to understand what Company Periscope does is to watch it handle a real call at your practice.
+
+So here's what I'd like to offer you:
+
+A 2-day free trial. No credit card. No commitment.
+
+We set up your AI receptionist, configure it for your practice in about 30 minutes, and let it run for 48 hours. You watch what happens. Then you decide if it's worth continuing.
+
+Most people who try it want to continue. But if you don't, you're out nothing — and you still got to see exactly how many calls you were missing.
+
+If you decide you want to keep going after the 2-day trial, we offer a full 7-Day Pilot for $297. That's a week of full service, an end-of-week performance report, and everything you need to make a real decision about the monthly plan.
+
+No pressure either direction.
+
+Start your free 2-day trial here →
+
+— The Company Periscope Team</div>
+      <div class="email-cta-block">
+        <div class="email-cta-label">Primary CTA</div>
+        <a href="pilot.html" class="email-cta-btn">Start Free 2-Day Trial →</a>
+        <p class="email-note">This CTA links to the pilot page. The "2-day trial" is the top of the pilot funnel — clicking through lands them on the $297 page where they can either start the free trial or jump straight to the paid pilot.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMAIL 5 -->
+  <div class="email-card">
+    <div class="email-header">
+      <span class="email-day">Email 5 — Last Touch</span>
+      <span class="email-timing">Send 5 days after opt-in</span>
+    </div>
+    <div class="email-meta">
+      <div class="meta-row">
+        <span class="meta-key">Subject</span>
+        <span class="meta-val subject">Quick question, {{contact.first_name}}</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-key">Preview Text</span>
+        <span class="meta-val">Not a sales pitch. Genuinely want to know.</span>
+      </div>
+    </div>
+    <div class="email-body">
+      <div class="email-body-content">Hi {{contact.first_name}},
+
+Last email from me — I promise.
+
+You used our calculator earlier this week and I've shared a bit about what Company Periscope does. I don't want to keep showing up in your inbox if it's not useful.
+
+But I do want to ask: was there anything that didn't make sense, or something specific holding you back from trying the free trial?
+
+Sometimes it's timing. Sometimes it's a question about how the setup works. Sometimes it's just not the right moment.
+
+Whatever it is — hit reply and tell me. I read every response and I'm happy to give you a straight answer.
+
+If you're ready to try it, the 2-day free trial is still open:
+
+Start your free trial →
+
+Either way — good luck out there. Running a practice is hard, and anything I can do to make the phone side less stressful is worth doing.
+
+— Cyrus
+Company Periscope</div>
+      <div class="email-cta-block">
+        <div class="email-cta-label">Primary CTA</div>
+        <a href="pilot.html" class="email-cta-btn">Start Free Trial →</a>
+        <p class="email-note">Last email — keep it human and personal. Sign off with Cyrus's name for authenticity.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     SEQUENCE 2: STRESS TEST OPT-IN
+     ============================================================ -->
+<div class="sequence-block">
+  <div class="seq-header">
+    <div class="seq-tag teal">Sequence 2 of 3</div>
+    <h2>Response Time Stress Test</h2>
+    <p class="seq-sub">
+      Triggered when someone requests the free stress test audit. Email 1 confirms receipt and sets expectations. Emails 2–5 follow the same structure as the calculator sequence with minor framing adjustments. Copy the Calculator sequence for emails 2–5 and adapt the first line of each email to reference the stress test instead.
+    </p>
+  </div>
+
+  <div class="ghl-setup">
+    <div class="ghl-setup-title">GHL Automation Settings</div>
+    <ul>
+      <li>Trigger: Form submitted — "Stress Test Request" form</li>
+      <li>Tag to add on trigger: <strong>opt-in-stresstest</strong></li>
+      <li>Assign to team member: Internal task to conduct the stress test within 24 hours of opt-in</li>
+      <li>Internal notification: Send team email/SMS when this form is submitted so the audit doesn't get missed</li>
+    </ul>
+  </div>
+
+  <!-- EMAIL 1 — STRESS TEST SPECIFIC -->
+  <div class="email-card">
+    <div class="email-header">
+      <span class="email-day">Email 1 — Confirm Audit Request</span>
+      <span class="email-timing">Send immediately on opt-in</span>
+    </div>
+    <div class="email-meta">
+      <div class="meta-row">
+        <span class="meta-key">Subject</span>
+        <span class="meta-val subject">Got it — your practice audit is scheduled, {{contact.first_name}}</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-key">Preview Text</span>
+        <span class="meta-val">We'll contact your office within 24 hours. Here's what to expect.</span>
+      </div>
+    </div>
+    <div class="email-body">
+      <div class="email-body-content">Hi {{contact.first_name}},
+
+We've received your request for the free Response Time Stress Test.
+
+Here's what happens next:
+
+Within the next 24 hours, our team will contact your practice as a prospective new patient. We'll call, and — if you requested it — also test your text and web inquiry response.
+
+We document everything: how many rings before answer, whether calls are missed entirely, how long text responses take, what after-hours looks like. All of it.
+
+Within 24–48 hours of the test, you'll receive a private PDF report with our full findings — including a revenue impact estimate based on what we observed.
+
+One thing to know: we won't identify ourselves as Company Periscope when we call. That's the only way to get an accurate picture of what a real new patient experiences.
+
+Keep an eye on your inbox. Your report is coming.
+
+— The Company Periscope Team</div>
+      <div class="email-note" style="padding: 0 28px 24px; font-size: 0.82rem; color: #8898b0; font-style: italic; line-height: 1.6;">
+        Emails 2–5 for this sequence: Use the same emails as the Calculator sequence (Email 2 through 5). Just change the opening line of Email 2 from "Picture this" framing to reference the stress test results they received. Example: "You just got your practice audit back. Here's what we want you to notice about it..."
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     SEQUENCE 3: SCRIPT PACK OPT-IN
+     ============================================================ -->
+<div class="sequence-block">
+  <div class="seq-header">
+    <div class="seq-tag green">Sequence 3 of 3</div>
+    <h2>AI Receptionist Script Pack</h2>
+    <p class="seq-sub">
+      Triggered when someone downloads the script pack. This audience is more self-directed — they're already thinking about improving their call handling. Email 1 delivers the PDF. Emails 2–5 use a slightly different angle: focus on helping them score their current setup and then naturally bridge to Company Periscope as the automated version.
+    </p>
+  </div>
+
+  <div class="ghl-setup">
+    <div class="ghl-setup-title">GHL Automation Settings</div>
+    <ul>
+      <li>Trigger: Form submitted — "Script Pack Download" form</li>
+      <li>Tag to add: <strong>opt-in-scriptpack</strong></li>
+      <li>Attach PDF to Email 1: Upload script pack PDF as attachment in GHL</li>
+      <li>Goal event: Contact clicks pilot page link</li>
+    </ul>
+  </div>
+
+  <!-- EMAIL 1 — SCRIPT PACK SPECIFIC -->
+  <div class="email-card">
+    <div class="email-header">
+      <span class="email-day">Email 1 — Deliver the Download</span>
+      <span class="email-timing">Send immediately on opt-in</span>
+    </div>
+    <div class="email-meta">
+      <div class="meta-row">
+        <span class="meta-key">Subject</span>
+        <span class="meta-val subject">Your AI Receptionist Script Pack is attached</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-key">Preview Text</span>
+        <span class="meta-val">15+ scripts + the self-scoring rubric. Check page 12 first.</span>
+      </div>
+    </div>
+    <div class="email-body">
+      <div class="email-body-content">Hi {{contact.first_name}},
+
+Your script pack is attached to this email — 15+ call scripts and the full self-scoring rubric.
+
+One suggestion before you dive in: go to the rubric first (it's on page 12).
+
+Score your current front desk across all five categories before you read the scripts. That way, you'll know exactly which scripts matter most for your specific gaps — instead of reading everything and not knowing where to start.
+
+Most people who score themselves honestly find 2–3 categories where they're genuinely weak. That's normal. That's also where the biggest revenue opportunities are.
+
+I'll follow up in a day or two with some context on what we typically see in practices like yours.
+
+In the meantime — enjoy the pack.
+
+— The Company Periscope Team
+
+P.S. If you want to skip the manual work entirely and just have these scripts running automatically at your practice, that's what Company Periscope does. But start with the rubric first — it makes the conversation a lot more useful.</div>
+      <div class="email-cta-block">
+        <div class="email-cta-label">Primary CTA (secondary — below PS)</div>
+        <a href="pilot.html" class="email-cta-btn">See Company Periscope →</a>
+        <p class="email-note">Attach the PDF in GHL. The CTA here is soft — it's the P.S., not the main ask. Email 4 is where the offer gets direct.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMAIL 2 — SCRIPT PACK -->
+  <div class="email-card">
+    <div class="email-header">
+      <span class="email-day">Email 2 — Score Review</span>
+      <span class="email-timing">Send 1 day after opt-in</span>
+    </div>
+    <div class="email-meta">
+      <div class="meta-row">
+        <span class="meta-key">Subject</span>
+        <span class="meta-val subject">What did your rubric score tell you?</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-key">Preview Text</span>
+        <span class="meta-val">Here's what we see most often in practices like yours.</span>
+      </div>
+    </div>
+    <div class="email-body">
+      <div class="email-body-content">Hi {{contact.first_name}},
+
+Did you get a chance to score yourself on the rubric?
+
+If you did, here's what we've found across hundreds of practices:
+
+The two areas where most practices score worst are:
+1. After-hours coverage (most practices score 0 — there's literally nothing there)
+2. Missed call follow-up (a patient calls, misses, and never hears back)
+
+These are also the two highest-leverage areas. Fix those two and you've addressed the majority of your revenue leakage.
+
+The scripts in your pack give you the language. But the missing piece for most practices isn't the language — it's the capacity to actually run those scripts consistently, at all hours, without adding staff.
+
+That's the problem Company Periscope solves.
+
+Tomorrow I'll show you what that looks like in practice.
+
+— The Company Periscope Team</div>
+      <div class="email-cta-block">
+        <div class="email-cta-label">Primary CTA</div>
+        <a href="pilot.html" class="email-cta-btn">See How Practices Fix This →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMAILS 3-5 NOTE -->
+  <div class="ghl-setup" style="border-color: rgba(0,201,122,0.2); background: rgba(0,201,122,0.03);">
+    <div class="ghl-setup-title" style="color: #006b40;">Emails 3, 4 & 5 — Script Pack Sequence</div>
+    <ul>
+      <li>Email 3: Same as Calculator Email 3 (How It Works) — no change needed</li>
+      <li>Email 4: Same as Calculator Email 4 (The Offer — free 2-day trial) — no change needed</li>
+      <li>Email 5: Same as Calculator Email 5 (Quick question / last touch) — change opening line to reference the script pack: "You downloaded our script pack a few days ago..." instead of "You used our calculator..."</li>
+    </ul>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     POST-PILOT SEQUENCE
+     ============================================================ -->
+<div class="sequence-block">
+  <div class="seq-header">
+    <div class="seq-tag" style="color: #6b39c9; background: rgba(107,57,201,0.08);">Bonus Sequence</div>
+    <h2>Post-Pilot Follow-Up (Day 8)</h2>
+    <p class="seq-sub">
+      Triggered when the 7-day pilot ends. Sent to contacts tagged <strong>pilot-completed</strong>. Two emails: the performance report delivery and a 48-hour subscription offer.
+    </p>
+  </div>
+
+  <div class="ghl-setup">
+    <div class="ghl-setup-title">GHL Automation Settings</div>
+    <ul>
+      <li>Trigger: Tag added — <strong>pilot-completed</strong> (add this tag manually or via webhook on Day 8)</li>
+      <li>Remove tag: pilot-active</li>
+      <li>Goal: Contact clicks Starter or Pro plan checkout link</li>
+    </ul>
+  </div>
+
+  <!-- EMAIL 1 — REPORT DELIVERY -->
+  <div class="email-card">
+    <div class="email-header">
+      <span class="email-day">Post-Pilot Email 1 — Performance Report</span>
+      <span class="email-timing">Send on Day 8 (pilot end)</span>
+    </div>
+    <div class="email-meta">
+      <div class="meta-row">
+        <span class="meta-key">Subject</span>
+        <span class="meta-val subject">Your 7-day pilot report is ready, {{contact.first_name}}</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-key">Preview Text</span>
+        <span class="meta-val">Here's everything that happened at your practice this week.</span>
+      </div>
+    </div>
+    <div class="email-body">
+      <div class="email-body-content">Hi {{contact.first_name}},
+
+Your 7-day Company Periscope pilot is complete. Your performance report is attached.
+
+Here's a summary of what happened this week:
+
+📞 Calls handled: <span class="placeholder">[NUMBER]</span>
+💬 Texts / inquiries responded to: <span class="placeholder">[NUMBER]</span>
+🌙 After-hours contacts handled: <span class="placeholder">[NUMBER]</span>
+⏱ Average first response time: <span class="placeholder">[TIME]</span>
+💰 Estimated revenue protected: <span class="placeholder">$[AMOUNT]</span>
+
+The full breakdown — with every conversation logged — is in the attached report.
+
+Now you have a decision to make.
+
+If you'd like to continue, the next step is a monthly subscription. Plans start at $500/month and include everything you experienced during the pilot. There's also a one-time $500 onboarding fee that covers the full custom setup for your ongoing plan.
+
+If you'd like to think about it, take 48 hours. I'll follow up once more and then leave you alone.
+
+If it's not for you, no hard feelings — I just ask for 5 minutes of honest feedback on what didn't land.
+
+— Cyrus
+Company Periscope</div>
+      <div class="email-cta-block">
+        <div class="email-cta-label">Primary CTA</div>
+        <a href="thank-you-starter.html" class="email-cta-btn">Continue — Starter Plan ($500/mo) →</a>
+        <p class="email-note">Link to the Stripe $500/mo checkout page. Also include a secondary link to the Pro plan ($1,000/mo) for larger or multi-location practices. Attach the PDF report in GHL.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMAIL 2 — 48HR FOLLOW-UP -->
+  <div class="email-card">
+    <div class="email-header">
+      <span class="email-day">Post-Pilot Email 2 — 48-Hour Follow-Up</span>
+      <span class="email-timing">Send 48 hours after Email 1</span>
+    </div>
+    <div class="email-meta">
+      <div class="meta-row">
+        <span class="meta-key">Subject</span>
+        <span class="meta-val subject">Last note on your pilot, {{contact.first_name}}</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-key">Preview Text</span>
+        <span class="meta-val">Keeping this short.</span>
+      </div>
+    </div>
+    <div class="email-body">
+      <div class="email-body-content">Hi {{contact.first_name}},
+
+Keeping this short.
+
+Your pilot ended 48 hours ago. I want to make sure you had a chance to look at the report and that you didn't have any questions I could help with before making a decision.
+
+If you're ready to continue: your subscription link is below. The sooner you activate, the faster your practice is covered again.
+
+If you're not ready or it's not the right fit: just hit reply and let me know. I'll close out your file and we won't follow up again.
+
+Either way — I appreciate you trying it.
+
+— Cyrus</div>
+      <div class="email-cta-block">
+        <div class="email-cta-label">Primary CTA</div>
+        <a href="thank-you-starter.html" class="email-cta-btn">Activate My Subscription →</a>
+        <p class="email-note">Last email in this sequence. After this, no more automated follow-up. If they don't convert, tag them <strong>pilot-no-convert</strong> for manual outreach later if desired.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

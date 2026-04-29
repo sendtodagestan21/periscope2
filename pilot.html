@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Get Started — $1,000 | Company Periscope</title>
+  <meta name="description" content="$1,000 to start — $500 onboarding + $500 first month. 30-day money-back guarantee on the subscription. No free trials, no gimmicks. Just results."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #050D1A; --deep: #07111F; --blue: #1A6CF6; --teal: #00E5C0; --green: #00C97A;
+      --white: #fff; --font: 'Montserrat', sans-serif; --body: 'Inter', sans-serif;
+      --mono: 'Share Tech Mono', monospace; --dim: rgba(255,255,255,0.55);
+    }
+    html { font-family: var(--body); background: var(--navy); color: var(--white); }
+    body { overflow-x: hidden; }
+
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 48px; border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .nav-logo img { height: 30px; }
+    .nav-back { font-family: var(--font); font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.5); text-decoration: none; transition: color 0.2s; }
+    .nav-back:hover { color: var(--teal); }
+
+    /* ── HERO ───────────────────────────────────────── */
+    .hero {
+      padding: 80px 48px 64px; text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; top: -40px; left: 50%; transform: translateX(-50%);
+      width: 700px; height: 500px;
+      background: radial-gradient(ellipse, rgba(26,108,246,0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(0,201,122,0.1); border: 1px solid rgba(0,201,122,0.3);
+      color: var(--green); font-family: var(--font); font-size: 0.7rem;
+      font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+      padding: 7px 16px; border-radius: 20px; margin-bottom: 28px;
+    }
+    .hero-badge-dot {
+      width: 7px; height: 7px; border-radius: 50%; background: var(--green);
+      box-shadow: 0 0 6px var(--green); animation: blink 2s infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    h1 {
+      font-family: var(--font); font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 900; line-height: 1.08; max-width: 780px; margin: 0 auto 20px;
+    }
+    h1 span { color: var(--teal); }
+    .hero-sub {
+      font-size: 1.05rem; color: rgba(255,255,255,0.6); line-height: 1.7;
+      max-width: 540px; margin: 0 auto 52px;
+    }
+
+    /* ── PRICE CARDS ────────────────────────────────── */
+    .pilot-pricing-grid {
+      display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;
+      max-width: 880px; margin: 0 auto 40px;
+    }
+    .price-card {
+      flex: 1; min-width: 280px; max-width: 400px;
+      background: linear-gradient(160deg, rgba(26,108,246,0.1), rgba(0,229,192,0.04));
+      border: 1px solid rgba(26,108,246,0.4);
+      border-radius: 24px; padding: 40px 36px;
+      box-shadow: 0 0 0 1px rgba(26,108,246,0.12), 0 32px 80px rgba(26,108,246,0.15);
+      text-align: left; position: relative;
+    }
+    .price-card.popular {
+      border-color: rgba(0,229,192,.45);
+      background: linear-gradient(160deg, rgba(0,201,122,.09), rgba(0,229,192,.03));
+      box-shadow: 0 0 0 1px rgba(0,229,192,.15), 0 32px 80px rgba(0,201,122,.14);
+    }
+    .popular-tag {
+      position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+      background: linear-gradient(135deg,#00C97A,#00E5C0); color: #050D1A;
+      font-family: var(--font); font-weight: 800; font-size: 0.62rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 4px 16px; border-radius: 20px; white-space: nowrap;
+    }
+    .plan-label {
+      font-family: var(--font); font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 0.15em; text-transform: uppercase; color: var(--teal); margin-bottom: 10px;
+    }
+    .plan-mins { font-size: 3rem; font-weight: 700; color: var(--white); line-height: 1; }
+    .plan-mins-label {
+      font-size: 0.72rem; color: rgba(255,255,255,.4); font-family: var(--font);
+      font-weight: 600; margin-bottom: 18px; margin-top: 3px;
+    }
+    .cta-btn-green {
+      background: linear-gradient(135deg,#00C97A,#00E5C0) !important;
+      color: #050D1A !important; box-shadow: 0 8px 32px rgba(0,201,122,.4) !important;
+    }
+    .cta-btn-green:hover { box-shadow: 0 12px 48px rgba(0,201,122,.55) !important; }
+
+    .price-total-row {
+      display: flex; align-items: flex-end; gap: 14px; margin-bottom: 8px;
+    }
+    .price-total-num {
+      font-family: var(--mono); font-size: 4.2rem; font-weight: 700;
+      color: var(--white); line-height: 1;
+    }
+    .price-total-label {
+      font-family: var(--font); font-size: 0.82rem; font-weight: 600;
+      color: rgba(255,255,255,0.4); padding-bottom: 10px; line-height: 1.4;
+    }
+
+    .price-breakdown {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;
+    }
+    .price-line {
+      background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px; padding: 14px 16px;
+    }
+    .price-line-num {
+      font-family: var(--mono); font-size: 1.35rem; color: var(--white);
+      margin-bottom: 3px;
+    }
+    .price-line-label { font-size: 0.75rem; color: rgba(255,255,255,0.5); line-height: 1.4; }
+    .price-line-note { font-size: 0.67rem; color: rgba(255,255,255,0.25); margin-top: 4px; }
+
+    .price-then {
+      font-size: 0.87rem; color: rgba(255,255,255,0.45); margin-bottom: 24px;
+    }
+    .price-then strong { color: rgba(255,255,255,0.8); }
+
+    .price-divider { border: none; border-top: 1px solid rgba(255,255,255,0.08); margin-bottom: 22px; }
+
+    .price-features { list-style: none; margin-bottom: 26px; }
+    .price-features li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 0.9rem; color: rgba(255,255,255,0.65); margin-bottom: 11px; line-height: 1.45;
+    }
+    .pf-check { color: var(--teal); font-weight: 700; flex-shrink: 0; font-size: 0.75rem; margin-top: 2px; }
+
+    .guarantee-strip {
+      display: flex; align-items: flex-start; gap: 14px;
+      background: rgba(0,201,122,0.07); border: 1px solid rgba(0,201,122,0.22);
+      border-radius: 12px; padding: 16px 18px; margin-bottom: 26px;
+    }
+    .gs-icon { font-size: 1.6rem; flex-shrink: 0; line-height: 1; }
+    .gs-title { font-family: var(--font); font-weight: 700; font-size: 0.9rem; color: #00c97a; margin-bottom: 4px; }
+    .gs-desc { font-size: 0.8rem; color: rgba(255,255,255,0.5); line-height: 1.55; }
+
+    .cta-btn {
+      display: block; width: 100%; text-align: center;
+      background: linear-gradient(135deg, var(--blue), #00C9E5);
+      color: var(--white); font-family: var(--font); font-weight: 800;
+      font-size: 1.05rem; padding: 20px 44px; border-radius: 12px; border: none;
+      cursor: pointer; box-shadow: 0 8px 32px rgba(26,108,246,0.4);
+      transition: transform 0.2s, box-shadow 0.2s; text-decoration: none;
+      letter-spacing: 0.01em;
+    }
+    .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 48px rgba(26,108,246,0.55); }
+    .price-fine { text-align: center; margin-top: 12px; font-size: 0.77rem; color: rgba(255,255,255,0.28); }
+
+    /* ── WHAT'S INCLUDED ────────────────────────────── */
+    .section-wrap { padding: 80px 48px; max-width: 900px; margin: 0 auto; }
+    .section-tag {
+      display: inline-block; font-family: var(--font); font-size: 0.65rem;
+      font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--teal); background: rgba(0,229,192,0.1); padding: 4px 10px;
+      border-radius: 4px; margin-bottom: 16px;
+    }
+    h2 { font-family: var(--font); font-size: 1.9rem; font-weight: 800; margin-bottom: 12px; }
+    .section-sub { font-size: 0.97rem; color: var(--dim); line-height: 1.7; margin-bottom: 40px; }
+
+    .include-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .include-card {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 14px; padding: 24px 20px; display: flex; gap: 16px;
+    }
+    .include-icon {
+      flex-shrink: 0; width: 44px; height: 44px; border-radius: 10px;
+      background: rgba(26,108,246,0.1); display: flex; align-items: center;
+      justify-content: center; font-size: 1.3rem;
+    }
+    .include-title { font-family: var(--font); font-weight: 700; font-size: 0.92rem; margin-bottom: 6px; }
+    .include-desc { font-size: 0.83rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
+
+    /* ── TIMELINE ───────────────────────────────────── */
+    .timeline-wrap { padding: 0 48px 80px; max-width: 900px; margin: 0 auto; }
+    .t-item { display: flex; gap: 20px; padding: 24px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .t-item:last-child { border-bottom: none; }
+    .t-day {
+      flex-shrink: 0; font-family: var(--font); font-weight: 800; font-size: 0.75rem;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal);
+      width: 64px; padding-top: 2px;
+    }
+    .t-title { font-family: var(--font); font-weight: 700; font-size: 0.95rem; margin-bottom: 4px; }
+    .t-desc { font-size: 0.87rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
+
+    /* ── HOW THE GUARANTEE WORKS ────────────────────── */
+    .guarantee-detail {
+      margin: 0 48px 60px; border-radius: 18px;
+      background: rgba(0,201,122,0.05); border: 1px solid rgba(0,201,122,0.18);
+      padding: 36px 40px;
+    }
+    .gd-title { font-family: var(--font); font-weight: 800; font-size: 1.1rem; color: #00c97a; margin-bottom: 16px; }
+    .gd-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .gd-col-title { font-family: var(--font); font-weight: 700; font-size: 0.85rem; margin-bottom: 8px; color: var(--white); }
+    .gd-col-body { font-size: 0.87rem; color: rgba(255,255,255,0.55); line-height: 1.65; }
+
+    /* ── FAQ ────────────────────────────────────────── */
+    .faq-wrap { padding: 0 48px 80px; max-width: 900px; margin: 0 auto; }
+    .faq-item { border-bottom: 1px solid rgba(255,255,255,0.07); padding: 24px 0; }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-q { font-family: var(--font); font-weight: 700; font-size: 0.97rem; margin-bottom: 10px; }
+    .faq-a { font-size: 0.9rem; color: var(--dim); line-height: 1.7; }
+
+    /* ── BOTTOM CTA ─────────────────────────────────── */
+    .bottom-cta {
+      padding: 80px 48px; text-align: center;
+      background: rgba(255,255,255,0.02); border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    .bottom-cta h2 { margin-bottom: 12px; }
+    .bottom-cta p { color: var(--dim); margin-bottom: 36px; font-size: 0.97rem; max-width: 500px; margin-left: auto; margin-right: auto; }
+    .bottom-cta-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: linear-gradient(135deg, var(--blue), #00C9E5);
+      color: var(--white); font-family: var(--font); font-weight: 800;
+      font-size: 1rem; padding: 20px 44px; border-radius: 12px; border: none; cursor: pointer;
+      box-shadow: 0 8px 32px rgba(26,108,246,0.4); transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+    }
+    .bottom-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 48px rgba(26,108,246,0.55); }
+
+    footer {
+      padding: 28px 48px; border-top: 1px solid rgba(255,255,255,0.07);
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+    }
+    footer img { height: 22px; opacity: 0.6; }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-size: 0.78rem; color: rgba(255,255,255,0.35); text-decoration: none; font-family: var(--font); font-weight: 500; }
+    .footer-links a:hover { color: var(--teal); }
+
+    /* ── MODAL ──────────────────────────────────────── */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 999;
+      background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 20px;
+    }
+    .modal-overlay.active { opacity: 1; pointer-events: all; }
+    .modal-box {
+      background: #0c1628; border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 20px; padding: 40px; width: 100%; max-width: 520px;
+      position: relative; transform: translateY(20px); transition: transform 0.3s;
+      max-height: 90vh; overflow-y: auto;
+    }
+    .modal-overlay.active .modal-box { transform: translateY(0); }
+    .modal-close {
+      position: absolute; top: 16px; right: 16px;
+      background: rgba(255,255,255,0.07); border: none; color: rgba(255,255,255,0.5);
+      width: 32px; height: 32px; border-radius: 50%; font-size: 1.1rem;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s;
+    }
+    .modal-close:hover { background: rgba(255,255,255,0.12); color: white; }
+    .modal-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(26,108,246,0.12); border: 1px solid rgba(26,108,246,0.3);
+      color: #60a5fa; font-family: var(--font); font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase; padding: 5px 12px; border-radius: 20px; margin-bottom: 16px;
+    }
+    .modal-title { font-family: var(--font); font-weight: 800; font-size: 1.4rem; margin-bottom: 8px; }
+    .modal-sub { font-size: 0.87rem; color: var(--dim); margin-bottom: 24px; line-height: 1.6; }
+    .modal-breakdown {
+      display: flex; gap: 8px; margin-bottom: 20px;
+    }
+    .modal-line {
+      flex: 1; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px; padding: 10px 12px; text-align: center;
+    }
+    .modal-line-num { font-family: var(--mono); font-size: 1.1rem; color: var(--white); }
+    .modal-line-label { font-size: 0.65rem; color: rgba(255,255,255,0.35); margin-top: 2px; }
+
+    .modal-form { display: flex; flex-direction: column; gap: 14px; }
+    .field-group { display: flex; flex-direction: column; gap: 6px; }
+    .field-label { font-family: var(--font); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.45); }
+    .field-input {
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px; padding: 13px 16px; font-size: 0.93rem; color: white;
+      font-family: var(--body); outline: none; transition: border-color 0.2s;
+    }
+    .field-input:focus { border-color: var(--teal); }
+    .field-input::placeholder { color: rgba(255,255,255,0.25); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .modal-submit-btn {
+      width: 100%; background: linear-gradient(135deg, var(--blue), #00C9E5);
+      color: var(--white); font-family: var(--font); font-weight: 800; font-size: 0.97rem;
+      padding: 16px; border-radius: 10px; border: none; cursor: pointer;
+      box-shadow: 0 6px 24px rgba(26,108,246,0.3); transition: transform 0.2s, box-shadow 0.2s;
+      margin-top: 4px;
+    }
+    .modal-submit-btn:hover { transform: translateY(-1px); }
+    .modal-submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .modal-fine-print { font-size: 0.75rem; color: rgba(255,255,255,0.3); text-align: center; margin-top: 8px; }
+    .modal-redirecting { display: none; text-align: center; padding: 24px 0; }
+    .modal-redirecting .spinner {
+      width: 40px; height: 40px; border: 3px solid rgba(26,108,246,0.2);
+      border-top-color: var(--blue); border-radius: 50%; animation: spin 0.8s linear infinite;
+      margin: 0 auto 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .modal-redirecting p { font-family: var(--font); font-weight: 600; font-size: 0.9rem; color: rgba(255,255,255,0.6); }
+
+    @media (max-width: 768px) {
+      nav { padding: 16px 20px; }
+      .hero { padding: 56px 20px 48px; }
+      .price-card { padding: 28px 20px; }
+      .price-breakdown { grid-template-columns: 1fr 1fr; }
+      .section-wrap, .faq-wrap { padding: 48px 20px; }
+      .timeline-wrap { padding: 0 20px 60px; }
+      .guarantee-detail { margin: 0 20px 48px; padding: 24px 20px; }
+      .gd-grid { grid-template-columns: 1fr; gap: 16px; }
+      .include-grid { grid-template-columns: 1fr; }
+      .bottom-cta { padding: 56px 20px; }
+      footer { padding: 24px 20px; flex-direction: column; text-align: center; }
+      .modal-box { padding: 28px 20px; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo"><img src="companyperiscope-whitelogo.png" alt="Company Periscope"/></a>
+  <a href="#book-demo" class="nav-cta" style="margin-left:auto;background:linear-gradient(135deg,#1A6CF6,#0050d0);color:#fff;font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.82rem;letter-spacing:0.04em;padding:10px 22px;border-radius:8px;text-decoration:none;transition:transform 0.18s,box-shadow 0.18s;">Book a Demo Call →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">
+    <span class="hero-badge-dot"></span>
+    30-Day Money-Back Guarantee
+  </div>
+  <h1>Start Today. <span>Protected for 30 Days.</span></h1>
+  <p class="hero-sub">
+    One straightforward investment to get your AI receptionist live and answering every call. If it's not working within 30 days, we refund your first month — no questions asked.
+  </p>
+
+  <div class="pilot-pricing-grid">
+
+    <!-- STARTER — 300 MIN -->
+    <div class="price-card">
+      <div class="plan-label">Starter</div>
+      <div class="plan-mins">300</div>
+      <div class="plan-mins-label">minutes / month included</div>
+
+      <div class="price-total-row">
+        <div class="price-total-num">$1,000</div>
+        <div class="price-total-label">to get started<br/>today</div>
+      </div>
+
+      <div class="price-breakdown">
+        <div class="price-line">
+          <div class="price-line-num">$500</div>
+          <div class="price-line-label">Setup Fee</div>
+          <div class="price-line-note">One-time · full AI configuration</div>
+        </div>
+        <div class="price-line">
+          <div class="price-line-num">$500</div>
+          <div class="price-line-label">First Month</div>
+          <div class="price-line-note">Included in today's payment</div>
+        </div>
+      </div>
+
+      <p class="price-then">Then <strong>$500/month</strong>, billed monthly. Cancel anytime.</p>
+      <hr class="price-divider"/>
+
+      <ul class="price-features">
+        <li><span class="pf-check">✓</span> AI Receptionist — live 24/7, answers every missed call</li>
+        <li><span class="pf-check">✓</span> Dedicated onboarding call — configured for your business</li>
+        <li><span class="pf-check">✓</span> Live in 48 hours — no tech setup on your end</li>
+        <li><span class="pf-check">✓</span> Lead capture, intake &amp; appointment booking</li>
+        <li><span class="pf-check">✓</span> Full analytics dashboard</li>
+        <li><span class="pf-check">✓</span> Ongoing support &amp; monthly check-ins</li>
+      </ul>
+
+      <div class="guarantee-strip">
+        <div class="gs-icon">🛡️</div>
+        <div>
+          <div class="gs-title">30-Day Money-Back Guarantee</div>
+          <div class="gs-desc">Not satisfied in 30 days? We refund your $500 subscription — no questions asked.</div>
+        </div>
+      </div>
+
+      <a href="https://buy.stripe.com/dRm8wP74O6AEeG220b8N206" class="cta-btn">Get Started — $1,000 Today →</a>
+      <p class="price-fine">Secure checkout via Stripe · Live in 48 hours</p>
+    </div>
+
+    <!-- PRO — 1,000 MIN -->
+    <div class="price-card popular">
+      <div class="popular-tag">Most Popular</div>
+      <div class="plan-label">Pro</div>
+      <div class="plan-mins">1,000</div>
+      <div class="plan-mins-label">minutes / month included</div>
+
+      <div class="price-total-row">
+        <div class="price-total-num">$1,500</div>
+        <div class="price-total-label">to get started<br/>today</div>
+      </div>
+
+      <div class="price-breakdown">
+        <div class="price-line">
+          <div class="price-line-num">$500</div>
+          <div class="price-line-label">Setup Fee</div>
+          <div class="price-line-note">One-time · full AI configuration</div>
+        </div>
+        <div class="price-line">
+          <div class="price-line-num">$1,000</div>
+          <div class="price-line-label">First Month</div>
+          <div class="price-line-note">Included in today's payment</div>
+        </div>
+      </div>
+
+      <p class="price-then">Then <strong>$1,000/month</strong>, billed monthly. Cancel anytime.</p>
+      <hr class="price-divider"/>
+
+      <ul class="price-features">
+        <li><span class="pf-check">✓</span> AI Receptionist — live 24/7, answers every missed call</li>
+        <li><span class="pf-check">✓</span> Dedicated onboarding call — configured for your business</li>
+        <li><span class="pf-check">✓</span> Live in 48 hours — no tech setup on your end</li>
+        <li><span class="pf-check">✓</span> Lead capture, intake &amp; appointment booking</li>
+        <li><span class="pf-check">✓</span> Full analytics dashboard</li>
+        <li><span class="pf-check">✓</span> Ongoing support &amp; monthly check-ins</li>
+      </ul>
+
+      <div class="guarantee-strip">
+        <div class="gs-icon">🛡️</div>
+        <div>
+          <div class="gs-title">30-Day Money-Back Guarantee</div>
+          <div class="gs-desc">Not satisfied in 30 days? We refund your $1,000 subscription — no questions asked.</div>
+        </div>
+      </div>
+
+      <a href="https://buy.stripe.com/dRm3cv3SC2koeG26gr8N207" class="cta-btn cta-btn-green">Get Started — $1,500 Today →</a>
+      <p class="price-fine">Secure checkout via Stripe · Live in 48 hours</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- WHAT'S INCLUDED -->
+<section class="section-wrap">
+  <div class="section-tag">What's Included</div>
+  <h2>Everything you need to get live and start capturing revenue.</h2>
+  <p class="section-sub">This isn't a watered-down entry plan. It's the full service, fully configured for your business, from day one.</p>
+
+  <div class="include-grid">
+    <div class="include-card">
+      <div class="include-icon">🤖</div>
+      <div>
+        <div class="include-title">Full AI Receptionist Setup</div>
+        <div class="include-desc">Configured specifically for your business type — handles new inquiries, scheduling requests, FAQs, after-hours calls, and more. Not a generic bot.</div>
+      </div>
+    </div>
+    <div class="include-card">
+      <div class="include-icon">📞</div>
+      <div>
+        <div class="include-title">Live Call &amp; Inquiry Handling</div>
+        <div class="include-desc">Real calls, real responses. Your AI receptionist is live and handling inquiries from the moment it goes live — not a recording, not a menu.</div>
+      </div>
+    </div>
+    <div class="include-card">
+      <div class="include-icon">📅</div>
+      <div>
+        <div class="include-title">Dedicated Onboarding Call</div>
+        <div class="include-desc">A 30–45 minute call with the Company Periscope team to configure your AI, set up call routing, and make sure everything runs exactly right before you go live.</div>
+      </div>
+    </div>
+    <div class="include-card">
+      <div class="include-icon">📊</div>
+      <div>
+        <div class="include-title">Dashboard &amp; Reporting</div>
+        <div class="include-desc">Track every call, every outcome, and every lead captured. See exactly what the AI is doing and the revenue it's protecting — in real time.</div>
+      </div>
+    </div>
+    <div class="include-card">
+      <div class="include-icon">🌙</div>
+      <div>
+        <div class="include-title">24/7 After-Hours Coverage</div>
+        <div class="include-desc">Evenings, weekends, and holidays. Your AI never clocks out. Every call that would have hit voicemail is now answered and captured.</div>
+      </div>
+    </div>
+    <div class="include-card">
+      <div class="include-icon">🔄</div>
+      <div>
+        <div class="include-title">Ongoing Support &amp; Tuning</div>
+        <div class="include-desc">As your business changes, we update your AI's scripts and responses. Monthly check-ins keep performance high and the system aligned with how your business actually works.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="timeline-wrap">
+  <div class="section-tag">What Happens After You Sign Up</div>
+  <h2>From checkout to live in 48 hours.</h2>
+  <p class="section-sub" style="margin-bottom:32px;">No technical setup required on your end — we handle everything.</p>
+
+  <div>
+    <div class="t-item">
+      <div class="t-day">Today</div>
+      <div>
+        <div class="t-title">Checkout &amp; Welcome Email</div>
+        <div class="t-desc">Complete checkout via Stripe and receive a welcome email with a link to schedule your onboarding call. Takes about 5 minutes.</div>
+      </div>
+    </div>
+    <div class="t-item">
+      <div class="t-day">Within 24 hrs</div>
+      <div>
+        <div class="t-title">Onboarding Call &amp; AI Configuration</div>
+        <div class="t-desc">30–45 minute call with our team. We configure your AI receptionist for your specific business — scripts, call routing, hours, custom responses, and tone.</div>
+      </div>
+    </div>
+    <div class="t-item">
+      <div class="t-day">48 hrs</div>
+      <div>
+        <div class="t-title">You Go Live</div>
+        <div class="t-desc">Your AI receptionist is active and handling every call. You'll receive confirmation and dashboard access. From this point forward, no call goes unanswered.</div>
+      </div>
+    </div>
+    <div class="t-item">
+      <div class="t-day">Days 1–30</div>
+      <div>
+        <div class="t-title">Full Service — Every Call Handled</div>
+        <div class="t-desc">Missed calls get caught. After-hours inquiries get answered. Leads get captured. You run your business while Company Periscope handles the phones.</div>
+      </div>
+    </div>
+    <div class="t-item">
+      <div class="t-day">Day 30</div>
+      <div>
+        <div class="t-title">Your Decision</div>
+        <div class="t-desc">If you're not satisfied, cancel and get your $500 subscription refunded. If you're seeing results — which most clients do within the first two weeks — you continue at $500/month.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GUARANTEE DETAIL -->
+<div class="guarantee-detail">
+  <div class="gd-title">🛡️ How the Guarantee Works — Exactly</div>
+  <div class="gd-grid">
+    <div>
+      <div class="gd-col-title">What's guaranteed</div>
+      <div class="gd-col-body">Your $500 first month subscription is fully refundable if you cancel within 30 days of going live and you're not satisfied with the service. No hoops, no lengthy review process. You ask, we refund.</div>
+    </div>
+    <div>
+      <div class="gd-col-title">What's not refundable</div>
+      <div class="gd-col-body">The $500 onboarding fee covers the real labor of building and configuring your AI — scripts written, call flows built, integrations set up, test calls run. That work is done whether you continue or not, so it stays. We only keep it because we actually did it.</div>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<section class="faq-wrap">
+  <div class="section-tag">Common Questions</div>
+  <h2>Before you commit.</h2>
+  <p class="section-sub" style="margin-bottom:32px;">Straight answers to everything you might be wondering.</p>
+
+  <div class="faq-item">
+    <div class="faq-q">Why is there an onboarding fee?</div>
+    <div class="faq-a">Setting up your AI receptionist correctly takes real work — our team spends time configuring your scripts, routing, responses, and making sure it handles your calls the way your business actually operates. The $500 onboarding fee covers that labor. We made it non-refundable because we earn it before you go live — not after.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">What's the monthly fee after the first month?</div>
+    <div class="faq-a">$500/month, billed monthly. No annual commitment required. Cancel anytime — just let us know before your next billing date and you won't be charged again.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">What exactly does the 30-day guarantee cover?</div>
+    <div class="faq-a">If you're not satisfied within the first 30 days of going live, we'll refund your $500 subscription fee — the first month included in your $1,000 payment. The $500 onboarding fee is not refundable. To request a refund, just email us within 30 days of your go-live date.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">Do I need to install anything or change my phone system?</div>
+    <div class="faq-a">No. Company Periscope works alongside your existing number and phone setup. No new hardware, no software to install, no changes to how your team operates day-to-day. We handle the configuration entirely on our end.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">How long until the AI is live?</div>
+    <div class="faq-a">48 hours from your onboarding call — sometimes faster. We've moved clients from checkout to live in as little as 24 hours when schedules align.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">What kinds of businesses does this work for?</div>
+    <div class="faq-a">Any service business that relies on inbound phone calls — HVAC, plumbing, contracting, legal, healthcare, dental, real estate, financial services, consulting, auto services, and more. If missed calls cost you revenue, Company Periscope fixes the problem.</div>
+  </div>
+</section>
+
+<!-- BOTTOM CTA -->
+<section class="bottom-cta">
+  <h2>Ready to stop leaving money on the table?</h2>
+  <p>$1,000 to start. $500/month after. 30-day guarantee on your first month. No complicated tiers, no free trial theatrics — just a real service with a real guarantee.</p>
+  <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+    <a href="https://buy.stripe.com/dRm8wP74O6AEeG220b8N206" class="bottom-cta-btn">Starter — $1,000 Today →</a>
+    <a href="https://buy.stripe.com/dRm3cv3SC2koeG26gr8N207" class="bottom-cta-btn" style="background:linear-gradient(135deg,#00C97A,#00E5C0);color:#050D1A;box-shadow:0 8px 32px rgba(0,201,122,.4);">Pro — $1,500 Today →</a>
+  </div>
+  <p style="margin-top:16px;font-size:0.8rem;color:rgba(255,255,255,0.3);">Secure checkout via Stripe · Live in 48 hours · $0.75/min overage after included minutes</p>
+</section>
+
+<footer>
+  <img src="companyperiscope-whitelogo.png" alt="Company Periscope"/>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="missed-call-calculator.html">Revenue Calculator</a>
+    <a href="index.html#pricing">Pricing</a>
+  </div>
+</footer>
+
+<!-- MODAL — contact capture → Stripe redirect -->
+<div class="modal-overlay" id="signup-modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">&#x2715;</button>
+    <div class="modal-badge">$1,000 to Start · 30-Day Guarantee</div>
+    <div class="modal-title">Let's get you set up</div>
+    <p class="modal-sub">Enter your details and you'll be taken to secure checkout via Stripe. We'll reach out within 24 hours to schedule your onboarding call.</p>
+
+    <div class="modal-breakdown">
+      <div class="modal-line">
+        <div class="modal-line-num">$500</div>
+        <div class="modal-line-label">Onboarding (one-time)</div>
+      </div>
+      <div class="modal-line">
+        <div class="modal-line-num">$500</div>
+        <div class="modal-line-label">First Month</div>
+      </div>
+      <div class="modal-line">
+        <div class="modal-line-num">$1,000</div>
+        <div class="modal-line-label">Total Today</div>
+      </div>
+    </div>
+
+    <div id="modal-form-area">
+      <!-- Replace with GHL form embed when ready — set redirect to Stripe $1,000 payment link -->
+      <form class="modal-form" id="signup-form" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="field-group">
+            <label class="field-label">First Name</label>
+            <input class="field-input" type="text" name="firstname" placeholder="Jane" required/>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Last Name</label>
+            <input class="field-input" type="text" name="lastname" placeholder="Smith" required/>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Business Name</label>
+          <input class="field-input" type="text" name="business" placeholder="Apex Plumbing Co." required/>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Email Address</label>
+          <input class="field-input" type="email" name="email" placeholder="jane@yourbusiness.com" required/>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Phone Number</label>
+          <input class="field-input" type="tel" name="phone" placeholder="(555) 000-0000" required/>
+        </div>
+        <button class="modal-submit-btn" type="submit" id="submit-btn">
+          Continue to Secure Checkout →
+        </button>
+        <p class="modal-fine-print">You'll be redirected to Stripe to complete your $1,000 payment. 30-day guarantee applies to the $500 subscription portion.</p>
+      </form>
+
+      <div class="modal-redirecting" id="redirecting-state">
+        <div class="spinner"></div>
+        <p>Redirecting to secure checkout...</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // Replace with your Stripe $1,000 payment link when ready.
+  // In Stripe, set the payment link's "After payment" success URL to:
+  //   https://periscope-brand-kit.netlify.app/thank-you-signup.html
+  const STRIPE_URL = 'REPLACE_WITH_STRIPE_PAYMENT_LINK';
+
+  function openModal() {
+    document.getElementById('signup-modal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    document.getElementById('signup-modal').classList.remove('active');
+    document.body.style.overflow = '';
+    document.getElementById('signup-form').style.display = 'flex';
+    document.getElementById('redirecting-state').style.display = 'none';
+    document.getElementById('submit-btn').disabled = false;
+    document.getElementById('submit-btn').textContent = 'Continue to Secure Checkout →';
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const form = e.target;
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Preparing checkout...';
+
+    // Optional: POST to GHL webhook to capture the lead before Stripe
+    // const data = { firstname: form.firstname.value, lastname: form.lastname.value, business: form.business.value, email: form.email.value, phone: form.phone.value };
+    // fetch('YOUR_GHL_WEBHOOK_URL', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(data) });
+
+    setTimeout(() => {
+      form.style.display = 'none';
+      document.getElementById('redirecting-state').style.display = 'block';
+      setTimeout(() => { window.location.href = STRIPE_URL; }, 1200);
+    }, 600);
+  }
+
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal(); });
+</script>
+
+</body>
+</html>

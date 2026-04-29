@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Company Periscope — Growth Funnel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    :root {
+      --navy:   #050D1A;
+      --blue:   #1A6CF6;
+      --teal:   #00E5C0;
+      --cyan:   #00C9E5;
+      --white:  #FFFFFF;
+      --dim:    rgba(255,255,255,0.55);
+      --dimmer: rgba(255,255,255,0.28);
+      --glass:  rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.08);
+      --font:   'Montserrat', system-ui, sans-serif;
+      --body:   'Inter', system-ui, sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; overflow: hidden; background: var(--navy); color: var(--white); font-family: var(--body); }
+
+    /* ── PROGRESS BAR ── */
+    #progress { position: fixed; top: 0; left: 0; height: 3px; width: 0%; z-index: 200; background: linear-gradient(90deg, #1A6CF6, #00E5C0); transition: width .4s ease; }
+
+    /* ── LOGO ── */
+    .logo-bar { position: fixed; top: 18px; left: 24px; z-index: 200; }
+    .logo-bar img { height: 22px; width: auto; opacity: .85; }
+
+    /* ── SLIDE COUNTER ── */
+    .counter { position: fixed; top: 22px; right: 24px; z-index: 200; font-family: var(--font); font-size: .7rem; font-weight: 700; color: var(--dimmer); letter-spacing: .12em; }
+
+    /* ── NAV ARROWS ── */
+    .nav-btn {
+      position: fixed; top: 50%; transform: translateY(-50%); z-index: 200;
+      width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--border);
+      background: rgba(255,255,255,.06); backdrop-filter: blur(12px);
+      color: var(--white); font-size: 1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all .2s;
+    }
+    .nav-btn:hover { background: rgba(26,108,246,.25); border-color: rgba(26,108,246,.5); }
+    .nav-btn:disabled { opacity: .15; cursor: default; pointer-events: none; }
+    #prev { left: 14px; }
+    #next { right: 14px; }
+
+    /* ── DOT NAV ── */
+    .dots { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); display: flex; gap: 7px; z-index: 200; }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.2); cursor: pointer; transition: all .3s; }
+    .dot.on { background: var(--teal); width: 22px; border-radius: 3px; }
+
+    /* ── SLIDES WRAPPER ── */
+    .deck { position: relative; width: 100%; height: 100vh; }
+
+    /* ── SINGLE SLIDE ── */
+    .slide {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 72px 64px 72px;
+      opacity: 0; transform: translateX(56px);
+      transition: opacity .45s cubic-bezier(.4,0,.2,1), transform .45s cubic-bezier(.4,0,.2,1);
+      pointer-events: none; overflow: hidden;
+    }
+    .slide.active { opacity: 1; transform: translateX(0); pointer-events: all; }
+    .slide.gone   { opacity: 0; transform: translateX(-56px); }
+
+    /* ── BACKGROUNDS ── */
+    .bg-cover  { background: radial-gradient(ellipse 90% 70% at 50% 0%, rgba(26,108,246,.22) 0%, transparent 70%), var(--navy); }
+    .bg-dark   { background: #040B16; }
+    .bg-mid    { background: linear-gradient(160deg, #061525 0%, #040B16 100%); }
+    .bg-teal   { background: linear-gradient(160deg, #04120E 0%, #040B16 100%); }
+    .bg-purple { background: linear-gradient(160deg, #09061A 0%, #040B16 100%); }
+
+    /* grid overlay */
+    .grid-bg { position: absolute; inset: 0; pointer-events: none;
+      background-image: linear-gradient(rgba(26,108,246,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(26,108,246,.04) 1px, transparent 1px);
+      background-size: 60px 60px; }
+
+    /* ── TYPE ── */
+    .eyebrow { font-family: var(--font); font-size: .65rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--teal); margin-bottom: 14px; }
+    .h1 { font-family: var(--font); font-size: clamp(2.4rem,4.5vw,3.6rem); font-weight: 900; line-height: 1.08; letter-spacing: -.03em; color: var(--white); text-align: center; margin-bottom: 18px; }
+    .h2 { font-family: var(--font); font-size: clamp(1.6rem,3vw,2.4rem); font-weight: 800; line-height: 1.12; letter-spacing: -.025em; color: var(--white); margin-bottom: 14px; }
+    .sub { font-size: clamp(.85rem,1.4vw,1rem); color: var(--dim); line-height: 1.72; max-width: 580px; text-align: center; margin-bottom: 36px; }
+    .grad { background: linear-gradient(135deg,#1A6CF6,#00E5C0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .red-grad { background: linear-gradient(135deg,#ff6060,#ff3030); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+    /* ── LIVE BADGE ── */
+    .live-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(26,108,246,.1); border: 1px solid rgba(26,108,246,.25); color: rgba(150,200,255,.9); font-family: var(--font); font-size: .68rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; padding: 7px 16px; border-radius: 100px; margin-bottom: 28px; }
+    .blink { width: 6px; height: 6px; background: var(--teal); border-radius: 50%; animation: blink 1.8s ease-in-out infinite; }
+    @keyframes blink { 0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,229,192,.5)} 50%{opacity:.5;box-shadow:0 0 0 5px rgba(0,229,192,0)} }
+
+    /* ── CARDS ── */
+    .card { background: var(--glass); border: 1px solid var(--border); border-radius: 20px; padding: 28px 24px; }
+    .card-hl { border-color: rgba(26,108,246,.3); background: rgba(26,108,246,.06); }
+    .card-teal { border-color: rgba(0,229,192,.3); background: rgba(0,229,192,.05); }
+
+    /* ── GRIDS ── */
+    .g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; width: 100%; max-width: 980px; }
+    .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; width: 100%; max-width: 980px; align-items: center; }
+    .g2-text { display: flex; flex-direction: column; }
+
+    /* ── STAT BIG ── */
+    .stat-big { font-family: var(--font); font-size: clamp(3.5rem,7vw,6rem); font-weight: 900; line-height: 1; }
+    .stat-label { font-size: .88rem; color: var(--dim); line-height: 1.5; margin-top: 10px; }
+
+    /* ── CHECKLIST ── */
+    .chk { list-style: none; text-align: left; }
+    .chk li { display: flex; gap: 10px; font-size: .9rem; color: var(--dim); margin-bottom: 11px; line-height: 1.5; }
+    .chk li .icon { flex-shrink: 0; margin-top: 1px; }
+    .chk li .icon.yes { color: var(--teal); }
+    .chk li .icon.no  { color: rgba(255,90,90,.8); }
+
+    /* ── PILLS ── */
+    .pill-row { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 14px; }
+    .pill { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font); font-size: .74rem; font-weight: 600; padding: 6px 13px; border-radius: 100px; }
+    .pt { background: rgba(0,229,192,.09); border: 1px solid rgba(0,229,192,.22); color: rgba(255,255,255,.85); }
+    .pb { background: rgba(26,108,246,.09); border: 1px solid rgba(26,108,246,.22); color: rgba(255,255,255,.85); }
+    .pd { background: rgba(255,255,255,.04); border: 1px solid var(--border); color: var(--dimmer); }
+
+    /* ── STAGE BADGE ── */
+    .stage-num { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font); font-weight: 900; font-size: 1.1rem; margin-bottom: 14px; flex-shrink: 0; }
+    .sn-blue { background: rgba(26,108,246,.18); border: 1.5px solid rgba(26,108,246,.4); color: #7BBFFF; }
+    .sn-teal { background: rgba(0,229,192,.14); border: 1.5px solid rgba(0,229,192,.35); color: var(--teal); }
+
+    /* ── VALUE STACK ── */
+    .val-stack { list-style: none; }
+    .val-stack li { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: .88rem; color: var(--dim); }
+    .val-stack li:last-child { border-bottom: none; }
+    .val-stack .val { font-family: var(--font); font-weight: 700; color: var(--teal); }
+    .val-stack .crossed { text-decoration: line-through; color: rgba(255,255,255,.25); }
+
+    /* ── SUMMARY TABLE ── */
+    .s-table { width: 100%; max-width: 900px; border-collapse: collapse; }
+    .s-table th { font-family: var(--font); font-size: .62rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--dimmer); padding: 10px 16px; text-align: left; border-bottom: 1px solid var(--border); }
+    .s-table td { padding: 13px 16px; font-size: .85rem; color: var(--dim); border-bottom: 1px solid rgba(255,255,255,.03); vertical-align: top; }
+    .s-table tr:hover td { background: rgba(255,255,255,.02); }
+    .sn { font-family: var(--font); font-weight: 900; color: var(--blue); font-size: 1rem; }
+    .free-tag { background: rgba(0,229,192,.1); border: 1px solid rgba(0,229,192,.25); color: var(--teal); font-family: var(--font); font-size: .62rem; font-weight: 700; padding: 3px 9px; border-radius: 100px; }
+    .paid-tag { background: rgba(26,108,246,.1); border: 1px solid rgba(26,108,246,.25); color: #7BBFFF; font-family: var(--font); font-size: .62rem; font-weight: 700; padding: 3px 9px; border-radius: 100px; }
+
+    /* ── WHY CARDS ── */
+    .why-g { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; width: 100%; max-width: 960px; }
+    .why-c { background: var(--glass); border: 1px solid var(--border); border-radius: 16px; padding: 22px 20px; text-align: left; }
+    .why-n { font-family: var(--font); font-size: 2.2rem; font-weight: 900; color: rgba(26,108,246,.25); line-height: 1; margin-bottom: 8px; }
+    .why-t { font-family: var(--font); font-size: .85rem; font-weight: 700; color: var(--white); margin-bottom: 7px; }
+    .why-b { font-size: .76rem; color: var(--dimmer); line-height: 1.58; }
+
+    /* ── MERMAID ── */
+    .mmd-wrap { width: 100%; max-width: 900px; background: rgba(255,255,255,.02); border: 1px solid var(--border); border-radius: 20px; padding: 28px 16px; overflow-x: auto; }
+    .mmd-wrap .mermaid { display: flex; justify-content: center; min-width: 500px; }
+
+    /* ── OPTIN NUMBER ── */
+    .optin-num { font-family: var(--font); font-size: .65rem; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; padding: 5px 12px; border-radius: 100px; margin-bottom: 14px; display: inline-block; }
+    .on1 { background: rgba(26,108,246,.12); border: 1px solid rgba(26,108,246,.3); color: #7BBFFF; }
+    .on2 { background: rgba(0,229,192,.1); border: 1px solid rgba(0,229,192,.28); color: var(--teal); }
+    .on3 { background: rgba(150,80,255,.1); border: 1px solid rgba(150,80,255,.25); color: #C08AFF; }
+
+    /* ── FLOW STEPS ── */
+    .flow { display: flex; align-items: center; gap: 0; justify-content: center; flex-wrap: nowrap; width: 100%; max-width: 900px; }
+    .flow-step { flex: 1; text-align: center; padding: 20px 12px; background: var(--glass); border: 1px solid var(--border); border-radius: 16px; position: relative; }
+    .flow-arrow { flex-shrink: 0; color: rgba(26,108,246,.6); font-size: 1.2rem; padding: 0 8px; }
+    .flow-step .fs-num { font-family: var(--font); font-weight: 900; font-size: 1.6rem; color: rgba(26,108,246,.4); line-height: 1; margin-bottom: 6px; }
+    .flow-step .fs-label { font-family: var(--font); font-size: .72rem; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+    .flow-step .fs-cost { font-size: .68rem; color: var(--dimmer); }
+    .flow-step.hl-step { border-color: rgba(0,229,192,.3); background: rgba(0,229,192,.06); }
+    .flow-step.hl-step .fs-num { color: rgba(0,229,192,.5); }
+
+    /* ══════════ MOBILE ══════════ */
+    @media (max-width: 768px) {
+      /* Slides */
+      .slide { padding: 64px 20px 72px; justify-content: flex-start; overflow-y: auto; }
+
+      /* Hide logo on mobile to save space */
+      .logo-bar { display: none; }
+      .counter  { top: 14px; right: 14px; font-size: .62rem; }
+      .nav-btn  { width: 36px; height: 36px; font-size: .9rem; }
+      #prev { left: 6px; }
+      #next { right: 6px; }
+
+      /* Typography */
+      .h1 { font-size: clamp(1.5rem,7vw,2.2rem); margin-bottom: 14px; }
+      .h2 { font-size: clamp(1.3rem,6vw,1.8rem); }
+      .sub { font-size: .82rem; margin-bottom: 20px; }
+      .eyebrow { margin-bottom: 8px; }
+
+      /* Grids → single column */
+      .g2, .g3, .why-g { grid-template-columns: 1fr; gap: 12px; }
+
+      /* Hide SVG illustrations on mobile — content first */
+      .slide-illo, .g2 > div:first-child > svg { display: none; }
+      .g2 > div:first-child:has(svg) { display: none; }
+
+      /* Cards */
+      .card { padding: 18px 16px; }
+
+      /* Stage badge */
+      .stage-num { width: 38px; height: 38px; font-size: .9rem; margin-bottom: 10px; }
+
+      /* Checklist */
+      .chk li { font-size: .8rem; margin-bottom: 8px; }
+
+      /* Value stack */
+      .val-stack li { font-size: .8rem; padding: 8px 0; }
+
+      /* Summary table — horizontal scroll */
+      .s-table-wrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .s-table { min-width: 560px; }
+      .s-table td, .s-table th { padding: 9px 12px; font-size: .75rem; }
+
+      /* Mermaid */
+      .mmd-wrap { padding: 16px 10px; }
+
+      /* Cover stat strip */
+      .cover-stats { flex-direction: column; gap: 12px; }
+      .cover-stats > div[style*="width:1px"] { display: none; }
+
+      /* Pills */
+      .pill { font-size: .68rem; padding: 5px 11px; }
+      .pill-row { gap: 6px; }
+
+      /* Optin num */
+      .optin-num { font-size: .6rem; }
+
+      /* Flow steps */
+      .flow { flex-direction: column; }
+      .flow-arrow { transform: rotate(90deg); padding: 2px 0; }
+    }
+
+    @media (max-width: 420px) {
+      .slide { padding: 56px 14px 68px; }
+      .h1 { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="progress"></div>
+<div class="logo-bar"><img src="companyperiscope-whitelogo.png" alt="Company Periscope"/></div>
+<div class="counter" id="counter">1 / 12</div>
+<button class="nav-btn" id="prev">&#8592;</button>
+<button class="nav-btn" id="next">&#8594;</button>
+<div class="dots" id="dots"></div>
+
+<div class="deck" id="deck">
+
+  <!-- ════════════ SLIDE 1 — COVER ════════════ -->
+  <div class="slide bg-cover active">
+    <div class="grid-bg"></div>
+    <!-- Periscope SVG -->
+    <svg style="position:absolute;right:8%;top:50%;transform:translateY(-50%);opacity:.12;width:260px;" viewBox="0 0 120 320" fill="none">
+      <rect x="52" y="0" width="16" height="200" rx="8" fill="#1A6CF6"/>
+      <rect x="36" y="190" width="48" height="28" rx="8" fill="#1A6CF6"/>
+      <circle cx="76" cy="204" r="9" fill="#00E5C0" opacity=".9"/>
+      <ellipse cx="60" cy="310" rx="40" ry="10" fill="#1A6CF6" opacity=".4"/>
+      <rect x="52" y="218" width="16" height="92" rx="8" fill="#1A6CF6"/>
+    </svg>
+    <div class="live-badge"><div class="blink"></div>Growth Strategy · 2026</div>
+    <h1 class="h1">The Company Periscope<br/><span class="grad">Growth Engine</span></h1>
+    <p class="sub">From missed call to monthly client — the complete opt-in, trial, and conversion funnel built to run on autopilot.</p>
+    <div class="cover-stats" style="display:flex;gap:32px;flex-wrap:wrap;justify-content:center;">
+      <div style="text-align:center;"><div style="font-family:var(--font);font-size:1.8rem;font-weight:900;color:#7BBFFF;">3</div><div style="font-size:.78rem;color:var(--dimmer);">Opt-In Paths</div></div>
+      <div style="width:1px;background:var(--border);"></div>
+      <div style="text-align:center;"><div style="font-family:var(--font);font-size:1.8rem;font-weight:900;color:var(--teal);">5</div><div style="font-size:.78rem;color:var(--dimmer);">Funnel Stages</div></div>
+      <div style="width:1px;background:var(--border);"></div>
+      <div style="text-align:center;"><div style="font-family:var(--font);font-size:1.8rem;font-weight:900;color:#C08AFF;">$500–1k</div><div style="font-size:.78rem;color:var(--dimmer);">Monthly Revenue / Client</div></div>
+    </div>
+  </div>
+
+  <!-- ════════════ SLIDE 2 — THE PROBLEM ════════════ -->
+  <div class="slide bg-dark">
+    <span class="eyebrow">The Problem</span>
+    <h1 class="h1">Every Missed Call<br/><span class="red-grad">Has a Price Tag.</span></h1>
+    <div class="g3" style="margin-top:8px;">
+      <div class="card" style="text-align:center;">
+        <svg width="48" height="48" viewBox="0 0 48 48" style="margin:0 auto 14px;" fill="none">
+          <circle cx="24" cy="24" r="22" fill="rgba(255,60,60,0.1)" stroke="rgba(255,60,60,0.2)" stroke-width="1.5"/>
+          <text x="24" y="30" text-anchor="middle" font-size="22" fill="rgba(255,100,100,0.9)">📵</text>
+        </svg>
+        <div class="stat-big" style="color:#ff7070;">$400</div>
+        <div class="stat-label">Average value of a single<br/>missed business call</div>
+      </div>
+      <div class="card" style="text-align:center;">
+        <svg width="48" height="48" viewBox="0 0 48 48" style="margin:0 auto 14px;" fill="none">
+          <circle cx="24" cy="24" r="22" fill="rgba(255,60,60,0.1)" stroke="rgba(255,60,60,0.2)" stroke-width="1.5"/>
+          <text x="24" y="30" text-anchor="middle" font-size="22" fill="rgba(255,100,100,0.9)">🕳️</text>
+        </svg>
+        <div class="stat-big" style="color:#ff7070;">40%</div>
+        <div class="stat-label">Of voicemails that are<br/>never returned</div>
+      </div>
+      <div class="card" style="text-align:center;">
+        <svg width="48" height="48" viewBox="0 0 48 48" style="margin:0 auto 14px;" fill="none">
+          <circle cx="24" cy="24" r="22" fill="rgba(255,60,60,0.1)" stroke="rgba(255,60,60,0.2)" stroke-width="1.5"/>
+          <text x="24" y="30" text-anchor="middle" font-size="22" fill="rgba(255,100,100,0.9)">🌙</text>
+        </svg>
+        <div class="stat-big" style="color:#ff7070;">68%</div>
+        <div class="stat-label">Of after-hours calls that<br/>go completely unanswered</div>
+      </div>
+    </div>
+    <p style="margin-top:28px;font-size:.88rem;color:var(--dimmer);max-width:600px;text-align:center;line-height:1.7;">The business owner is the problem — not because they don't care, but because they <em style="color:var(--white);">can't be everywhere at once.</em> Company Periscope fixes that permanently.</p>
+  </div>
+
+  <!-- ════════════ SLIDE 3 — 3 OPT-INS OVERVIEW ════════════ -->
+  <div class="slide bg-mid">
+    <span class="eyebrow">Top of Funnel</span>
+    <h1 class="h1">Three Ways In.<br/><span class="grad">One Destination.</span></h1>
+    <div class="g3">
+      <div class="card card-hl" style="text-align:center;">
+        <div style="font-size:2.2rem;margin-bottom:12px;">🧮</div>
+        <div class="optin-num on1">Opt-In 01</div>
+        <div style="font-family:var(--font);font-weight:800;font-size:1rem;color:var(--white);margin-bottom:8px;">Missed Call<br/>Calculator</div>
+        <div style="font-size:.78rem;color:var(--dimmer);line-height:1.6;">missedcallmetrics.com<br/>Show them their number in dollars. Gate the full report behind an email.</div>
+        <div class="pill-row" style="justify-content:center;margin-top:14px;"><span class="pill pb">Analytical Buyers</span></div>
+      </div>
+      <div class="card card-teal" style="text-align:center;">
+        <div style="font-size:2.2rem;margin-bottom:12px;">📞</div>
+        <div class="optin-num on2">Opt-In 02</div>
+        <div style="font-family:var(--font);font-weight:800;font-size:1rem;color:var(--white);margin-bottom:8px;">Free Front Desk<br/>Stress Test</div>
+        <div style="font-size:.78rem;color:var(--dimmer);line-height:1.6;">We call them. They consent to social content. They get an audit report. They feel it.</div>
+        <div class="pill-row" style="justify-content:center;margin-top:14px;"><span class="pill pt">Proof-Driven Buyers</span></div>
+      </div>
+      <div class="card" style="text-align:center;border-color:rgba(150,80,255,.25);background:rgba(150,80,255,.05);">
+        <div style="font-size:2.2rem;margin-bottom:12px;">📋</div>
+        <div class="optin-num on3">Opt-In 03</div>
+        <div style="font-family:var(--font);font-weight:800;font-size:1rem;color:var(--white);margin-bottom:8px;">Industry<br/>Script Pack</div>
+        <div style="font-size:.78rem;color:var(--dimmer);line-height:1.6;">They self-score 7 call scenarios. Download best-practice scripts. Their gap creates the urgency.</div>
+        <div class="pill-row" style="justify-content:center;margin-top:14px;"><span class="pill" style="background:rgba(150,80,255,.1);border:1px solid rgba(150,80,255,.25);color:#C08AFF;">DIY Buyers</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════ SLIDE 4 — OPT-IN 1: CALCULATOR ════════════ -->
+  <div class="slide bg-dark">
+    <div class="g2">
+      <!-- Left: illustration -->
+      <div style="display:flex;justify-content:center;align-items:center;">
+        <svg width="320" height="280" viewBox="0 0 320 280" fill="none">
+          <!-- Calculator body -->
+          <rect x="60" y="20" width="200" height="240" rx="20" fill="#0D2040" stroke="rgba(26,108,246,0.3)" stroke-width="1.5"/>
+          <!-- Screen -->
+          <rect x="80" y="40" width="160" height="70" rx="10" fill="#071525" stroke="rgba(26,108,246,0.2)" stroke-width="1"/>
+          <text x="175" y="70" text-anchor="middle" font-family="Montserrat,sans-serif" font-weight="900" font-size="26" fill="url(#cg)">$14,200</text>
+          <text x="175" y="90" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.4)">ESTIMATED MONTHLY LOSS</text>
+          <defs><linearGradient id="cg" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#ff6060"/><stop offset="100%" stop-color="#ff3030"/></linearGradient></defs>
+          <!-- Buttons row 1 -->
+          <rect x="85" y="126" width="38" height="28" rx="7" fill="rgba(26,108,246,0.15)" stroke="rgba(26,108,246,0.25)" stroke-width="1"/>
+          <rect x="133" y="126" width="38" height="28" rx="7" fill="rgba(26,108,246,0.15)" stroke="rgba(26,108,246,0.25)" stroke-width="1"/>
+          <rect x="181" y="126" width="38" height="28" rx="7" fill="rgba(26,108,246,0.15)" stroke="rgba(26,108,246,0.25)" stroke-width="1"/>
+          <!-- Buttons row 2 -->
+          <rect x="85" y="164" width="38" height="28" rx="7" fill="rgba(26,108,246,0.1)" stroke="rgba(26,108,246,0.18)" stroke-width="1"/>
+          <rect x="133" y="164" width="38" height="28" rx="7" fill="rgba(26,108,246,0.1)" stroke="rgba(26,108,246,0.18)" stroke-width="1"/>
+          <rect x="181" y="164" width="38" height="28" rx="7" fill="rgba(26,108,246,0.1)" stroke="rgba(26,108,246,0.18)" stroke-width="1"/>
+          <!-- CTA button -->
+          <rect x="85" y="202" width="150" height="36" rx="18" fill="url(#bg2)"/>
+          <defs><linearGradient id="bg2" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#1A6CF6"/><stop offset="100%" stop-color="#00C9E5"/></linearGradient></defs>
+          <text x="160" y="225" text-anchor="middle" font-family="Montserrat,sans-serif" font-weight="700" font-size="10" fill="white">Email me the full report →</text>
+          <!-- Glow -->
+          <ellipse cx="160" cy="260" rx="80" ry="12" fill="rgba(26,108,246,0.15)"/>
+        </svg>
+      </div>
+      <!-- Right: content -->
+      <div class="g2-text">
+        <div class="optin-num on1">Opt-In 01</div>
+        <h2 class="h2">The Missed Call<br/>Calculator</h2>
+        <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(26,108,246,0.08);border:1px solid rgba(26,108,246,0.22);border-radius:10px;padding:8px 14px;margin-bottom:18px;flex-wrap:wrap;">
+          <span style="font-family:var(--font);font-size:.72rem;font-weight:700;color:#7BBFFF;">missedcallmetrics.com</span>
+          <span style="color:var(--dimmer);font-size:.7rem;">→</span>
+          <span style="font-family:var(--font);font-size:.72rem;font-weight:600;color:var(--dimmer);">forwards to companyperiscope.com/calculator</span>
+          <span style="background:rgba(0,229,192,.12);border:1px solid rgba(0,229,192,.25);color:var(--teal);font-family:var(--font);font-size:.6rem;font-weight:700;padding:2px 8px;border-radius:100px;letter-spacing:.08em;">EASY TO REMEMBER</span>
+        </div>
+        <ul class="chk" style="margin-bottom:20px;">
+          <li><span class="icon yes">✓</span>Prospect enters: industry, weekly call volume, average job value</li>
+          <li><span class="icon yes">✓</span>Site immediately reveals a partial dollar figure — creating urgency</li>
+          <li><span class="icon yes">✓</span>Full industry benchmark report is gated behind their email</li>
+          <li><span class="icon yes">✓</span>Report compares them to top performers in their industry</li>
+          <li><span class="icon yes">✓</span>Follow-up sequence kicks off automatically referencing their exact number</li>
+        </ul>
+        <div class="card" style="padding:16px 20px;">
+          <div style="font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--teal);margin-bottom:6px;">Why it works</div>
+          <div style="font-size:.82rem;color:var(--dim);line-height:1.6;">They're emotionally invested in their own number before the email ask hits. It doesn't feel like a trade — it feels like the next logical step.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════ SLIDE 5 — OPT-IN 2: STRESS TEST ════════════ -->
+  <div class="slide bg-teal">
+    <div class="g2">
+      <div class="g2-text">
+        <div class="optin-num on2">Opt-In 02</div>
+        <h2 class="h2">Free Front Desk<br/>Stress Test</h2>
+        <p style="font-size:.88rem;color:var(--dim);line-height:1.7;margin-bottom:20px;">We call their business — unannounced — and grade exactly what happens. Three scenarios. One report. Zero sugar-coating.</p>
+        <ul class="chk" style="margin-bottom:20px;">
+          <li><span class="icon yes">✓</span>New customer / new patient call</li>
+          <li><span class="icon yes">✓</span>Emergency or urgent request</li>
+          <li><span class="icon yes">✓</span>After-hours call (the most revealing)</li>
+          <li><span class="icon yes">✓</span>48-hour written audit delivered by email</li>
+          <li><span class="icon yes">✓</span><strong style="color:var(--white);">They consent to social media content use</strong> — before/after content gold</li>
+        </ul>
+        <div class="card card-teal" style="padding:16px 20px;">
+          <div style="font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--teal);margin-bottom:6px;">Why it works</div>
+          <div style="font-size:.82rem;color:var(--dim);line-height:1.6;">They hear what their business sounds like to a customer. That's more powerful than any statistic. The content consent turns every audit into potential testimonial content.</div>
+        </div>
+      </div>
+      <!-- Right: illustration -->
+      <div style="display:flex;justify-content:center;align-items:center;">
+        <svg width="300" height="300" viewBox="0 0 300 300" fill="none">
+          <!-- Phone -->
+          <rect x="95" y="40" width="110" height="190" rx="20" fill="#0D2040" stroke="rgba(0,229,192,0.3)" stroke-width="1.5"/>
+          <rect x="108" y="60" width="84" height="130" rx="8" fill="#071525"/>
+          <!-- Screen content -->
+          <text x="150" y="95" text-anchor="middle" font-size="28">📵</text>
+          <text x="150" y="118" text-anchor="middle" font-family="Montserrat,sans-serif" font-weight="700" font-size="9" fill="rgba(255,100,100,0.9)">NO ANSWER</text>
+          <text x="150" y="133" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,0.35)">After hours · 9:47 PM</text>
+          <!-- Score -->
+          <rect x="115" y="148" width="70" height="28" rx="8" fill="rgba(255,60,60,0.12)" stroke="rgba(255,60,60,0.25)" stroke-width="1"/>
+          <text x="150" y="167" text-anchor="middle" font-family="Montserrat,sans-serif" font-weight="800" font-size="11" fill="rgba(255,100,100,0.9)">Score: 2 / 10</text>
+          <!-- Rings -->
+          <circle cx="150" cy="280" r="5" fill="rgba(255,255,255,0.2)"/>
+          <!-- Pulse rings -->
+          <circle cx="150" cy="135" r="70" stroke="rgba(0,229,192,0.08)" stroke-width="1.5" fill="none"/>
+          <circle cx="150" cy="135" r="100" stroke="rgba(0,229,192,0.05)" stroke-width="1" fill="none"/>
+          <!-- Social badge -->
+          <rect x="30" y="200" width="100" height="42" rx="10" fill="#0D2040" stroke="rgba(0,229,192,0.3)" stroke-width="1"/>
+          <text x="80" y="216" text-anchor="middle" font-size="10">📸</text>
+          <text x="80" y="233" text-anchor="middle" font-family="Montserrat,sans-serif" font-weight="700" font-size="8" fill="rgba(0,229,192,0.9)">Content rights ✓</text>
+          <rect x="170" y="200" width="100" height="42" rx="10" fill="#0D2040" stroke="rgba(26,108,246,0.3)" stroke-width="1"/>
+          <text x="220" y="216" text-anchor="middle" font-size="10">📊</text>
+          <text x="220" y="233" text-anchor="middle" font-family="Montserrat,sans-serif" font-weight="700" font-size="8" fill="rgba(100,160,255,0.9)">Audit report ✓</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════ SLIDE 6 — OPT-IN 3: SCRIPT PACK ════════════ -->
+  <div class="slide bg-purple">
+    <div class="g2">
+      <!-- Left: illustration -->
+      <div style="display:flex;justify-content:center;align-items:center;">
+        <svg width="300" height="300" viewBox="0 0 300 300" fill="none">
+          <!-- Document -->
+          <rect x="50" y="20" width="200" height="260" rx="16" fill="#0D1535" stroke="rgba(150,80,255,0.3)" stroke-width="1.5"/>
+          <!-- Header -->
+          <rect x="50" y="20" width="200" height="48" rx="16" fill="rgba(150,80,255,0.15)"/>
+          <rect x="50" y="52" width="200" height="16" rx="0" fill="rgba(150,80,255,0.15)"/>
+          <text x="150" y="50" text-anchor="middle" font-family="Montserrat,sans-serif" font-weight="800" font-size="11" fill="rgba(200,150,255,0.9)">INDUSTRY SCRIPT PACK</text>
+          <!-- Scenario rows -->
+          <rect x="68" y="84" width="14" height="14" rx="3" fill="rgba(0,229,192,0.2)" stroke="rgba(0,229,192,0.4)" stroke-width="1"/>
+          <text x="76" y="95" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="9" fill="rgba(0,229,192,0.9)">✓</text>
+          <text x="165" y="95" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.6)">New Customer Call</text>
+          <rect x="68" y="108" width="14" height="14" rx="3" fill="rgba(0,229,192,0.2)" stroke="rgba(0,229,192,0.4)" stroke-width="1"/>
+          <text x="76" y="119" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="9" fill="rgba(0,229,192,0.9)">✓</text>
+          <text x="165" y="119" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.6)">Emergency / Urgent</text>
+          <rect x="68" y="132" width="14" height="14" rx="3" fill="rgba(0,229,192,0.2)" stroke="rgba(0,229,192,0.4)" stroke-width="1"/>
+          <text x="76" y="143" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="9" fill="rgba(0,229,192,0.9)">✓</text>
+          <text x="165" y="143" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.6)">After-Hours Call</text>
+          <rect x="68" y="156" width="14" height="14" rx="3" fill="rgba(255,60,60,0.12)" stroke="rgba(255,60,60,0.3)" stroke-width="1"/>
+          <text x="76" y="167" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,100,100,0.7)">2</text>
+          <text x="165" y="167" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.35)">Pricing Question</text>
+          <rect x="68" y="180" width="14" height="14" rx="3" fill="rgba(255,60,60,0.12)" stroke="rgba(255,60,60,0.3)" stroke-width="1"/>
+          <text x="76" y="191" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,100,100,0.7)">1</text>
+          <text x="165" y="191" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.35)">Complaint Handling</text>
+          <rect x="68" y="204" width="14" height="14" rx="3" fill="rgba(255,60,60,0.12)" stroke="rgba(255,60,60,0.3)" stroke-width="1"/>
+          <text x="76" y="215" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,100,100,0.7)">0</text>
+          <text x="165" y="215" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.35)">Scheduling / Rebook</text>
+          <!-- Score bar -->
+          <rect x="68" y="236" width="164" height="6" rx="3" fill="rgba(255,255,255,0.06)"/>
+          <rect x="68" y="236" width="70" height="6" rx="3" fill="url(#sg)"/>
+          <defs><linearGradient id="sg" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#ff6060"/><stop offset="100%" stop-color="#ffaa00"/></linearGradient></defs>
+          <text x="150" y="262" text-anchor="middle" font-family="Montserrat,sans-serif" font-weight="700" font-size="9" fill="rgba(255,180,80,0.9)">Your Score: 4.2 / 10 — Below Industry Average</text>
+        </svg>
+      </div>
+      <div class="g2-text">
+        <div class="optin-num on3">Opt-In 03</div>
+        <h2 class="h2">Industry Script Pack<br/>&amp; Self-Assessment</h2>
+        <ul class="chk" style="margin-bottom:20px;">
+          <li><span class="icon yes">✓</span>Prospect selects their industry (dental, HVAC, legal, etc.)</li>
+          <li><span class="icon yes">✓</span>They rate how their team handles each of 7 core call scenarios</li>
+          <li><span class="icon yes">✓</span>They see their score vs. industry best practice benchmark</li>
+          <li><span class="icon yes">✓</span>They download the full script pack showing exactly how to handle each</li>
+          <li><span class="icon yes">✓</span>Follow-up references their specific gaps: <em style="color:var(--white);">"You scored 0 on after-hours — here's the cost"</em></li>
+        </ul>
+        <div class="card" style="padding:16px 20px;border-color:rgba(150,80,255,.25);background:rgba(150,80,255,.05);">
+          <div style="font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#C08AFF;margin-bottom:6px;">Why it works</div>
+          <div style="font-size:.82rem;color:var(--dim);line-height:1.6;">They graded themselves. The gap between their score and the best-practice script is an argument they can't dispute — it's their own honest assessment.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════ SLIDE 7 — FULL FUNNEL MERMAID ════════════ -->
+  <div class="slide bg-dark">
+    <span class="eyebrow">The Complete Funnel</span>
+    <h1 class="h1" style="font-size:clamp(1.6rem,3vw,2.4rem);margin-bottom:24px;">Every Path Leads<br/><span class="grad">to the Same Destination.</span></h1>
+    <div class="mmd-wrap">
+      <div class="mermaid">
+%%{init:{'theme':'base','themeVariables':{'primaryColor':'#0D2040','primaryTextColor':'#e2e8f0','primaryBorderColor':'#1A6CF6','lineColor':'#1A6CF6','background':'#050D1A','mainBkg':'#0D2040','fontFamily':'Montserrat,Inter,sans-serif','fontSize':'13px','edgeLabelBackground':'#071525'}}}%%
+flowchart TD
+    A["🧮 missedcallmetrics.com\nMissed Call Calculator"] --> D
+    B["📞 Free Front Desk\nStress Test"] --> D
+    C["📋 Industry Script Pack\n& Self-Assessment"] --> D
+    D["✉️ Email Captured\n+ Follow-Up Sequence"] --> E
+    E["⚡ 2-Day Free Trial\nJordan live on their line · Free"] --> F
+    F["🚀 7-Day Live Pilot\n$297 · Onboarding fee waived if they stay"] --> G
+    G["💰 Full Subscription\n$500/mo Starter · $1,000/mo Growth"]
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════ SLIDE 8 — STAGE 3: 2-DAY TRIAL ════════════ -->
+  <div class="slide bg-mid">
+    <div class="g2">
+      <div class="g2-text">
+        <div class="stage-num sn-blue" style="margin-bottom:14px;">3</div>
+        <span class="eyebrow">Stage Three</span>
+        <h2 class="h2">The 2-Day<br/>Free Trial</h2>
+        <p style="font-size:.88rem;color:var(--dim);line-height:1.7;margin-bottom:20px;">Jordan runs live on their actual business phone number for 48 hours. No credit card. No setup friction. The Company Periscope team handles all configuration.</p>
+        <ul class="chk">
+          <li><span class="icon yes">✓</span>Real calls answered on their actual line</li>
+          <li><span class="icon yes">✓</span>All call recordings delivered to them</li>
+          <li><span class="icon yes">✓</span>Summary of every interaction handled</li>
+          <li><span class="icon yes">✓</span>Any leads or appointments captured during the window</li>
+          <li><span class="icon yes">✓</span>Follow-up call from the team to walk through results</li>
+        </ul>
+      </div>
+      <div class="card card-hl" style="padding:32px;">
+        <div style="font-size:.7rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#7BBFFF;margin-bottom:20px;">The One Goal of This Stage</div>
+        <p style="font-family:var(--font);font-size:1.4rem;font-weight:800;color:var(--white);line-height:1.3;margin-bottom:20px;">"Let the product<br/>sell itself."</p>
+        <p style="font-size:.84rem;color:var(--dim);line-height:1.7;">Nothing converts faster than a business owner seeing their phone answered perfectly at 11pm while they're at dinner. The 48-hour window is short by design — long enough to experience value, short enough to create urgency to continue.</p>
+        <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border);">
+          <div style="font-size:.72rem;color:var(--dimmer);">Cost to prospect</div>
+          <div style="font-family:var(--font);font-weight:900;font-size:1.6rem;color:var(--teal);">$0</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════ SLIDE 9 — STAGE 4: 7-DAY PILOT ════════════ -->
+  <div class="slide bg-dark">
+    <div class="g2">
+      <div style="display:flex;justify-content:center;align-items:center;">
+        <div class="card" style="width:100%;max-width:320px;padding:32px;">
+          <div style="font-size:.65rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);margin-bottom:16px;">Value Stack</div>
+          <ul class="val-stack">
+            <li><span>7 Days Live AI Coverage</span><span class="val">$350 value</span></li>
+            <li><span>Full Custom Configuration</span><span class="val">$500 value</span></li>
+            <li><span>Call Recordings &amp; Data (yours to keep)</span><span class="val">$200 value</span></li>
+            <li><span>Week-End Performance Report</span><span class="val">$150 value</span></li>
+            <li><span>Onboarding Fee (waived on convert)</span><span class="val crossed">$500</span></li>
+          </ul>
+          <div style="padding-top:20px;margin-top:4px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <div style="font-size:.7rem;color:var(--dimmer);">Total value</div>
+              <div style="font-family:var(--font);font-weight:900;font-size:1.1rem;color:rgba(255,255,255,.35);text-decoration:line-through;">$1,700+</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:.7rem;color:var(--dimmer);">You pay</div>
+              <div style="font-family:var(--font);font-weight:900;font-size:2rem;color:var(--teal);">$297</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="g2-text">
+        <div class="stage-num sn-teal">4</div>
+        <span class="eyebrow">Stage Four</span>
+        <h2 class="h2">The 7-Day<br/>Live Pilot</h2>
+        <p style="font-size:.88rem;color:var(--dim);line-height:1.7;margin-bottom:20px;">Jordan runs fully live on their line for a complete week — fully trained and customized to their business. They pay $297. If they convert to monthly, the $500 onboarding fee is waived entirely.</p>
+        <div class="card card-teal" style="padding:18px 22px;">
+          <div style="font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--teal);margin-bottom:7px;">Why $297 — not free?</div>
+          <div style="font-size:.82rem;color:var(--dim);line-height:1.6;">Free trial users browse. Paying users pay <em style="color:var(--white);">attention.</em> The $297 covers setup costs so it's not a loss leader — and it transforms the psychology of the relationship before month one even starts.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════ SLIDE 10 — STAGE 5: SUBSCRIPTION ════════════ -->
+  <div class="slide bg-mid">
+    <span class="eyebrow">Stage Five</span>
+    <h1 class="h1" style="font-size:clamp(1.8rem,3.5vw,2.8rem);">Full Subscription.<br/><span class="grad">The Sale Already Happened.</span></h1>
+    <div class="g3" style="max-width:860px;margin-top:8px;">
+      <div class="card" style="text-align:center;padding:28px 20px;">
+        <div style="font-size:.65rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--dimmer);margin-bottom:12px;">Starter</div>
+        <div style="font-family:var(--font);font-weight:900;font-size:2.4rem;color:var(--white);line-height:1;">$500<span style="font-size:1rem;opacity:.5;">/mo</span></div>
+        <div style="font-size:.78rem;color:var(--dimmer);margin:8px 0 16px;">300 min · Onboarding waived</div>
+        <div class="pill-row" style="justify-content:center;"><span class="pill pt">HIPAA Compliant</span><span class="pill pb">Live in 48h</span></div>
+      </div>
+      <div class="card card-hl" style="text-align:center;padding:28px 20px;">
+        <div style="font-size:.65rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);margin-bottom:12px;">Growth</div>
+        <div style="font-family:var(--font);font-weight:900;font-size:2.4rem;color:var(--white);line-height:1;">$1,000<span style="font-size:1rem;opacity:.5;">/mo</span></div>
+        <div style="font-size:.78rem;color:var(--dimmer);margin:8px 0 16px;">1,000 min · Full analytics</div>
+        <div class="pill-row" style="justify-content:center;"><span class="pill pt">Most Popular</span></div>
+      </div>
+      <div class="card" style="text-align:center;padding:28px 20px;background:rgba(0,229,192,.04);border-color:rgba(0,229,192,.15);">
+        <div style="font-family:var(--font);font-weight:800;font-size:1rem;color:var(--white);margin-bottom:14px;line-height:1.4;">One new patient or job per month covers the entire cost.</div>
+        <div style="font-size:.78rem;color:var(--dim);line-height:1.65;">Dental new patient avg: <strong style="color:var(--white);">$800–3,000</strong><br/>HVAC emergency job avg: <strong style="color:var(--white);">$500–2,000</strong><br/>The AI pays for itself with the first call it captures.</div>
+      </div>
+    </div>
+    <p style="margin-top:24px;font-size:.84rem;color:var(--dimmer);max-width:620px;text-align:center;line-height:1.7;">By Stage 5, the prospect has experienced 9 days of live AI coverage on their real phone line. The sale isn't happening here — <em style="color:var(--white);">it happened the first time Jordan answered a call they would have missed.</em></p>
+  </div>
+
+  <!-- ════════════ SLIDE 11 — WHY IT WORKS ════════════ -->
+  <div class="slide bg-dark">
+    <span class="eyebrow">The Psychology</span>
+    <h1 class="h1" style="font-size:clamp(1.8rem,3.2vw,2.6rem);margin-bottom:28px;">Why This Funnel<br/><span class="grad">Converts.</span></h1>
+    <div class="why-g">
+      <div class="why-c">
+        <div class="why-n">01</div>
+        <div class="why-t">Urgency from Their Own Data</div>
+        <div class="why-b">The calculator shows them their specific dollar loss — not a generic stat. A number they calculated themselves is impossible to argue with.</div>
+      </div>
+      <div class="why-c">
+        <div class="why-n">02</div>
+        <div class="why-t">Experience Before Commitment</div>
+        <div class="why-b">9 days of live AI coverage before paying a monthly fee. They're not buying a promise — they're continuing something that already works.</div>
+      </div>
+      <div class="why-c">
+        <div class="why-n">03</div>
+        <div class="why-t">Paying Creates Commitment</div>
+        <div class="why-b">The $297 pilot is not a discount — it's a filter. Paying users pay attention. It transforms the relationship before month one starts.</div>
+      </div>
+      <div class="why-c">
+        <div class="why-n">04</div>
+        <div class="why-t">Social Proof Built In</div>
+        <div class="why-b">Every Stress Test audit is a potential before/after content piece. The consent is baked into the opt-in, so content production is automatic.</div>
+      </div>
+      <div class="why-c">
+        <div class="why-n">05</div>
+        <div class="why-t">The Waived Fee Is the Close</div>
+        <div class="why-b">Waiving the $500 onboarding fee for pilot converters feels like a $500 reward for making the logical choice. Loss aversion does the selling.</div>
+      </div>
+      <div class="why-c">
+        <div class="why-n">06</div>
+        <div class="why-t">Three Entry Points, One Path</div>
+        <div class="why-b">Analytical, proof-driven, and DIY buyers all have a tailored opt-in. Nobody falls through the cracks because they weren't reached the right way.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════ SLIDE 12 — SUMMARY TABLE ════════════ -->
+  <div class="slide bg-mid">
+    <div class="grid-bg"></div>
+    <span class="eyebrow">Full Funnel at a Glance</span>
+    <h1 class="h1" style="font-size:clamp(1.8rem,3vw,2.4rem);margin-bottom:28px;">Every Step.<br/><span class="grad">Every Why.</span></h1>
+    <div class="s-table-wrap"><table class="s-table">
+      <thead>
+        <tr>
+          <th>Step</th>
+          <th>Stage</th>
+          <th>What Happens</th>
+          <th>Why</th>
+          <th>Cost</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="sn">1</td><td>Awareness</td><td>Stage presentations, email list, social content</td><td>Reach warm audiences who already know the problem</td><td><span class="free-tag">—</span></td></tr>
+        <tr><td class="sn">2A</td><td>Opt-In</td><td>missedcallmetrics.com calculator → email gated report</td><td>Their number creates urgency nothing else can match</td><td><span class="free-tag">Free</span></td></tr>
+        <tr><td class="sn">2B</td><td>Opt-In</td><td>Front Desk Stress Test → audit + social consent</td><td>Hearing their own business fail converts better than stats</td><td><span class="free-tag">Free</span></td></tr>
+        <tr><td class="sn">2C</td><td>Opt-In</td><td>Script Pack self-assessment → gap score + download</td><td>Self-graded gaps can't be disputed — they close themselves</td><td><span class="free-tag">Free</span></td></tr>
+        <tr><td class="sn">3</td><td>Trial</td><td>Jordan live on their line · 48 hours · call recordings delivered</td><td>Let the product sell itself before any ask is made</td><td><span class="free-tag">Free</span></td></tr>
+        <tr><td class="sn">4</td><td>Pilot</td><td>7-day fully configured live pilot · waived onboarding on convert</td><td>Payment creates commitment; waived fee closes the conversion</td><td><span class="paid-tag">$297</span></td></tr>
+        <tr><td class="sn">5</td><td>Client</td><td>Starter $500/mo or Growth $1,000/mo — no contracts</td><td>By now they've lived the ROI. Continuation is the rational move.</td><td><span class="paid-tag">$500–1k/mo</span></td></tr>
+      </tbody>
+    </table></div>
+    <div style="margin-top:24px;display:flex;align-items:center;gap:10px;">
+      <img src="companyperiscope-whitelogo.png" style="height:20px;opacity:.6;" alt=""/>
+      <span style="font-size:.72rem;color:var(--dimmer);">companyperiscope.com · missedcallmetrics.com</span>
+    </div>
+  </div>
+
+</div><!-- /deck -->
+
+<script>
+  mermaid.initialize({ startOnLoad:true, theme:'base', themeVariables:{ primaryColor:'#0D2040', primaryTextColor:'#e2e8f0', primaryBorderColor:'#1A6CF6', lineColor:'#1A6CF6', secondaryColor:'#071525', background:'#050D1A', mainBkg:'#0D2040', fontFamily:'Montserrat,Inter,sans-serif', fontSize:'13px', edgeLabelBackground:'#071525' } });
+
+  const slides = document.querySelectorAll('.slide');
+  const total  = slides.length;
+  let cur = 0;
+
+  const progress = document.getElementById('progress');
+  const counter  = document.getElementById('counter');
+  const prevBtn  = document.getElementById('prev');
+  const nextBtn  = document.getElementById('next');
+  const dotsEl   = document.getElementById('dots');
+
+  // Build dots
+  slides.forEach((_,i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i===0?' on':'');
+    d.addEventListener('click', () => go(i));
+    dotsEl.appendChild(d);
+  });
+
+  function go(n) {
+    slides[cur].classList.remove('active');
+    slides[cur].classList.add('gone');
+    setTimeout(() => slides[cur >= n ? cur : cur].classList.remove('gone'), 500);
+    cur = Math.max(0, Math.min(n, total-1));
+    slides[cur].classList.remove('gone');
+    slides[cur].classList.add('active');
+    update();
+  }
+
+  function update() {
+    slides.forEach((s,i) => {
+      s.classList.remove('active','gone');
+      if (i === cur) s.classList.add('active');
+    });
+    document.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('on', i===cur));
+    progress.style.width = ((cur+1)/total*100) + '%';
+    counter.textContent  = (cur+1) + ' / ' + total;
+    prevBtn.disabled = cur === 0;
+    nextBtn.disabled = cur === total-1;
+  }
+
+  prevBtn.addEventListener('click', () => { if(cur>0) go(cur-1); });
+  nextBtn.addEventListener('click', () => { if(cur<total-1) go(cur+1); });
+
+  document.addEventListener('keydown', e => {
+    if (e.key==='ArrowRight'||e.key==='ArrowDown') { if(cur<total-1) go(cur+1); }
+    if (e.key==='ArrowLeft' ||e.key==='ArrowUp')   { if(cur>0) go(cur-1); }
+  });
+
+  // Touch swipe
+  let tx = 0;
+  document.addEventListener('touchstart', e => tx = e.touches[0].clientX, {passive:true});
+  document.addEventListener('touchend',   e => {
+    const dx = e.changedTouches[0].clientX - tx;
+    if (dx < -50 && cur < total-1) go(cur+1);
+    if (dx >  50 && cur > 0)       go(cur-1);
+  }, {passive:true});
+
+  update();
+</script>
+</body>
+</html>

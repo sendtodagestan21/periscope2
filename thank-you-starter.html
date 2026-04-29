@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Welcome to Company Periscope — Starter Plan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- ============================================================
+       TRACKING PIXELS — STARTER SUBSCRIPTION ($500/mo)
+       High-value conversion event — recurring revenue begins here.
+       ============================================================
+
+  Facebook Pixel — Subscribe Event:
+  <script>
+    fbq('init', 'YOUR_PIXEL_ID');
+    fbq('track', 'Subscribe', {value: 500.00, currency: 'USD', predicted_ltv: 6000.00});
+  </script>
+
+  Google Ads Conversion — Subscription Start:
+  <script>
+    gtag('event', 'conversion', {
+      'send_to': 'AW-XXXXXXX/XXXXXXX',
+      'value': 500.0,
+      'currency': 'USD'
+    });
+  </script>
+
+  Note: For subscription tracking, also set up Stripe webhooks
+  (invoice.payment_succeeded) to track monthly recurring conversions
+  server-side. Pixel fires only on initial signup — webhooks give
+  you full MRR visibility.
+  ============================================================ -->
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #050D1A; --teal: #00E5C0; --blue: #1A6CF6; --green: #00C97A;
+      --white: #fff; --font: 'Montserrat', sans-serif; --body: 'Inter', sans-serif;
+    }
+    html { font-family: var(--body); background: var(--navy); color: var(--white); min-height: 100vh; }
+    body { overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh; }
+
+    nav { display: flex; align-items: center; padding: 20px 48px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    nav img { height: 28px; }
+
+    .main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 72px 24px; text-align: center; }
+
+    .success-icon {
+      width: 88px; height: 88px; border-radius: 50%;
+      background: rgba(26,108,246,0.12); border: 2px solid rgba(26,108,246,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.2rem; margin: 0 auto 32px;
+      animation: pop 0.5s cubic-bezier(0.175,0.885,0.32,1.275) both;
+    }
+    @keyframes pop { 0%{transform:scale(0);opacity:0} 100%{transform:scale(1);opacity:1} }
+
+    .ty-tag {
+      display: inline-block; font-family: var(--font); font-size: 0.65rem; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--blue);
+      background: rgba(26,108,246,0.1); padding: 4px 10px; border-radius: 4px; margin-bottom: 16px;
+    }
+    h1 { font-family: var(--font); font-size: 2.4rem; font-weight: 900; max-width: 620px; margin-bottom: 14px; line-height: 1.1; }
+    h1 span { color: var(--teal); }
+    .ty-sub { font-size: 1rem; color: rgba(255,255,255,0.6); max-width: 480px; line-height: 1.7; margin-bottom: 48px; }
+
+    .plan-card {
+      background: rgba(26,108,246,0.06); border: 1px solid rgba(26,108,246,0.2);
+      border-radius: 16px; padding: 28px 32px; max-width: 520px; width: 100%;
+      text-align: left; margin-bottom: 24px;
+    }
+    .plan-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+    .plan-name { font-family: var(--font); font-weight: 800; font-size: 1rem; }
+    .plan-price { font-family: var(--font); font-weight: 800; font-size: 1.4rem; color: var(--teal); }
+    .plan-price span { font-size: 0.8rem; color: rgba(255,255,255,0.4); font-weight: 400; }
+    .plan-features { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .plan-features li { font-size: 0.87rem; color: rgba(255,255,255,0.7); display: flex; align-items: center; gap: 10px; }
+    .plan-features li::before { content: '✓'; color: var(--teal); font-weight: 700; flex-shrink: 0; }
+
+    .next-card {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px; padding: 28px 32px; max-width: 520px; width: 100%;
+      text-align: left; margin-bottom: 24px;
+    }
+    .next-title { font-family: var(--font); font-weight: 700; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 20px; }
+    .next-row { display: flex; gap: 14px; margin-bottom: 16px; }
+    .next-row:last-child { margin-bottom: 0; }
+    .next-dot {
+      flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%;
+      background: rgba(0,229,192,0.1); border: 1px solid rgba(0,229,192,0.25);
+      color: var(--teal); font-family: var(--font); font-weight: 800; font-size: 0.65rem;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .next-step-title { font-family: var(--font); font-weight: 700; font-size: 0.88rem; margin-bottom: 3px; }
+    .next-step-desc { font-size: 0.8rem; color: rgba(255,255,255,0.45); line-height: 1.6; }
+
+    .action-note { max-width: 520px; width: 100%; font-size: 0.87rem; color: rgba(255,255,255,0.4); line-height: 1.7; text-align: center; }
+    .action-note strong { color: var(--teal); }
+
+    footer { padding: 24px 48px; border-top: 1px solid rgba(255,255,255,0.07); text-align: center; margin-top: auto; }
+    footer img { height: 20px; opacity: 0.4; }
+
+    @media (max-width: 640px) {
+      nav { padding: 16px 20px; }
+      h1 { font-size: 1.75rem; }
+      .plan-card, .next-card { padding: 20px; }
+      footer { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html"><img src="companyperiscope-whitelogo.png" alt="Company Periscope"/></a>
+</nav>
+
+<main class="main">
+  <div class="success-icon">🎉</div>
+  <div class="ty-tag">Subscription Confirmed</div>
+  <h1>Welcome to Company Periscope. <span>You're officially covered.</span></h1>
+  <p class="ty-sub">
+    Your Starter Plan subscription is active. Your AI receptionist is being configured for your practice and you'll hear from us within the next few hours.
+  </p>
+
+  <div class="plan-card">
+    <div class="plan-header">
+      <div class="plan-name">Starter Plan — Active</div>
+      <div class="plan-price">$500<span>/month</span></div>
+    </div>
+    <ul class="plan-features">
+      <li>Full AI receptionist — 24/7 call &amp; inquiry handling</li>
+      <li>Missed call follow-up via SMS</li>
+      <li>After-hours coverage — evenings &amp; weekends</li>
+      <li>Appointment scheduling assistance</li>
+      <li>Insurance question handling</li>
+      <li>Monthly performance reports</li>
+    </ul>
+  </div>
+
+  <div class="next-card">
+    <div class="next-title">What Happens Now</div>
+    <div class="next-row">
+      <div class="next-dot">1</div>
+      <div>
+        <div class="next-step-title">Welcome email incoming</div>
+        <div class="next-step-desc">Check your inbox — your onboarding details and setup calendar link are on their way within 30 minutes.</div>
+      </div>
+    </div>
+    <div class="next-row">
+      <div class="next-dot">2</div>
+      <div>
+        <div class="next-step-title">Setup call within 24 hours</div>
+        <div class="next-step-desc">We'll configure your AI receptionist to your practice — scripts, hours, routing, and custom responses. Plan for 45–60 minutes.</div>
+      </div>
+    </div>
+    <div class="next-row">
+      <div class="next-dot">3</div>
+      <div>
+        <div class="next-step-title">Live in 48 hours</div>
+        <div class="next-step-desc">Once setup is complete, your AI receptionist is active. You'll receive a confirmation with your dashboard access link.</div>
+      </div>
+    </div>
+    <div class="next-row">
+      <div class="next-dot">4</div>
+      <div>
+        <div class="next-step-title">Monthly reports &amp; check-ins</div>
+        <div class="next-step-desc">You'll receive a performance report every month. Our team checks in quarterly to optimize and improve your setup.</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="action-note">
+    Need help before your call? Reach us at <strong>support@companyperiscope.com</strong>
+  </p>
+</main>
+
+<footer>
+  <img src="companyperiscope-whitelogo.png" alt="Company Periscope"/>
+</footer>
+
+</body>
+</html>

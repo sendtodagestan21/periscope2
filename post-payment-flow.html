@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Post-Payment Flow — Company Periscope</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;900&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #050D1A; --teal: #00E5C0; --green: #00C97A; --white: #fff;
+      --font: 'Montserrat', sans-serif; --body: 'Inter', sans-serif;
+    }
+    html { background: var(--navy); color: var(--white); font-family: var(--body); }
+    body { min-height: 100vh; padding: 0 0 80px; }
+
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 48px; border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    nav img { height: 26px; }
+    .nav-label {
+      font-family: var(--font); font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+    }
+
+    .hero {
+      text-align: center; padding: 56px 24px 40px;
+    }
+    .badge {
+      display: inline-block; font-family: var(--font); font-size: 0.65rem;
+      font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--teal); background: rgba(0,229,192,0.1);
+      border: 1px solid rgba(0,229,192,0.25); padding: 5px 14px;
+      border-radius: 20px; margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-family: var(--font); font-weight: 900;
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      line-height: 1.15; margin-bottom: 12px;
+    }
+    .hero h1 span { color: var(--teal); }
+    .hero p {
+      font-size: 0.95rem; color: rgba(255,255,255,0.5);
+      line-height: 1.7; max-width: 500px; margin: 0 auto;
+    }
+
+    .legend {
+      display: flex; justify-content: center; gap: 28px;
+      flex-wrap: wrap; padding: 0 24px 36px;
+    }
+    .legend-item {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.78rem; color: rgba(255,255,255,0.45);
+      font-family: var(--font); font-weight: 600;
+    }
+    .dot {
+      width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+    }
+    .dot-teal { background: var(--teal); }
+    .dot-green { background: var(--green); }
+    .dot-yellow { background: #F5C842; }
+    .dot-red { background: #FF5F5F; }
+    .dot-blue { background: #1A6CF6; }
+
+    .chart-wrap {
+      max-width: 1100px; margin: 0 auto; padding: 0 24px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 20px; overflow: auto;
+    }
+
+    .mermaid {
+      padding: 40px 24px;
+      display: flex; justify-content: center;
+    }
+
+    .mermaid svg {
+      max-width: 100%;
+    }
+
+    footer {
+      text-align: center; padding: 48px 24px 0;
+      font-size: 0.75rem; color: rgba(255,255,255,0.2);
+      font-family: var(--font); font-weight: 600; letter-spacing: 0.05em;
+    }
+
+    @media (max-width: 640px) {
+      nav { padding: 16px 20px; }
+      .hero { padding: 40px 20px 28px; }
+      .chart-wrap { padding: 0 16px; border-radius: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <img src="companyperiscope-whitelogo.png" alt="Company Periscope"/>
+  <span class="nav-label">Internal Operations</span>
+</nav>
+
+<section class="hero">
+  <div class="badge">Post-Payment Operations Flow</div>
+  <h1>What happens after<br/><span>a client pays $1,000</span></h1>
+  <p>From payment confirmation to go-live, monthly retention, upsells, and offboarding. Every step. Every owner.</p>
+</section>
+
+<div class="legend">
+  <div class="legend-item"><div class="dot dot-teal"></div> Automated</div>
+  <div class="legend-item"><div class="dot dot-green"></div> Go-Live</div>
+  <div class="legend-item"><div class="dot dot-yellow"></div> Monthly Cycle</div>
+  <div class="legend-item"><div class="dot dot-red"></div> Churn Risk</div>
+  <div class="legend-item"><div class="dot dot-blue"></div> Growth</div>
+</div>
+
+<div class="chart-wrap">
+  <div class="mermaid">
+flowchart TD
+    A["💳 Payment — $1,000\nStripe confirmed"]
+    A --> B["Client lands on\nThank-You Page"]
+    B --> C["Fills GHL\nOnboarding Form"]
+    B --> D["GHL auto-creates contact\nWelcome email fires\nTeam notified"]
+    D --> G
+    C --> E{"Form submitted\nwithin 24 hrs?"}
+    E -- No --> F["📞 Call client directly\nDo not wait"]
+    F --> E
+    E -- Yes --> G["Dan reviews\nform responses\nHour 1–4"]
+    G --> H["Onboarding call scheduled\nWithin 24 hours of payment"]
+    H --> I["Onboarding Call\n30–45 min\nScripts, escalation rules, FAQs"]
+    I --> J["AI Built and Configured\nDay 1–2"]
+    J --> K["Internal QA\nTest calls — Day 2"]
+    K --> L{"QA passed?"}
+    L -- No --> J
+    L -- Yes --> M["🚀 Client Goes Live\n48-hour promise met"]
+    M --> N["Launch confirmation\nemail sent to client"]
+    N --> O["Day 3 — Human Check-In\nNever skipped. Owner: Dan"]
+    O --> CYCLE
+
+    CYCLE["📅 Monthly Cycle"]
+    CYCLE --> Q["Monthly report delivered\nQA completed before billing"]
+    Q --> R["Client touchpoint\nEmail or call"]
+    R --> S{"Account\nhealth?"}
+
+    S -- Healthy --> T{"Milestone?"}
+    T -- "Day 30" --> U["Soft upsell mention\nin Month 1 report"]
+    T -- "Day 60" --> V["Formal upsell\nExtra lines · SMS · Reviews"]
+    T -- "Day 90" --> W["Referral program\n1 free month per referral"]
+    T -- "Quarterly" --> X["Strategy review call\nHigh-value accounts"]
+    U --> CYCLE
+    V --> CYCLE
+    W --> CYCLE
+    X --> CYCLE
+
+    S -- "⚠️ Churn signal" --> Y["Dan calls personally\nOffer pause · reconfigure · save rate"]
+    Y --> Z{"Account\nsaved?"}
+    Z -- Yes --> CYCLE
+    Z -- No --> AA["Offboarding\nRefund review + data return\nDeprovisioning"]
+    AA --> AB["Win-back sequence\nDay 30 · 60 · 90 post-cancel"]
+
+    style A fill:#1a3a5c,stroke:#00E5C0,color:#fff
+    style M fill:#0a3d2e,stroke:#00C97A,color:#fff
+    style CYCLE fill:#2a2a0a,stroke:#F5C842,color:#fff
+    style Y fill:#3d0a0a,stroke:#FF5F5F,color:#fff
+    style AA fill:#1a1a1a,stroke:#888,color:#ccc
+    style F fill:#3d1a0a,stroke:#FF8C42,color:#fff
+    style V fill:#0a1a3d,stroke:#1A6CF6,color:#fff
+    style W fill:#0a1a3d,stroke:#1A6CF6,color:#fff
+  </div>
+</div>
+
+<footer>
+  Company Periscope &nbsp;·&nbsp; hello@companyperiscope.com &nbsp;·&nbsp; Internal use only
+</footer>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+    themeVariables: {
+      primaryColor: '#0d2137',
+      primaryTextColor: '#ffffff',
+      primaryBorderColor: '#00E5C0',
+      lineColor: '#00E5C0',
+      secondaryColor: '#0a3d2e',
+      tertiaryColor: '#1a1a2e',
+      background: '#050D1A',
+      mainBkg: '#0d2137',
+      nodeBorder: '#00E5C0',
+      clusterBkg: '#0d2137',
+      titleColor: '#ffffff',
+      edgeLabelBackground: '#050D1A',
+      fontSize: '14px'
+    },
+    flowchart: {
+      curve: 'basis',
+      padding: 20,
+      nodeSpacing: 50,
+      rankSpacing: 60,
+      htmlLabels: true
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Missed Call Revenue Calculator — Company Periscope</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #050D1A; --teal: #00E5C0; --blue: #1A6CF6; --purple: #7B5CF5;
+      --white: #fff; --font: 'Montserrat', sans-serif; --body: 'Inter', sans-serif;
+      --mono: 'Share Tech Mono', monospace;
+      --calc-bg: #111827; --calc-key: #1c2438; --calc-border: rgba(255,255,255,0.07);
+    }
+    html { font-family: var(--body); background: var(--navy); color: var(--white); }
+    body { overflow-x: hidden; }
+
+    /* ── OUTER WRAPPER ──────────────────────────────── */
+    .calc-outer {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 24px 24px 40px;
+    }
+
+    /* ── CALCULATOR BODY ────────────────────────────── */
+    .calculator-body {
+      background: linear-gradient(160deg, #141c2e 0%, #0c1220 60%, #091019 100%);
+      border-radius: 28px; padding: 22px 20px 20px;
+      border: 1.5px solid rgba(255,255,255,0.07);
+      box-shadow:
+        0 70px 140px rgba(0,0,0,0.7),
+        0 0 0 1px rgba(255,255,255,0.03) inset,
+        0 2px 0 rgba(255,255,255,0.05) inset;
+      max-width: 520px; width: 100%;
+      position: relative;
+    }
+
+    /* Screw details */
+    .calculator-body::before,
+    .calculator-body::after {
+      content: ''; position: absolute; width: 8px; height: 8px;
+      border-radius: 50%; background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.04);
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.8);
+    }
+    .calculator-body::before { top: 12px; left: 12px; }
+    .calculator-body::after { top: 12px; right: 12px; }
+
+    /* Brand strip */
+    .calc-brand {
+      display: flex; align-items: center; gap: 10px;
+      padding: 0 6px 16px; border-bottom: 1px solid rgba(255,255,255,0.05);
+      margin-bottom: 16px;
+    }
+    .calc-brand img { height: 18px; opacity: 0.7; }
+    .calc-brand-label {
+      font-family: var(--mono); font-size: 0.62rem; color: rgba(255,255,255,0.2);
+      letter-spacing: 0.1em; margin-left: 4px;
+    }
+    .calc-ac {
+      margin-left: auto; font-family: var(--mono); font-size: 0.6rem;
+      color: rgba(255,107,107,0.6); background: rgba(255,107,107,0.06);
+      border: 1px solid rgba(255,107,107,0.15); border-radius: 5px;
+      padding: 3px 7px; cursor: pointer; letter-spacing: 0.06em;
+      transition: all 0.15s;
+    }
+    .calc-ac:hover { background: rgba(255,107,107,0.12); color: rgba(255,107,107,0.9); }
+
+    /* Display screen */
+    .calc-display {
+      background: #030a14;
+      border-radius: 12px;
+      border: 1.5px solid rgba(0,0,0,0.8);
+      box-shadow: inset 0 2px 16px rgba(0,0,0,0.9), inset 0 0 0 1px rgba(255,255,255,0.02);
+      padding: 16px 20px 18px;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+      min-height: 130px;
+    }
+    /* Scanline overlay */
+    .calc-display::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.06) 3px, rgba(0,0,0,0.06) 4px);
+      pointer-events: none; border-radius: inherit;
+    }
+    /* Glow */
+    .calc-display::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0,229,192,0.12), transparent);
+    }
+    .display-top {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .display-step-num {
+      font-family: var(--mono); font-size: 0.72rem; color: rgba(0,229,192,0.5);
+      letter-spacing: 0.08em;
+    }
+    .display-dots {
+      display: flex; gap: 5px;
+    }
+    .display-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(255,255,255,0.08); transition: background 0.3s;
+    }
+    .display-dot.done { background: rgba(0,229,192,0.6); }
+    .display-dot.active { background: var(--teal); box-shadow: 0 0 6px rgba(0,229,192,0.5); }
+    .display-question {
+      font-family: var(--font); font-weight: 800; font-size: 1.1rem;
+      line-height: 1.3; color: var(--white); margin-bottom: 6px;
+    }
+    .display-question .hl { color: var(--teal); }
+    .display-hint {
+      font-size: 0.75rem; color: rgba(255,255,255,0.35); line-height: 1.5;
+    }
+
+    /* Separator groove */
+    .calc-groove {
+      height: 6px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(255,255,255,0.02) 100%);
+      border-radius: 3px;
+      margin: 0 0 14px;
+      border: 1px solid rgba(0,0,0,0.4);
+      border-top-color: rgba(255,255,255,0.04);
+    }
+
+    /* Keypad */
+    .calc-keypad {
+      min-height: 220px;
+      margin-bottom: 14px;
+    }
+    .keypad-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+    }
+    .keypad-grid.two-col { grid-template-columns: repeat(2, 1fr); }
+    .keypad-grid.one-col { grid-template-columns: 1fr; }
+
+    /* Calculator key cards */
+    .kkey {
+      background: linear-gradient(160deg, #1e2840, #141c30);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-bottom: 1px solid rgba(0,0,0,0.4);
+      border-radius: 10px;
+      padding: 12px 8px;
+      cursor: pointer;
+      text-align: center;
+      box-shadow: 0 4px 0 rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.04) inset;
+      transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.15s;
+      user-select: none; -webkit-tap-highlight-color: transparent;
+    }
+    .kkey:hover { background: linear-gradient(160deg, #232d4a, #18213a); }
+    .kkey:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0,0,0,0.5); }
+    .kkey.selected {
+      background: linear-gradient(160deg, rgba(0,229,192,0.16), rgba(0,229,192,0.06));
+      border-color: rgba(0,229,192,0.4);
+      box-shadow: 0 4px 0 rgba(0,70,56,0.5), 0 0 14px rgba(0,229,192,0.08);
+    }
+    .kkey-icon { font-size: 1.4rem; display: block; margin-bottom: 6px; }
+    .kkey-label { font-family: var(--font); font-weight: 700; font-size: 0.72rem; line-height: 1.3; color: var(--white); }
+    .kkey-sub { font-size: 0.62rem; color: rgba(255,255,255,0.35); margin-top: 3px; line-height: 1.3; }
+    .kkey.selected .kkey-sub { color: rgba(0,229,192,0.6); }
+
+    /* Value key (row style) */
+    .vkey {
+      background: linear-gradient(160deg, #1e2840, #141c30);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px;
+      padding: 12px 16px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      box-shadow: 0 3px 0 rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.04) inset;
+      transition: transform 0.08s, box-shadow 0.08s, background 0.15s;
+      user-select: none; -webkit-tap-highlight-color: transparent;
+    }
+    .vkey:hover { background: linear-gradient(160deg, #232d4a, #18213a); }
+    .vkey:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(0,0,0,0.4); }
+    .vkey.selected {
+      background: linear-gradient(160deg, rgba(0,229,192,0.13), rgba(0,229,192,0.05));
+      border-color: rgba(0,229,192,0.4);
+    }
+    .vkey-main { font-family: var(--font); font-weight: 700; font-size: 0.87rem; }
+    .vkey-note { font-size: 0.7rem; color: rgba(255,255,255,0.35); margin-top: 2px; }
+    .vkey.selected .vkey-note { color: rgba(0,229,192,0.6); }
+    .vkey-check {
+      flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.6rem; color: transparent; transition: all 0.15s;
+    }
+    .vkey.selected .vkey-check { background: var(--teal); border-color: var(--teal); color: var(--navy); }
+
+    /* Slider */
+    .slider-area { padding: 4px 0; }
+    .slider-big-num {
+      font-family: var(--mono); font-size: 3.6rem; color: var(--teal);
+      line-height: 1; text-align: center; margin-bottom: 4px;
+      text-shadow: 0 0 20px rgba(0,229,192,0.3);
+    }
+    .slider-label { text-align: center; font-size: 0.78rem; color: rgba(255,255,255,0.4); margin-bottom: 6px; }
+    .slider-sublabel { text-align: center; font-size: 0.72rem; color: rgba(255,255,255,0.3); margin-bottom: 20px; }
+    input[type="range"] {
+      -webkit-appearance: none; width: 100%; height: 5px;
+      background: rgba(255,255,255,0.08); border-radius: 3px; outline: none; cursor: pointer;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%;
+      background: var(--teal); cursor: pointer;
+      box-shadow: 0 0 0 4px rgba(0,229,192,0.18), 0 2px 6px rgba(0,0,0,0.5);
+    }
+    .slider-ticks { display: flex; justify-content: space-between; margin-top: 8px; }
+    .slider-tick { font-size: 0.62rem; color: rgba(255,255,255,0.25); font-family: var(--mono); }
+
+    /* Text inputs */
+    .input-field-wrap { margin-bottom: 10px; }
+    .input-label-k {
+      font-family: var(--font); font-weight: 700; font-size: 0.65rem;
+      letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4);
+      margin-bottom: 6px; display: block;
+    }
+    .calc-input {
+      width: 100%; background: rgba(0,0,0,0.4);
+      border: 1.5px solid rgba(255,255,255,0.1); border-radius: 8px;
+      padding: 12px 14px; font-family: var(--body); font-size: 0.9rem; color: var(--white);
+      outline: none; transition: border-color 0.2s, background 0.2s;
+    }
+    .calc-input:focus { border-color: rgba(0,229,192,0.5); background: rgba(0,229,192,0.04); }
+    .calc-input::placeholder { color: rgba(255,255,255,0.18); }
+    .input-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+
+    /* Competitor inputs */
+    .comp-wrap { display: flex; flex-direction: column; gap: 9px; }
+    .comp-row-k { display: flex; align-items: center; gap: 10px; }
+    .comp-badge {
+      flex-shrink: 0; width: 26px; height: 26px; border-radius: 6px;
+      background: rgba(123,92,245,0.1); border: 1px solid rgba(123,92,245,0.25);
+      color: #a88df9; font-family: var(--mono); font-size: 0.7rem;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* Email + name step */
+    .contact-step { display: flex; flex-direction: column; gap: 10px; }
+    .contact-teaser {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 6px;
+    }
+    .teaser-k {
+      background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 8px; padding: 10px 8px; text-align: center;
+    }
+    .teaser-k-label { font-size: 0.58rem; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 5px; }
+    .teaser-k-val {
+      font-family: var(--mono); font-weight: 700; font-size: 0.95rem; color: var(--teal);
+      filter: blur(5px); transition: filter 0.5s;
+    }
+    .teaser-k-val.purple { color: #a88df9; }
+    .teaser-k-val.blue { color: #60a5fa; }
+
+    /* Marketing checkbox */
+    .marketing-check-wrap {
+      background: rgba(0,229,192,0.05); border: 1px solid rgba(0,229,192,0.15);
+      border-radius: 10px; padding: 14px 14px; display: flex; gap: 12px; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .marketing-check-wrap:hover { background: rgba(0,229,192,0.08); }
+    .marketing-check-wrap input[type="checkbox"] { display: none; }
+    .custom-check {
+      flex-shrink: 0; width: 20px; height: 20px; border-radius: 5px;
+      border: 1.5px solid rgba(0,229,192,0.4);
+      background: rgba(0,0,0,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; color: transparent; margin-top: 1px;
+      transition: all 0.15s;
+    }
+    .marketing-check-wrap.checked .custom-check {
+      background: var(--teal); color: var(--navy); border-color: var(--teal);
+    }
+    .marketing-check-text .mct-title {
+      font-family: var(--font); font-weight: 700; font-size: 0.82rem; margin-bottom: 2px;
+    }
+    .marketing-check-text .mct-sub { font-size: 0.7rem; color: rgba(255,255,255,0.4); line-height: 1.4; }
+
+    /* Action bar */
+    .calc-action-bar {
+      display: grid; grid-template-columns: 1fr 2fr; gap: 8px;
+    }
+    .btn-back-k {
+      background: linear-gradient(160deg, #1a2235, #111828);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px; padding: 14px;
+      font-family: var(--font); font-weight: 700; font-size: 0.8rem;
+      color: rgba(255,255,255,0.4); cursor: pointer;
+      box-shadow: 0 4px 0 rgba(0,0,0,0.4);
+      transition: all 0.08s; display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .btn-back-k:hover { color: rgba(255,255,255,0.7); }
+    .btn-back-k:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0,0,0,0.4); }
+    .btn-enter-k {
+      background: linear-gradient(145deg, #00ddb8, #00b899);
+      border: none; border-radius: 10px; padding: 14px 20px;
+      font-family: var(--font); font-weight: 800; font-size: 0.9rem;
+      color: var(--navy); cursor: pointer;
+      box-shadow: 0 5px 0 #007a63, 0 1px 0 rgba(255,255,255,0.2) inset;
+      transition: all 0.08s; display: flex; align-items: center; justify-content: center; gap: 8px;
+      letter-spacing: 0.02em;
+    }
+    .btn-enter-k:hover { filter: brightness(1.08); }
+    .btn-enter-k:active { transform: translateY(4px); box-shadow: 0 1px 0 #007a63; }
+    .btn-enter-k:disabled { opacity: 0.35; cursor: not-allowed; transform: none; box-shadow: 0 5px 0 #004a3c; }
+    .btn-enter-k.hidden { visibility: hidden; }
+    .skip-k {
+      grid-column: span 2; text-align: center;
+      font-size: 0.72rem; color: rgba(255,255,255,0.22);
+      cursor: pointer; padding: 6px; transition: color 0.2s;
+      text-decoration: underline;
+    }
+    .skip-k:hover { color: rgba(255,255,255,0.45); }
+
+    /* Spinner */
+    .btn-spinner {
+      display: none; width: 16px; height: 16px;
+      border: 2px solid rgba(5,13,26,0.3); border-top-color: var(--navy);
+      border-radius: 50%; animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── RESULTS ────────────────────────────────────── */
+    .results-wrap {
+      display: none;
+      max-width: 600px; width: 100%; margin: 0 auto; padding: 0 0 40px;
+    }
+    .results-wrap.visible { display: block; animation: fade-up 0.5s ease both; }
+    @keyframes fade-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    .results-header { text-align: center; padding: 36px 0 28px; }
+    .results-tag {
+      display: inline-block; font-family: var(--font); font-size: 0.6rem; font-weight: 700;
+      letter-spacing: 0.15em; text-transform: uppercase; color: #a88df9;
+      background: rgba(123,92,245,0.1); padding: 4px 10px; border-radius: 4px; margin-bottom: 14px;
+    }
+    .results-header h1 {
+      font-family: var(--font); font-weight: 900; font-size: 1.6rem;
+      line-height: 1.2; margin-bottom: 10px;
+    }
+    .results-header h1 .hl { color: var(--teal); }
+    .results-sub { font-size: 0.85rem; color: rgba(255,255,255,0.45); line-height: 1.7; }
+
+    /* Revenue hero */
+    .revenue-hero {
+      background: linear-gradient(135deg, rgba(123,92,245,0.07), rgba(0,229,192,0.04));
+      border: 1px solid rgba(123,92,245,0.22); border-radius: 20px;
+      padding: 30px 24px; margin-bottom: 14px; text-align: center; position: relative; overflow: hidden;
+    }
+    .revenue-hero::before {
+      content: ''; position: absolute; top: -50px; right: -50px;
+      width: 180px; height: 180px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,229,192,0.07) 0%, transparent 70%);
+    }
+    .rh-label { font-family: var(--font); font-size: 0.63rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 10px; }
+    .rh-amount {
+      font-family: var(--font); font-weight: 900; font-size: 3.2rem;
+      color: #ff6b6b; line-height: 1; margin-bottom: 5px;
+    }
+    .rh-period { font-size: 0.8rem; color: rgba(255,255,255,0.35); margin-bottom: 22px; }
+    .rh-divider { width: 40px; height: 2px; background: rgba(255,255,255,0.07); margin: 0 auto 22px; }
+    .rh-rec-label { font-family: var(--font); font-size: 0.63rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(0,229,192,0.55); margin-bottom: 8px; }
+    .rh-rec-amount {
+      font-family: var(--font); font-weight: 900; font-size: 2.2rem;
+      color: var(--teal); line-height: 1; margin-bottom: 5px;
+    }
+    .rh-rec-note { font-size: 0.76rem; color: rgba(255,255,255,0.3); }
+
+    /* Stats row */
+    .stats-row {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px;
+    }
+    .stat-box {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 14px; padding: 16px 10px; text-align: center;
+    }
+    .stat-num { font-family: var(--font); font-weight: 900; font-size: 1.4rem; margin-bottom: 4px; }
+    .stat-label { font-size: 0.68rem; color: rgba(255,255,255,0.35); line-height: 1.4; }
+
+    /* Section card */
+    .section-card {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px; padding: 22px 20px; margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: var(--font); font-weight: 800; font-size: 0.72rem;
+      letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.35);
+      margin-bottom: 18px; display: flex; align-items: center; gap: 8px;
+    }
+    .section-title::before {
+      content: ''; display: block; width: 12px; height: 2px;
+      background: var(--teal); flex-shrink: 0;
+    }
+
+    /* Action steps */
+    .action-step { display: flex; gap: 14px; margin-bottom: 16px; }
+    .action-step:last-child { margin-bottom: 0; }
+    .action-num {
+      flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%;
+      background: rgba(0,229,192,0.09); border: 1px solid rgba(0,229,192,0.22);
+      color: var(--teal); font-family: var(--font); font-weight: 900; font-size: 0.65rem;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .action-title { font-family: var(--font); font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; }
+    .action-desc { font-size: 0.78rem; color: rgba(255,255,255,0.43); line-height: 1.6; }
+
+    /* Lead score */
+    .score-band {
+      display: flex; align-items: flex-start; gap: 14px; padding: 14px 18px;
+      border-radius: 12px; margin-bottom: 12px;
+    }
+    .score-band.hot { background: rgba(255,107,107,0.07); border: 1px solid rgba(255,107,107,0.18); }
+    .score-band.warm { background: rgba(251,191,36,0.07); border: 1px solid rgba(251,191,36,0.18); }
+    .score-band.nurture { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); }
+    .score-icon { font-size: 1.5rem; flex-shrink: 0; margin-top: 1px; }
+    .score-title { font-family: var(--font); font-weight: 800; font-size: 0.87rem; margin-bottom: 3px; }
+    .score-desc { font-size: 0.78rem; color: rgba(255,255,255,0.43); line-height: 1.5; }
+
+    /* Competitor rows */
+    .comp-result-row {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+      gap: 10px;
+    }
+    .comp-result-row:last-child { border-bottom: none; }
+    .comp-result-info { display: flex; align-items: flex-start; gap: 10px; }
+    .comp-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,107,107,0.7); flex-shrink: 0; margin-top: 4px; }
+    .comp-dot.green { background: rgba(0,229,192,0.7); }
+    .comp-result-name { font-family: var(--font); font-weight: 700; font-size: 0.83rem; margin-bottom: 2px; }
+    .comp-result-insight { font-size: 0.73rem; color: rgba(255,255,255,0.35); line-height: 1.5; }
+    .comp-tag {
+      font-size: 0.65rem; padding: 2px 8px; border-radius: 4px; white-space: nowrap; flex-shrink: 0; margin-top: 2px;
+      color: rgba(255,107,107,0.7); background: rgba(255,107,107,0.08);
+    }
+    .comp-tag.opp { color: rgba(0,229,192,0.7); background: rgba(0,229,192,0.08); }
+
+    /* Marketing section */
+    .mkt-row { display: flex; gap: 14px; margin-bottom: 14px; }
+    .mkt-row:last-child { margin-bottom: 0; }
+    .mkt-icon-wrap {
+      flex-shrink: 0; width: 36px; height: 36px; border-radius: 10px;
+      background: rgba(26,108,246,0.1); border: 1px solid rgba(26,108,246,0.2);
+      display: flex; align-items: center; justify-content: center; font-size: 1rem;
+    }
+    .mkt-title { font-family: var(--font); font-weight: 700; font-size: 0.85rem; margin-bottom: 3px; }
+    .mkt-desc { font-size: 0.76rem; color: rgba(255,255,255,0.43); line-height: 1.6; }
+    .mkt-upside {
+      display: inline-block; font-family: var(--font); font-weight: 700; font-size: 0.7rem;
+      color: var(--teal); background: rgba(0,229,192,0.08);
+      padding: 2px 8px; border-radius: 4px; margin-top: 5px;
+    }
+
+    /* CTA card */
+    .cta-card {
+      background: linear-gradient(135deg, rgba(0,229,192,0.07), rgba(26,108,246,0.05));
+      border: 1px solid rgba(0,229,192,0.18); border-radius: 20px;
+      padding: 28px 24px; text-align: center; margin-top: 16px;
+    }
+    .cta-card h2 { font-family: var(--font); font-weight: 900; font-size: 1.3rem; margin-bottom: 10px; line-height: 1.2; }
+    .cta-card p { font-size: 0.82rem; color: rgba(255,255,255,0.45); line-height: 1.7; margin-bottom: 22px; }
+    .cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-cta-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 28px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--teal), #00c4a5); color: var(--navy);
+      font-family: var(--font); font-weight: 800; font-size: 0.88rem;
+      text-decoration: none; cursor: pointer; border: none;
+      transition: all 0.2s; letter-spacing: 0.02em;
+    }
+    .btn-cta-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 40px rgba(0,229,192,0.3); }
+    .btn-cta-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 22px; border-radius: 10px;
+      background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.7);
+      font-family: var(--font); font-weight: 700; font-size: 0.85rem;
+      border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: all 0.2s;
+    }
+    .btn-cta-secondary:hover { background: rgba(255,255,255,0.1); color: var(--white); }
+    .cta-sub-note { font-size: 0.7rem; color: rgba(255,255,255,0.22); margin-top: 12px; }
+
+    /* ── RESPONSIVE ─────────────────────────────────── */
+    @media (max-width: 600px) {
+      .calc-outer { padding: 16px 12px 32px; }
+      .calculator-body { padding: 16px 14px 14px; border-radius: 20px; }
+      .display-question { font-size: 0.95rem; }
+      .calc-display { padding: 14px 16px; }
+      .keypad-grid { gap: 6px; }
+      .kkey { padding: 10px 6px; }
+      .kkey-icon { font-size: 1.1rem; }
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .stats-row .stat-box:last-child { grid-column: span 2; }
+      .rh-amount { font-size: 2.4rem; }
+      .rh-rec-amount { font-size: 1.7rem; }
+      .revenue-hero, .section-card { padding: 20px 16px; }
+      .cta-card { padding: 22px 16px; }
+      .cta-btns { flex-direction: column; }
+      .btn-cta-primary, .btn-cta-secondary { width: 100%; justify-content: center; }
+      .results-header h1 { font-size: 1.35rem; }
+      .input-row-2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- CALCULATOR -->
+<div class="calc-outer" id="calc-outer">
+
+  <div class="calculator-body">
+
+    <!-- Brand strip -->
+    <div class="calc-brand">
+      <img src="companyperiscope-whitelogo.png" alt="Company Periscope"/>
+      <span class="calc-brand-label">REV-7000</span>
+      <button class="calc-ac" onclick="resetCalc()" title="Start over">AC</button>
+    </div>
+
+    <!-- LCD Display -->
+    <div class="calc-display">
+      <div class="display-top">
+        <div class="display-step-num" id="display-step-num">01 / 07</div>
+        <div class="display-dots" id="display-dots"></div>
+      </div>
+      <div class="display-question" id="display-question"></div>
+      <div class="display-hint" id="display-hint"></div>
+    </div>
+
+    <div class="calc-groove"></div>
+
+    <!-- Dynamic keypad -->
+    <div class="calc-keypad" id="calc-keypad"></div>
+
+    <!-- Action bar -->
+    <div class="calc-action-bar" id="action-bar">
+      <button class="btn-back-k" id="btn-back" onclick="goPrev()">← Back</button>
+      <button class="btn-enter-k" id="btn-enter" onclick="goNext()">
+        <span id="btn-enter-text">Continue</span>
+        <div class="btn-spinner" id="btn-spinner"></div>
+      </button>
+    </div>
+    <div id="skip-row" style="display:none">
+      <span class="skip-k" onclick="goNext()">Skip — show results without competitors</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div class="results-wrap" id="results-wrap">
+
+  <div class="results-header">
+    <div class="results-tag">Your Personalized Revenue Report</div>
+    <h1><span class="hl" id="r-name">Your business</span> is leaving money on the table — here's the number.</h1>
+    <p class="results-sub" id="r-intro">Based on your inputs, here's what unanswered calls are costing you and what's recoverable.</p>
+  </div>
+
+  <div class="revenue-hero">
+    <div class="rh-label">Annual Revenue Leaking From Missed Calls</div>
+    <div class="rh-amount" id="r-annual">$0</div>
+    <div class="rh-period">per year (<span id="r-monthly">$0</span>/mo)</div>
+    <div class="rh-divider"></div>
+    <div class="rh-rec-label">Estimated Annual Recovery with Company Periscope</div>
+    <div class="rh-rec-amount" id="r-recovery">$0</div>
+    <div class="rh-rec-note">Based on avg. 65% missed-call recovery rate across active clients</div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-box">
+      <div class="stat-num" id="r-missed-mo">–</div>
+      <div class="stat-label">Missed calls<br>per month</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num" id="r-lost-clients">–</div>
+      <div class="stat-label">New clients<br>lost per month</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num" id="r-roi">–</div>
+      <div class="stat-label">Projected ROI<br>on Periscope</div>
+    </div>
+  </div>
+
+  <div id="r-score-band"></div>
+
+  <!-- Action Plan -->
+  <div class="section-card">
+    <div class="section-title">Your 3-Step Action Plan</div>
+    <div id="r-actions"></div>
+  </div>
+
+  <!-- Competitor Analysis -->
+  <div class="section-card" id="r-comp-card" style="display:none">
+    <div class="section-title">Competitive Gap Analysis</div>
+    <div id="r-comp-rows"></div>
+    <p style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.05);font-size:0.75rem;color:rgba(255,255,255,0.3);line-height:1.6">
+      These insights reflect common patterns in your market. Your Company Periscope account contact will run a live competitive audit during onboarding to identify specific gaps and opportunities.
+    </p>
+  </div>
+
+  <!-- Marketing opportunities (conditional) -->
+  <div class="section-card" id="r-mkt-card" style="display:none">
+    <div class="section-title">Your Call Generation Opportunities</div>
+    <div id="r-mkt-rows"></div>
+  </div>
+
+  <!-- How it works -->
+  <div class="section-card">
+    <div class="section-title">How Company Periscope Recovers This Revenue</div>
+    <div class="action-step">
+      <div class="action-num">1</div>
+      <div>
+        <div class="action-title">AI answers every missed call — instantly</div>
+        <div class="action-desc">When your team is busy, on hold, or after hours, Company Periscope picks up. Callers get a real conversation, not a voicemail. New client inquiries are captured and qualified on the spot.</div>
+      </div>
+    </div>
+    <div class="action-step">
+      <div class="action-num">2</div>
+      <div>
+        <div class="action-title">Warm leads go directly into your pipeline</div>
+        <div class="action-desc">Qualified prospects are transferred to your booking system or staff in real time. No more leads going cold in a voicemail queue or being called back too late.</div>
+      </div>
+    </div>
+    <div class="action-step">
+      <div class="action-num">3</div>
+      <div>
+        <div class="action-title">You see every call, every outcome</div>
+        <div class="action-desc">Track recovered clients, monthly revenue impact, and response performance — all in your dashboard. Know exactly what your missed calls were costing you before, and what's being saved now.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-card">
+    <h2>Ready to stop leaving money on the table?</h2>
+    <p>Book a free 20-minute business audit. We'll walk through your specific numbers, show you how the setup works, and tell you what recovery looks like in month one.</p>
+    <div class="cta-btns">
+      <a href="pilot.html" target="_parent" class="btn-cta-primary">Get Started — $1,000 Today →</a>
+      <button class="btn-cta-secondary" onclick="window.print()">⬇ Download PDF Report</button>
+    </div>
+    <div class="cta-sub-note">$500 onboarding + $500 first month · 30-day money-back guarantee · No contracts</div>
+  </div>
+
+</div>
+
+<script>
+/* ── STATE ──────────────────────────────────────── */
+const S = {
+  step: 1, total: 7,
+  industry: null, industryLabel: '', industryMid: 1200,
+  bizName: '', city: '',
+  callVolume: null,
+  missedPct: 30,
+  clientValue: null,
+  competitors: [],
+  firstName: '', email: '',
+  wantsMarketing: false
+};
+
+/* ── PARENT RESIZE ──────────────────────────────── */
+function notifyParent() {
+  const h = document.body.scrollHeight;
+  parent.postMessage({ calcHeight: h }, '*');
+}
+
+/* ── INDUSTRY DATA ──────────────────────────────── */
+const INDUSTRIES = [
+  { v:'hvac',        icon:'🔧', label:'Home Services',         sub:'HVAC, Plumbing, Electrical',     mid:1400 },
+  { v:'contractor',  icon:'🏗️', label:'Contracting',           sub:'General, Construction, Roofing', mid:2500 },
+  { v:'legal',       icon:'⚖️', label:'Legal Services',        sub:'Law firm, Attorney, Paralegal',   mid:3500 },
+  { v:'financial',   icon:'💼', label:'Financial Services',    sub:'Accounting, Wealth, Insurance',   mid:2000 },
+  { v:'consulting',  icon:'🏢', label:'Consulting',            sub:'Business, IT, HR, Marketing',     mid:2200 },
+  { v:'realestate',  icon:'🏠', label:'Real Estate',           sub:'Agents, Brokers, Property Mgmt', mid:5000 },
+  { v:'auto',        icon:'🚗', label:'Auto Services',         sub:'Repair, Dealership, Detailing',   mid:900  },
+  { v:'healthcare',  icon:'🏥', label:'Healthcare',            sub:'Medical, Dental, Therapy',        mid:1800 },
+  { v:'retail',      icon:'🛍️', label:'Retail / Restaurant',  sub:'Shop, Salon, Dining, Spa',        mid:600  },
+  { v:'other',       icon:'📦', label:'Other Business',        sub:'Any service or trade business',   mid:1000 }
+];
+
+const ACTIONS = {
+  hvac: [
+    { t: 'Capture every emergency call — that\'s your highest-margin work', d: 'Emergency HVAC, plumbing, and electrical calls are time-sensitive and high-ticket. The first company that answers gets the job. If your team is on another call or after-hours, that booking goes to a competitor.' },
+    { t: 'Win the "first responder" race in your market', d: 'Home service consumers call 2–3 companies and go with whoever responds fastest. Company Periscope answers immediately, every time — so you\'re always first to engage, even at midnight.' },
+    { t: 'Track which marketing channels actually produce booked jobs', d: 'Knowing your call volume is half the picture. Connecting call outcomes to your marketing spend shows which channels produce revenue — not just clicks or impressions.' }
+  ],
+  contractor: [
+    { t: 'Respond to estimate requests the same hour they come in', d: 'Homeowners getting bids call multiple contractors. The one that responds in the first hour wins 40% more estimates. A missed call is a missed bid — and often a $5,000–$50,000 job.' },
+    { t: 'Protect your peak season capacity from walk-in competitors', d: 'Spring and fall booking windows are short. Companies that answer every call fill their schedules faster and at better margins. Don\'t leave jobs on the table during your busiest season.' },
+    { t: 'Build a follow-up pipeline from every inquiry call', d: 'Not every caller books on the first call. Company Periscope captures contact info and intent so your team can follow up on prospects who weren\'t ready to commit on the spot.' }
+  ],
+  legal: [
+    { t: 'Answer intake calls the moment potential clients work up the courage to call', d: 'Legal consumers often call one firm. If they reach voicemail, the majority do not call back — they move on or lose momentum. The intake window is brief and high-stakes.' },
+    { t: 'Cover after-hours and weekend calls — that\'s when urgent legal needs spike', d: 'DUI arrests, accidents, family emergencies, and contract disputes don\'t happen on a 9–5 schedule. Being reachable when competitors aren\'t is a significant competitive edge.' },
+    { t: 'Pre-qualify leads before they reach your team', d: 'Company Periscope handles the initial intake — practice area, situation summary, urgency — so your attorneys only spend time on qualified, ready-to-retain prospects.' }
+  ],
+  financial: [
+    { t: 'Build trust with immediate, professional first contact', d: 'In financial services, the first impression is everything. A client who reaches voicemail at their most financially anxious moment will often call a competitor instead. First contact sets the relationship.' },
+    { t: 'Protect referral pipeline response time', d: 'Warm referrals have a short window. When a trusted contact refers someone to your firm, that prospect expects responsiveness. A missed call from a referral can cost not just that client — but the referral relationship.' },
+    { t: 'Capture high-value client inquiries at any hour', d: 'High-net-worth prospects work on their own schedule. The firm that answers at 7pm on a Friday when they\'re reviewing their portfolio gets the client. Be available when others aren\'t.' }
+  ],
+  consulting: [
+    { t: 'Respond to inbound inquiries before they go to RFP with a competitor', d: 'Consulting engagements often start with an exploratory call. A prompt, professional response signals operational competence before the first meeting — and can close the door on competing firms.' },
+    { t: 'Turn conference and networking leads into booked calls', d: 'After events, prospects often call or leave messages and forget within 48 hours. Company Periscope ensures every inbound lead is captured and responded to while the conversation is still fresh.' },
+    { t: 'Position your firm as reliably reachable — a differentiator', d: 'Most boutique consulting firms have inconsistent phone coverage. Being consistently reachable and responsive is a brand signal that larger, harder-to-reach firms can\'t match.' }
+  ],
+  realestate: [
+    { t: 'Win the "first agent to call back" race — it decides most transactions', d: 'NAR data shows buyers and sellers go with the first agent who responds. In a market where every lead is competing, response speed is more important than any marketing message.' },
+    { t: 'Capture after-hours online listing inquiries before competitors do', d: 'Most listing inquiries happen evenings and weekends when people are browsing. Calling back the next morning often means the lead has already committed elsewhere.' },
+    { t: 'Never miss a referral or relocation call while you\'re in a showing', d: 'The biggest deals often come via referral — and those callers expect to reach a real person. Company Periscope handles overflow so no referral hits voicemail while you\'re with another client.' }
+  ],
+  auto: [
+    { t: 'Book service appointments before the caller tries the next shop in line', d: 'Auto service customers often call 2–3 shops and go with the first to schedule them. If your service desk is busy, that appointment goes down the street — along with any future repeat business.' },
+    { t: 'Capture seasonal demand spikes: winter prep, tires, inspections', d: 'Demand floods in seasonally — and customers don\'t wait. Companies that answer every call during peak windows fill bays faster and at higher throughput.' },
+    { t: 'Handle insurance claim and estimate calls around the clock', d: 'Collision and claim calls are high-urgency and time-sensitive. A same-hour response wins the repair job. A voicemail often sends the customer to a preferred-shop competitor.' }
+  ],
+  healthcare: [
+    { t: 'Capture new patient inquiries — every unanswered call is a revenue relationship lost', d: 'Healthcare practices miss an average of 32% of new patient calls. Each unanswered call is a potential long-term patient relationship walking to the practice down the street.' },
+    { t: 'Protect after-hours inquiries — your highest-intent window', d: 'Evening and weekend callers are often new patients in pain or need — searching right now, with high conversion intent. These calls have the highest booking rate and almost no competition.' },
+    { t: 'Track which marketing channels produce actually booked appointments', d: 'Knowing how many calls you get is only half the equation. Company Periscope connects call outcomes to your marketing spend so you can see which channels produce filled chairs — not just clicks.' }
+  ],
+  retail: [
+    { t: 'Answer reservation and availability calls before they go to a competitor', d: 'Reservation calls, event inquiries, and "do you have X in stock" calls are high-intent. A missed call means a lost booking or lost sale — often to the first competitor who picks up.' },
+    { t: 'Capture private event and party planning inquiries immediately', d: 'Group bookings and event inquiries represent outsized revenue. These callers are planning ahead and will commit to whoever responds professionally and promptly.' },
+    { t: 'Build a customer callback follow-up system for busy periods', d: 'During peak hours when your team is serving in-person customers, Company Periscope captures overflow callers so no inquiry slips through without follow-up.' }
+  ],
+  other: [
+    { t: 'Stop losing new client inquiries to the first business that picks up', d: 'Consumers call multiple businesses and go with the first professional response. The company that answers first — every time, including evenings and weekends — captures disproportionately more new clients.' },
+    { t: 'Convert more callers with an immediate, professional first interaction', d: 'The first impression happens on the phone. A confident, knowledgeable first response converts callers at 2–3x the rate of a voicemail callback — and sets the tone for the entire client relationship.' },
+    { t: 'Build a data layer your competitors do not have', d: 'Most businesses have no visibility into what callers asked, why they did or did not book, or which marketing drove the call. Company Periscope captures all of it — giving you a competitive intelligence advantage.' }
+  ]
+};
+
+const MARKETING_OPPORTUNITIES = [
+  {
+    icon: '📍',
+    title: 'Google Business Profile Optimization',
+    desc: 'An incomplete or poorly-optimized GBP profile loses you 20–40% of potential inbound calls from local search. Businesses with complete profiles, updated hours, and recent photos receive significantly more "call" button clicks.',
+    upside: '+15–40% more inbound calls from Google'
+  },
+  {
+    icon: '⭐',
+    title: 'Review Generation Strategy',
+    desc: 'Businesses with 4.5+ star ratings receive up to 3x more inbound calls than those below 4.0. A systematic post-service review request (via SMS or email) is the fastest lever to improve call volume from organic search.',
+    upside: 'Up to 3x more calls vs. sub-4-star competitors'
+  },
+  {
+    icon: '📣',
+    title: 'Local Service Ads / Google Guaranteed',
+    desc: 'LSAs appear above regular Google Ads and organic results — at the top of the page, with a "Google Guaranteed" badge. They drive highly qualified calls from people actively searching for your service right now.',
+    upside: 'Highest-intent call channel available in local search'
+  },
+  {
+    icon: '💬',
+    title: 'Missed Call Text-Back (Already Included)',
+    desc: 'Company Periscope automatically sends a branded text-back to anyone who missed calls or hung up before connecting — keeping warm leads engaged with a conversation thread until they\'re ready to book.',
+    upside: 'Recovers 20–35% of callers who would otherwise go cold'
+  }
+];
+
+/* ── STEP DEFINITIONS ───────────────────────────── */
+const STEPS = [
+  { q: 'What type of business <span class="hl">are you</span>?', hint: 'Select the option that best fits. This personalizes your entire report.' },
+  { q: 'Tell us about <span class="hl">your business</span>', hint: 'We\'ll personalize your revenue report with your name and location.' },
+  { q: 'How many inbound calls do you receive <span class="hl">per month</span>?', hint: 'Count all calls — new inquiries, bookings, questions, follow-ups.' },
+  { q: 'What % of those calls go <span class="hl">unanswered</span>?', hint: 'Industry average is around 35%. Adjust to match your experience.' },
+  { q: 'What\'s the average value of a <span class="hl">new client or job</span>?', hint: 'Think in lifetime value — total revenue from a new customer relationship.' },
+  { q: 'Who are your top competitors in <span class="hl" id="city-hl">your area</span>?', hint: 'Optional — used to build your competitive gap analysis.' },
+  { q: 'Your revenue report is <span class="hl">ready.</span>', hint: 'Enter your name and email to unlock your personalized analysis.' }
+];
+
+/* ── RENDER ENGINE ──────────────────────────────── */
+function render() {
+  const idx = S.step - 1;
+  const step = STEPS[idx];
+  document.getElementById('display-question').innerHTML = step.q;
+  document.getElementById('display-hint').textContent = step.hint;
+  document.getElementById('display-step-num').textContent = String(S.step).padStart(2,'0') + ' / ' + String(S.total).padStart(2,'0');
+  renderDots();
+  const kp = document.getElementById('calc-keypad');
+  kp.innerHTML = '';
+  kp.appendChild(renderStep(S.step));
+  updateActions();
+  if(S.step === 6) {
+    const cityhl = document.getElementById('city-hl');
+    if(cityhl && S.city) cityhl.textContent = S.city.split(',')[0].trim();
+  }
+  setTimeout(notifyParent, 50);
+}
+
+function renderDots() {
+  const el = document.getElementById('display-dots');
+  el.innerHTML = '';
+  for(let i=1;i<=S.total;i++){
+    const d = document.createElement('div');
+    d.className = 'display-dot' + (i<S.step?' done':i===S.step?' active':'');
+    el.appendChild(d);
+  }
+}
+
+function updateActions() {
+  const back = document.getElementById('btn-back');
+  const enter = document.getElementById('btn-enter');
+  const enterText = document.getElementById('btn-enter-text');
+  const skipRow = document.getElementById('skip-row');
+  back.style.visibility = S.step === 1 ? 'hidden' : 'visible';
+  skipRow.style.display = S.step === 6 ? 'block' : 'none';
+  if(S.step === 7) {
+    enterText.textContent = 'Unlock My Report →';
+    enter.disabled = true;
+  } else if(S.step === 6) {
+    enterText.textContent = 'See My Results →';
+    enter.disabled = false;
+  } else {
+    enterText.textContent = 'Continue';
+    enter.disabled = needsSelection();
+  }
+}
+
+function needsSelection() {
+  if(S.step === 1) return !S.industry;
+  if(S.step === 2) return !S.bizName.trim() || !S.city.trim();
+  if(S.step === 3) return !S.callVolume;
+  if(S.step === 5) return !S.clientValue;
+  return false;
+}
+
+/* ── STEP RENDERERS ─────────────────────────────── */
+function renderStep(n) {
+  const div = document.createElement('div');
+  if(n===1) div.innerHTML = renderIndustryGrid();
+  else if(n===2) div.innerHTML = renderBizInfo();
+  else if(n===3) div.innerHTML = renderVolume();
+  else if(n===4) div.innerHTML = renderSlider();
+  else if(n===5) div.innerHTML = renderClientValue();
+  else if(n===6) div.innerHTML = renderCompetitors();
+  else if(n===7) div.innerHTML = renderContact();
+  return div;
+}
+
+function renderIndustryGrid() {
+  return `<div class="keypad-grid two-col">
+    ${INDUSTRIES.map(ind => `
+      <div class="kkey${S.industry===ind.v?' selected':''}"
+        onclick="selectIndustry('${ind.v}', '${ind.label}', ${ind.mid})">
+        <span class="kkey-icon">${ind.icon}</span>
+        <div class="kkey-label">${ind.label}</div>
+        <div class="kkey-sub">${ind.sub}</div>
+      </div>`).join('')}
+  </div>`;
+}
+
+function renderBizInfo() {
+  return `<div style="display:flex;flex-direction:column;gap:10px">
+    <div class="input-row-2">
+      <div>
+        <label class="input-label-k">Business Name *</label>
+        <input class="calc-input" id="biz-name" type="text" placeholder="e.g. Apex Plumbing Co." value="${S.bizName}" oninput="S.bizName=this.value.trim();updateActions()"/>
+      </div>
+      <div>
+        <label class="input-label-k">City, State *</label>
+        <input class="calc-input" id="biz-city" type="text" placeholder="e.g. Austin, TX" value="${S.city}" oninput="S.city=this.value.trim();updateActions()"/>
+      </div>
+    </div>
+  </div>`;
+}
+
+const VOLUMES = [
+  { v:75,  l:'Under 100/mo',   n:'Smaller or newer business' },
+  { v:150, l:'100–200/mo',     n:'Established single location' },
+  { v:300, l:'200–400/mo',     n:'Busy, growth-stage business' },
+  { v:500, l:'400–600/mo',     n:'High-volume operation' },
+  { v:750, l:'600+/mo',        n:'Multi-location or enterprise' }
+];
+
+function renderVolume() {
+  return `<div class="keypad-grid one-col">
+    ${VOLUMES.map(v => `
+      <div class="vkey${S.callVolume===v.v?' selected':''}"
+        onclick="selectVolume(${v.v})">
+        <div><div class="vkey-main">${v.l}</div><div class="vkey-note">${v.n}</div></div>
+        <div class="vkey-check">✓</div>
+      </div>`).join('')}
+  </div>`;
+}
+
+function renderSlider() {
+  const missed = S.callVolume ? Math.round(S.callVolume * S.missedPct / 100) : '–';
+  return `<div class="slider-area">
+    <div class="slider-big-num" id="slider-pct">${S.missedPct}%</div>
+    <div class="slider-label">of calls go unanswered</div>
+    <div class="slider-sublabel" id="slider-sub">${S.callVolume ? '≈ <strong>' + missed + '</strong> missed calls per month' : 'Go back to set your call volume first'}</div>
+    <input type="range" min="5" max="65" step="5" value="${S.missedPct}" oninput="updateSlider(this.value)"/>
+    <div class="slider-ticks">
+      <span>5%</span><span>Avg: 35%</span><span>65%</span>
+    </div>
+  </div>`;
+}
+
+const CLIENT_VALUES = [
+  { v:350,  l:'Under $500',       n:'One-time or transactional job' },
+  { v:750,  l:'$500 – $1,000',    n:'Standard service or project' },
+  { v:1750, l:'$1,000 – $2,500',  n:'Larger project or ongoing work' },
+  { v:3750, l:'$2,500 – $5,000',  n:'High-value project or retainer' },
+  { v:7500, l:'$5,000+',          n:'Enterprise, specialty, or long-term' }
+];
+
+function renderClientValue() {
+  return `<div class="keypad-grid one-col">
+    ${CLIENT_VALUES.map(cv => `
+      <div class="vkey${S.clientValue===cv.v?' selected':''}"
+        onclick="selectClientValue(${cv.v})">
+        <div><div class="vkey-main">${cv.l}</div><div class="vkey-note">${cv.n}</div></div>
+        <div class="vkey-check">✓</div>
+      </div>`).join('')}
+  </div>`;
+}
+
+function renderCompetitors() {
+  const [c1='',c2='',c3=''] = S.competitors;
+  return `<div class="comp-wrap">
+    ${[{n:1,v:c1},{n:2,v:c2},{n:3,v:c3}].map(c=>`
+      <div class="comp-row-k">
+        <div class="comp-badge">${c.n}</div>
+        <input class="calc-input" id="comp-${c.n}" type="text"
+          placeholder="Competitor name (optional)" value="${c.v}"
+          oninput="updateCompetitors()"/>
+      </div>`).join('')}
+  </div>`;
+}
+
+function renderContact() {
+  const calc = calculate();
+  return `<div class="contact-step">
+    <div class="contact-teaser">
+      <div class="teaser-k">
+        <div class="teaser-k-label">Annual Leak</div>
+        <div class="teaser-k-val" id="tease-leak">${fmtDollar(calc.annualLeak)}</div>
+      </div>
+      <div class="teaser-k">
+        <div class="teaser-k-label">Recoverable</div>
+        <div class="teaser-k-val purple" id="tease-recover">${fmtDollar(calc.recovery)}</div>
+      </div>
+      <div class="teaser-k">
+        <div class="teaser-k-label">Competitors</div>
+        <div class="teaser-k-val blue">${S.competitors.length > 0 ? S.competitors.length + ' entered' : 'None'}</div>
+      </div>
+    </div>
+    <div>
+      <label class="input-label-k">Your First Name *</label>
+      <input class="calc-input" id="first-name" type="text" placeholder="First name" value="${S.firstName}"
+        oninput="S.firstName=this.value.trim();checkContact()"/>
+    </div>
+    <div>
+      <label class="input-label-k">Email Address *</label>
+      <input class="calc-input" id="email-addr" type="email" placeholder="you@yourbusiness.com" value="${S.email}"
+        oninput="S.email=this.value.trim();checkContact()" onkeydown="if(event.key==='Enter')goNext()"/>
+    </div>
+    <label class="marketing-check-wrap${S.wantsMarketing?' checked':''}" onclick="toggleMarketing(this)">
+      <input type="checkbox" ${S.wantsMarketing?'checked':''}/>
+      <div class="custom-check">✓</div>
+      <div class="marketing-check-text">
+        <div class="mct-title">Include a free call generation strategy</div>
+        <div class="mct-sub">Add a section to my report showing how to generate more inbound calls through Google, reviews, and local ads</div>
+      </div>
+    </label>
+    <p style="font-size:0.68rem;color:rgba(255,255,255,0.22);text-align:center;line-height:1.5">No spam. Unsubscribe anytime. Your report will also be emailed to you.</p>
+  </div>`;
+}
+
+/* ── STATE MUTATORS ─────────────────────────────── */
+function selectIndustry(v, label, mid) {
+  S.industry = v; S.industryLabel = label; S.industryMid = mid;
+  document.querySelectorAll('#calc-keypad .kkey').forEach(k => k.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+  updateActions();
+  setTimeout(() => goNext(), 260);
+}
+
+function selectVolume(v) {
+  S.callVolume = v;
+  document.querySelectorAll('#calc-keypad .vkey').forEach(k => k.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+  event.currentTarget.querySelector('.vkey-check').style.color = 'var(--navy)';
+  updateActions();
+  setTimeout(() => goNext(), 260);
+}
+
+function selectClientValue(v) {
+  S.clientValue = v;
+  document.querySelectorAll('#calc-keypad .vkey').forEach(k => k.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+  updateActions();
+  setTimeout(() => goNext(), 260);
+}
+
+function updateSlider(val) {
+  S.missedPct = parseInt(val);
+  document.getElementById('slider-pct').textContent = val + '%';
+  const missed = S.callVolume ? Math.round(S.callVolume * S.missedPct / 100) : '–';
+  document.getElementById('slider-sub').innerHTML = S.callVolume
+    ? '≈ <strong>' + missed + '</strong> missed calls per month'
+    : 'Go back to set your call volume first';
+}
+
+function updateCompetitors() {
+  S.competitors = [
+    (document.getElementById('comp-1')||{value:''}).value.trim(),
+    (document.getElementById('comp-2')||{value:''}).value.trim(),
+    (document.getElementById('comp-3')||{value:''}).value.trim()
+  ].filter(c => c.length > 0);
+}
+
+function toggleMarketing(el) {
+  S.wantsMarketing = !S.wantsMarketing;
+  el.classList.toggle('checked', S.wantsMarketing);
+}
+
+function checkContact() {
+  const nameOk = S.firstName.length >= 1;
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(S.email);
+  document.getElementById('btn-enter').disabled = !(nameOk && emailOk);
+}
+
+/* ── NAVIGATION ─────────────────────────────────── */
+function goNext() {
+  if(S.step === 6) updateCompetitors();
+  if(S.step === 7) { submitAndShow(); return; }
+  S.step++;
+  render();
+}
+
+function goPrev() {
+  if(S.step <= 1) return;
+  S.step--;
+  render();
+}
+
+function resetCalc() {
+  Object.assign(S, {
+    step:1, industry:null, industryLabel:'', industryMid:1200,
+    bizName:'', city:'', callVolume:null, missedPct:30,
+    clientValue:null, competitors:[], firstName:'', email:'', wantsMarketing:false
+  });
+  render();
+}
+
+/* ── SUBMIT ─────────────────────────────────────── */
+function submitAndShow() {
+  const nameEl = document.getElementById('first-name');
+  const emailEl = document.getElementById('email-addr');
+  if(nameEl) S.firstName = nameEl.value.trim();
+  if(emailEl) S.email = emailEl.value.trim();
+  if(!S.firstName || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(S.email)) return;
+
+  const btn = document.getElementById('btn-enter');
+  document.getElementById('btn-enter-text').style.display = 'none';
+  document.getElementById('btn-spinner').style.display = 'block';
+  btn.disabled = true;
+
+  // GHL webhook — replace URL when ready
+  // fetch('https://YOUR-GHL-WEBHOOK-URL/calculator-lead', {
+  //   method:'POST', headers:{'Content-Type':'application/json'},
+  //   body: JSON.stringify({ firstName: S.firstName, email: S.email, bizName: S.bizName, city: S.city, industry: S.industry, callVolume: S.callVolume, missedPct: S.missedPct, clientValue: S.clientValue, competitors: S.competitors, wantsMarketing: S.wantsMarketing, ...calculate() })
+  // });
+
+  setTimeout(() => {
+    document.getElementById('calc-outer').style.display = 'none';
+    buildResults();
+  }, 1100);
+}
+
+/* ── CALCULATE ──────────────────────────────────── */
+function calculate() {
+  const vol = S.callVolume || 150;
+  const pct = S.missedPct / 100;
+  const val = S.clientValue || 1000;
+  const missedMo = Math.round(vol * pct);
+  const lostClientsMo = Math.round(missedMo * 0.28);
+  const leakMo = lostClientsMo * val;
+  const annualLeak = leakMo * 12;
+  const recovery = Math.round(annualLeak * 0.65);
+  const periscopeCost = 6000;
+  const roi = recovery > 0 ? (recovery / periscopeCost).toFixed(1) + 'x' : '–';
+  return { missedMo, lostClientsMo, leakMo, annualLeak, recovery, roi };
+}
+
+function fmtDollar(n) {
+  if(!n) return '$0';
+  if(n >= 1000000) return '$' + (n/1000000).toFixed(1) + 'M';
+  if(n >= 10000) return '$' + Math.round(n/1000) + 'k';
+  return '$' + n.toLocaleString();
+}
+
+function animateNum(el, target, dur) {
+  const start = performance.now();
+  (function tick(now) {
+    const p = Math.min((now-start)/dur,1);
+    const ease = 1-Math.pow(1-p,3);
+    el.textContent = fmtDollar(Math.round(target*ease));
+    if(p<1) requestAnimationFrame(tick);
+  })(start);
+}
+
+/* ── BUILD RESULTS ──────────────────────────────── */
+function buildResults() {
+  const r = calculate();
+  const wrap = document.getElementById('results-wrap');
+  wrap.style.display = 'block';
+  requestAnimationFrame(() => wrap.classList.add('visible'));
+
+  document.getElementById('r-name').textContent = S.bizName || 'Your business';
+  document.getElementById('r-intro').textContent =
+    `Based on your inputs for ${S.bizName||'your business'}${S.city?' in '+S.city:''}, here's what unanswered calls are costing you — and what Company Periscope can recover.`;
+
+  setTimeout(() => {
+    animateNum(document.getElementById('r-annual'), r.annualLeak, 1200);
+    animateNum(document.getElementById('r-recovery'), r.recovery, 1400);
+  }, 300);
+
+  document.getElementById('r-monthly').textContent = fmtDollar(r.leakMo) + '/mo';
+  document.getElementById('r-missed-mo').textContent = r.missedMo;
+  document.getElementById('r-lost-clients').textContent = r.lostClientsMo;
+  document.getElementById('r-roi').textContent = r.roi;
+
+  // Lead score
+  const score = (S.callVolume >= 300 || S.clientValue >= 2500) ? 'hot' : (S.callVolume >= 150 || S.clientValue >= 1000) ? 'warm' : 'nurture';
+  const scoreMap = {
+    hot: { icon:'🔥', title:'High-Priority Opportunity', desc:`${S.firstName ? S.firstName+', your' : 'Your'} call volume and client value put you in the highest-impact tier. Practices and businesses at this level typically see ROI from Company Periscope within the first 30 days.` },
+    warm: { icon:'📈', title:'Strong Revenue Recovery Potential', desc:`Your business has solid fundamentals and a clear opportunity to recover significant revenue from existing call volume. Most clients at your tier recover their investment within 60–90 days.` },
+    nurture: { icon:'🌱', title:'Every Missed Call Matters', desc:`Even at lower volume, each missed call is revenue lost permanently. Company Periscope ensures you capture every inquiry so nothing slips through as your business scales.` }
+  };
+  const sc = scoreMap[score];
+  document.getElementById('r-score-band').innerHTML = `<div class="score-band ${score}"><div class="score-icon">${sc.icon}</div><div><div class="score-title">${sc.title}</div><div class="score-desc">${sc.desc}</div></div></div>`;
+
+  // Action plan
+  const actions = ACTIONS[S.industry] || ACTIONS.other;
+  document.getElementById('r-actions').innerHTML = actions.map((a,i) => `
+    <div class="action-step">
+      <div class="action-num">${i+1}</div>
+      <div><div class="action-title">${a.t}</div><div class="action-desc">${a.d}</div></div>
+    </div>`).join('');
+
+  // Competitors
+  if(S.competitors.length > 0) {
+    document.getElementById('r-comp-card').style.display = 'block';
+    const insights = [
+      { risk:true, tag:'Booking risk', ins:'If they answer more calls than you, they\'re booking the clients you miss — especially during peak hours and after hours.' },
+      { risk:false, tag:'Gap opportunity', ins:'Most businesses in your market aren\'t using AI call handling yet. The first to deploy it gains a significant and durable booking advantage.' },
+      { risk:true, tag:'Monitor closely', ins:'Speed of response decides most transactions. Being the second business to call back often means losing the lead permanently.' }
+    ];
+    document.getElementById('r-comp-rows').innerHTML = S.competitors.map((c,i) => {
+      const ins = insights[i % insights.length];
+      return `<div class="comp-result-row">
+        <div class="comp-result-info">
+          <div class="comp-dot${ins.risk?'':' green'}"></div>
+          <div><div class="comp-result-name">${c}</div><div class="comp-result-insight">${ins.ins}</div></div>
+        </div>
+        <div class="comp-tag${ins.risk?'':' opp'}">${ins.tag}</div>
+      </div>`;
+    }).join('');
+  }
+
+  // Marketing
+  if(S.wantsMarketing) {
+    document.getElementById('r-mkt-card').style.display = 'block';
+    document.getElementById('r-mkt-rows').innerHTML = MARKETING_OPPORTUNITIES.map(m => `
+      <div class="mkt-row">
+        <div class="mkt-icon-wrap">${m.icon}</div>
+        <div>
+          <div class="mkt-title">${m.title}</div>
+          <div class="mkt-desc">${m.desc}</div>
+          <div class="mkt-upside">${m.upside}</div>
+        </div>
+      </div>`).join('');
+  }
+
+  setTimeout(notifyParent, 100);
+}
+
+/* ── INIT ───────────────────────────────────────── */
+render();
+</script>
+</body>
+</html>

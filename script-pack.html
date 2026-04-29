@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Free AI Receptionist Script Pack | Company Periscope</title>
+  <meta name="description" content="Download the exact scripts our AI uses — 15+ done-for-you response scripts and a self-scoring rubric. Free PDF, instant delivery."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #050D1A; --blue: #1A6CF6; --teal: #00E5C0; --cyan: #00C9E5; --purple: #7B5CF5;
+      --white: #fff; --font: 'Montserrat', sans-serif; --body: 'Inter', sans-serif;
+    }
+    html { font-family: var(--body); background: var(--navy); color: var(--white); }
+    body { overflow-x: hidden; position: relative; }
+
+    #bg-canvas { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; }
+
+    .sonar-wrap { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); pointer-events:none; z-index:1; }
+    .sonar-ring { position:absolute; border-radius:50%; animation:sonar-expand 6s ease-out infinite; transform:translate(-50%,-50%); }
+    .sonar-ring:nth-child(1){width:280px;height:280px;border:1px solid rgba(123,92,245,.14);animation-delay:0s;}
+    .sonar-ring:nth-child(2){width:560px;height:560px;border:1px solid rgba(123,92,245,.09);animation-delay:1.5s;}
+    .sonar-ring:nth-child(3){width:840px;height:840px;border:1px solid rgba(0,229,192,.06);animation-delay:3s;}
+    .sonar-ring:nth-child(4){width:1120px;height:1120px;border:1px solid rgba(0,229,192,.04);animation-delay:4.5s;}
+    @keyframes sonar-expand { 0%{opacity:.7;transform:translate(-50%,-50%) scale(.7);} 100%{opacity:0;transform:translate(-50%,-50%) scale(1);} }
+
+    nav { position:relative; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:18px 48px; background:rgba(5,13,26,.7); backdrop-filter:blur(20px); border-bottom:1px solid rgba(255,255,255,.07); }
+    .nav-logo img { height:28px; }
+    .nav-back { font-family:var(--font); font-size:.78rem; font-weight:600; color:rgba(255,255,255,.45); text-decoration:none; transition:color .2s; }
+    .nav-back:hover { color:var(--teal); }
+
+    .trust-marquee {
+      width:100%; max-width:700px; overflow:hidden; position:relative; margin-top:20px;
+    }
+    .trust-marquee::before, .trust-marquee::after {
+      content:''; position:absolute; top:0; bottom:0; width:72px; z-index:2; pointer-events:none;
+    }
+    .trust-marquee::before { left:0; background:linear-gradient(to right,var(--navy),transparent); }
+    .trust-marquee::after  { right:0; background:linear-gradient(to left,var(--navy),transparent); }
+    .marquee-track { display:flex; width:max-content; animation:marquee-left 32s linear infinite; }
+    @keyframes marquee-left { 0%{transform:translateX(0);} 100%{transform:translateX(-50%);} }
+    .trust-item {
+      display:inline-flex; align-items:center; gap:7px; padding:4px 20px;
+      font-family:var(--font); font-size:.7rem; font-weight:700; letter-spacing:.05em;
+      color:rgba(255,255,255,.36); white-space:nowrap; border-right:1px solid rgba(255,255,255,.06);
+    }
+    .trust-item .ti-icon { width:17px; height:17px; border-radius:4px; background:rgba(0,229,192,.08); display:flex; align-items:center; justify-content:center; font-size:.68rem; flex-shrink:0; }
+    .trust-item.hl { color:rgba(0,229,192,.65); }
+    .trust-item.hl .ti-icon { background:rgba(0,229,192,.12); }
+
+    .hero { position:relative; z-index:10; min-height:calc(100vh - 120px); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:80px 24px; overflow:hidden; }
+    .hero-gradient { position:absolute; inset:0; background:radial-gradient(ellipse 80% 60% at 50% 40%, rgba(123,92,245,.06) 0%, transparent 70%); pointer-events:none; }
+    .hero-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(123,92,245,.12); border:1px solid rgba(123,92,245,.3); color:#b09ef8; font-family:var(--font); font-size:.68rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; padding:7px 16px; border-radius:30px; margin-bottom:28px; position:relative; z-index:2; }
+    .hero-badge .pulse-dot { width:7px; height:7px; background:var(--purple); border-radius:50%; box-shadow:0 0 8px var(--purple); animation:pulse-dot 2s ease-in-out infinite; }
+    @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.8)} }
+    h1 { font-family:var(--font); font-weight:900; font-size:clamp(2.2rem,5vw,3.8rem); line-height:1.06; max-width:820px; margin-bottom:20px; position:relative; z-index:2; letter-spacing:-.02em; }
+    h1 em { font-style:normal; color:var(--teal); }
+    .hero-sub { font-size:clamp(.97rem,2vw,1.1rem); color:rgba(255,255,255,.58); line-height:1.75; max-width:540px; margin-bottom:44px; position:relative; z-index:2; }
+    .cta-wrap { position:relative; z-index:2; display:flex; flex-direction:column; align-items:center; gap:16px; }
+    .cta-btn { display:inline-flex; align-items:center; gap:12px; background:linear-gradient(135deg,var(--teal) 0%,var(--cyan) 100%); color:var(--navy); font-family:var(--font); font-weight:800; font-size:1.05rem; padding:20px 44px; border-radius:14px; border:none; cursor:pointer; animation:cta-glow 3s ease-in-out infinite; transition:transform .2s; }
+    .cta-btn:hover { transform:translateY(-3px); }
+    @keyframes cta-glow { 0%,100%{box-shadow:0 8px 32px rgba(0,229,192,.3),0 0 0 0 rgba(0,229,192,0);} 50%{box-shadow:0 12px 48px rgba(0,229,192,.45),0 0 0 8px rgba(0,229,192,.06);} }
+    .cta-secondary { font-size:.82rem; color:rgba(255,255,255,.38); font-family:var(--font); font-weight:500; }
+    .cta-secondary a { color:rgba(255,255,255,.55); text-decoration:underline; text-underline-offset:3px; transition:color .2s; }
+    .cta-secondary a:hover { color:var(--teal); }
+
+    /* TRANSFORM SECTION */
+    .transform-section { position:relative; z-index:10; padding:96px 48px; background:rgba(255,255,255,.018); border-top:1px solid rgba(255,255,255,.07); border-bottom:1px solid rgba(255,255,255,.07); }
+    .transform-label { text-align:center; margin-bottom:52px; }
+    .section-tag { display:inline-block; font-family:var(--font); font-size:.65rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--teal); background:rgba(0,229,192,.1); padding:5px 12px; border-radius:4px; margin-bottom:14px; }
+    .transform-label h2 { font-family:var(--font); font-size:clamp(1.6rem,3vw,2.2rem); font-weight:800; line-height:1.2; }
+    .transform-label p { font-size:.95rem; color:rgba(255,255,255,.5); margin-top:10px; }
+    .transform-grid { display:grid; grid-template-columns:1fr auto 1fr; gap:0; max-width:900px; margin:0 auto; align-items:start; }
+    .before-card, .after-card { border-radius:20px; overflow:hidden; }
+    .before-card { background:rgba(255,50,80,.04); border:1px solid rgba(255,50,80,.15); }
+    .after-card { background:rgba(0,229,192,.04); border:1px solid rgba(0,229,192,.18); }
+    .card-header { padding:18px 24px; display:flex; align-items:center; gap:10px; }
+    .before-card .card-header { background:rgba(255,50,80,.08); border-bottom:1px solid rgba(255,50,80,.1); }
+    .after-card .card-header { background:rgba(0,229,192,.08); border-bottom:1px solid rgba(0,229,192,.1); }
+    .card-label { font-family:var(--font); font-weight:800; font-size:.78rem; letter-spacing:.1em; text-transform:uppercase; }
+    .before-card .card-label { color:#ff6b82; }
+    .after-card .card-label { color:var(--teal); }
+    .card-dot { width:9px; height:9px; border-radius:50%; }
+    .before-card .card-dot { background:#ff4d6a; box-shadow:0 0 8px rgba(255,77,106,.6); }
+    .after-card .card-dot { background:var(--teal); box-shadow:0 0 8px rgba(0,229,192,.6); animation:pulse-dot 2s infinite; }
+    .card-body { padding:24px; display:flex; flex-direction:column; gap:0; }
+    .step-row { display:flex; gap:14px; align-items:flex-start; padding:12px 0; border-bottom:1px solid rgba(255,255,255,.05); opacity:0; transform:translateY(10px); transition:opacity .45s ease,transform .45s ease; }
+    .step-row:last-child { border-bottom:none; }
+    .step-row.visible { opacity:1; transform:translateY(0); }
+    .step-icon { flex-shrink:0; width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:1rem; }
+    .before-card .step-icon { background:rgba(255,77,106,.1); }
+    .after-card .step-icon { background:rgba(0,229,192,.1); }
+    .step-content { flex:1; padding-top:6px; }
+    .step-title { font-family:var(--font); font-weight:700; font-size:.88rem; margin-bottom:2px; }
+    .step-sub { font-size:.78rem; line-height:1.5; }
+    .before-card .step-sub { color:rgba(255,77,106,.7); }
+    .after-card .step-sub { color:rgba(0,229,192,.65); }
+    .revenue-row { display:flex; align-items:center; justify-content:space-between; padding:16px 20px; border-radius:10px; margin-top:8px; }
+    .before-card .revenue-row { background:rgba(255,77,106,.08); }
+    .after-card .revenue-row { background:rgba(0,229,192,.08); }
+    .rev-label { font-family:var(--font); font-size:.72rem; font-weight:600; color:rgba(255,255,255,.5); }
+    .rev-amount { font-family:var(--font); font-weight:900; font-size:1.1rem; }
+    .before-card .rev-amount { color:#ff4d6a; }
+    .after-card .rev-amount { color:var(--teal); }
+    .vs-divider { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:0 20px; gap:12px; padding-top:80px; }
+    .vs-circle { width:48px; height:48px; border-radius:50%; background:var(--navy); border:2px solid rgba(255,255,255,.1); display:flex; align-items:center; justify-content:center; font-family:var(--font); font-weight:900; font-size:.75rem; color:rgba(255,255,255,.35); }
+    .vs-arrow { display:flex; flex-direction:column; align-items:center; gap:4px; }
+    .vs-arrow-dot { width:6px; height:6px; border-radius:50%; background:rgba(0,229,192,.3); }
+    .vs-arrow-dot:nth-child(2) { background:rgba(0,229,192,.5); }
+    .vs-arrow-dot:nth-child(3) { background:rgba(0,229,192,.3); }
+
+    /* PREVIEW SECTION */
+    .preview-section { position:relative; z-index:10; padding:88px 48px; max-width:960px; margin:0 auto; }
+    h2 { font-family:var(--font); font-size:clamp(1.5rem,3vw,2rem); font-weight:800; margin-bottom:10px; }
+    .section-sub { font-size:.95rem; color:rgba(255,255,255,.52); line-height:1.7; margin-bottom:48px; }
+
+    /* DOC MOCKUP */
+    .doc-mockup { background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08); border-radius:20px; padding:32px; margin-bottom:48px; }
+    .doc-titlebar { display:flex; align-items:center; gap:8px; margin-bottom:24px; padding-bottom:16px; border-bottom:1px solid rgba(255,255,255,.07); }
+    .mac-dot { width:10px; height:10px; border-radius:50%; }
+    .mac-dot.r{background:#FF5F57;} .mac-dot.y{background:#FEBC2E;} .mac-dot.g{background:#28C840;}
+    .doc-filename { font-family:var(--font); font-size:.78rem; font-weight:600; color:rgba(255,255,255,.4); margin-left:8px; }
+    .script-preview-item { display:flex; gap:16px; padding:14px 0; border-bottom:1px solid rgba(255,255,255,.05); }
+    .script-preview-item:last-child { border-bottom:none; }
+    .sp-num { flex-shrink:0; font-family:var(--font); font-weight:700; font-size:.75rem; color:var(--teal); width:28px; padding-top:2px; }
+    .sp-name { font-family:var(--font); font-weight:700; font-size:.9rem; margin-bottom:4px; }
+    .sp-text { font-size:.8rem; color:rgba(255,255,255,.42); line-height:1.55; font-style:italic; }
+    .doc-more { text-align:center; padding:14px; font-family:var(--font); font-size:.78rem; font-weight:600; color:rgba(255,255,255,.3); }
+
+    .inside-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:48px; }
+    .inside-card { background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07); border-radius:16px; padding:24px 20px; transition:border-color .3s,background .3s; }
+    .inside-card:hover { border-color:rgba(0,229,192,.2); background:rgba(0,229,192,.03); }
+    .inside-icon { font-size:1.5rem; margin-bottom:12px; display:block; }
+    .inside-title { font-family:var(--font); font-weight:700; font-size:.9rem; margin-bottom:6px; }
+    .inside-desc { font-size:.83rem; color:rgba(255,255,255,.5); line-height:1.6; }
+
+    /* RUBRIC */
+    .rubric-section { position:relative; z-index:10; padding:0 48px 88px; max-width:960px; margin:0 auto; }
+    .rubric-table { width:100%; border-collapse:collapse; }
+    .rubric-table th { font-family:var(--font); font-size:.7rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:12px 16px; text-align:left; background:rgba(255,255,255,.04); color:rgba(255,255,255,.45); }
+    .rubric-table td { padding:14px 16px; border-bottom:1px solid rgba(255,255,255,.05); font-size:.87rem; color:rgba(255,255,255,.68); }
+    .rubric-table tr:last-child td { border-bottom:none; }
+    .score-badge { display:inline-block; font-family:var(--font); font-weight:700; font-size:.7rem; padding:3px 10px; border-radius:20px; }
+    .s-good { background:rgba(0,229,192,.15); color:var(--teal); }
+    .s-ok { background:rgba(254,188,46,.15); color:#febc2e; }
+    .s-bad { background:rgba(255,77,106,.15); color:#FF4D6A; }
+
+    .bottom-cta { position:relative; z-index:10; padding:88px 48px; text-align:center; background:rgba(255,255,255,.02); border-top:1px solid rgba(255,255,255,.07); }
+    .bottom-cta h2 { margin-bottom:12px; }
+    .bottom-cta p { color:rgba(255,255,255,.5); margin-bottom:40px; font-size:.97rem; }
+
+    footer { position:relative; z-index:10; padding:28px 48px; border-top:1px solid rgba(255,255,255,.07); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+    footer img { height:22px; opacity:.5; }
+    .footer-links { display:flex; gap:28px; }
+    .footer-links a { font-size:.78rem; color:rgba(255,255,255,.32); text-decoration:none; font-family:var(--font); font-weight:500; transition:color .2s; }
+    .footer-links a:hover { color:var(--teal); }
+
+    .modal-overlay { position:fixed; inset:0; z-index:999; background:rgba(0,0,0,.8); backdrop-filter:blur(12px); display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity .3s; padding:20px; }
+    .modal-overlay.active { opacity:1; pointer-events:all; }
+    .modal-box { background:linear-gradient(160deg,#0c1628 0%,#09101e 100%); border:1px solid rgba(255,255,255,.1); border-radius:22px; padding:44px; width:100%; max-width:500px; position:relative; transform:translateY(24px) scale(.97); transition:transform .35s cubic-bezier(.175,.885,.32,1.275); max-height:90vh; overflow-y:auto; }
+    .modal-overlay.active .modal-box { transform:translateY(0) scale(1); }
+    .modal-close { position:absolute; top:16px; right:16px; background:rgba(255,255,255,.06); border:none; color:rgba(255,255,255,.4); width:34px; height:34px; border-radius:50%; font-size:1.1rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+    .modal-close:hover { background:rgba(255,255,255,.12); color:white; }
+    .modal-tag { font-family:var(--font); font-size:.65rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--teal); margin-bottom:12px; }
+    .modal-title { font-family:var(--font); font-weight:800; font-size:1.5rem; margin-bottom:8px; }
+    .modal-sub { font-size:.87rem; color:rgba(255,255,255,.52); margin-bottom:28px; line-height:1.65; }
+    .ghl-placeholder { background:rgba(255,255,255,.03); border:2px dashed rgba(0,229,192,.2); border-radius:14px; padding:44px 24px; text-align:center; }
+    .ghl-placeholder .ph-icon { font-size:2rem; margin-bottom:12px; }
+    .ghl-placeholder p { font-size:.85rem; color:rgba(255,255,255,.38); font-family:var(--font); font-weight:600; }
+    .ghl-placeholder code { display:block; font-size:.72rem; color:var(--teal); background:rgba(0,229,192,.06); padding:8px 12px; border-radius:6px; margin-top:10px; font-family:'Courier New',monospace; }
+
+    @media(max-width:768px){
+      nav{padding:16px 20px;} .hero{min-height:auto;padding:60px 20px 64px;}
+      .transform-section{padding:64px 20px;} .transform-grid{grid-template-columns:1fr;gap:16px;}
+      .vs-divider{flex-direction:row;padding-top:0;gap:8px;} .vs-circle{width:36px;height:36px;font-size:.65rem;}
+      .vs-arrow{flex-direction:row;} .preview-section,.rubric-section{padding:64px 20px;}
+      .inside-grid{grid-template-columns:1fr;} .bottom-cta{padding:64px 20px;}
+      footer{padding:24px 20px;flex-direction:column;text-align:center;} .modal-box{padding:28px 20px;}
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<nav>
+  <a href="index.html" class="nav-logo"><img src="companyperiscope-whitelogo.png" alt="Company Periscope"/></a>
+  <a href="index.html" class="nav-back">← Main site</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-gradient"></div>
+  <div class="sonar-wrap">
+    <div class="sonar-ring"></div><div class="sonar-ring"></div>
+    <div class="sonar-ring"></div><div class="sonar-ring"></div>
+  </div>
+  <div class="hero-badge"><span class="pulse-dot"></span>Free PDF — Instant Download</div>
+  <h1>The Exact Scripts Our AI Uses<br>to <em>Handle Every Patient Call</em></h1>
+  <p class="hero-sub">15+ done-for-you response scripts for dental, medical, and specialty practices — plus a self-scoring rubric so you can see exactly how your current setup compares.</p>
+  <div class="cta-wrap">
+    <button class="cta-btn" onclick="openModal()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download Free Script Pack
+    </button>
+    <p class="cta-secondary">Free PDF · Instant delivery · <a href="#whats-inside">See what's inside ↓</a></p>
+    <div class="trust-marquee">
+      <div class="marquee-track">
+        <span class="trust-item hl"><span class="ti-icon">📋</span>15+ Scripts Included</span>
+        <span class="trust-item"><span class="ti-icon">📥</span>Instant PDF Delivery</span>
+        <span class="trust-item hl"><span class="ti-icon">✓</span>Self-Scoring Rubric</span>
+        <span class="trust-item"><span class="ti-icon">🤖</span>AI-Ready Scripts</span>
+        <span class="trust-item hl"><span class="ti-icon">🔒</span>HIPAA Compliant</span>
+        <span class="trust-item"><span class="ti-icon">💬</span>SMS Templates</span>
+        <span class="trust-item hl"><span class="ti-icon">⭐</span>4.9 Star Average</span>
+        <span class="trust-item"><span class="ti-icon">🚀</span>No Credit Card</span>
+        <span class="trust-item hl"><span class="ti-icon">🛡️</span>No Strings Attached</span>
+        <span class="trust-item"><span class="ti-icon">💳</span>Stripe Secured</span>
+        <!-- duplicate -->
+        <span class="trust-item hl"><span class="ti-icon">📋</span>15+ Scripts Included</span>
+        <span class="trust-item"><span class="ti-icon">📥</span>Instant PDF Delivery</span>
+        <span class="trust-item hl"><span class="ti-icon">✓</span>Self-Scoring Rubric</span>
+        <span class="trust-item"><span class="ti-icon">🤖</span>AI-Ready Scripts</span>
+        <span class="trust-item hl"><span class="ti-icon">🔒</span>HIPAA Compliant</span>
+        <span class="trust-item"><span class="ti-icon">💬</span>SMS Templates</span>
+        <span class="trust-item hl"><span class="ti-icon">⭐</span>4.9 Star Average</span>
+        <span class="trust-item"><span class="ti-icon">🚀</span>No Credit Card</span>
+        <span class="trust-item hl"><span class="ti-icon">🛡️</span>No Strings Attached</span>
+        <span class="trust-item"><span class="ti-icon">💳</span>Stripe Secured</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="transform-section" id="transform">
+  <div class="transform-label">
+    <div class="section-tag">The Gap</div>
+    <h2>Your front desk right now —<br>vs. what Company Periscope runs automatically.</h2>
+    <p>The scripts in this pack show you exactly what best-in-class looks like. Here's the difference it makes.</p>
+  </div>
+  <div class="transform-grid">
+    <div class="before-card">
+      <div class="card-header"><div class="card-dot"></div><div class="card-label">Manual / No Script</div></div>
+      <div class="card-body">
+        <div class="step-row" data-delay="100"><div class="step-icon">😬</div><div class="step-content"><div class="step-title">Staff improvises on every call</div><div class="step-sub">Inconsistent answers. Missed details. Patient frustration.</div></div></div>
+        <div class="step-row" data-delay="600"><div class="step-icon">❓</div><div class="step-content"><div class="step-title">Insurance question stumps them</div><div class="step-sub">"I'll have to check and call you back..." — they never do.</div></div></div>
+        <div class="step-row" data-delay="1100"><div class="step-icon">📵</div><div class="step-content"><div class="step-title">After-hours call hits voicemail</div><div class="step-sub">Generic message. No follow-up. Patient calls elsewhere.</div></div></div>
+        <div class="step-row" data-delay="1600"><div class="step-icon">📉</div><div class="step-content"><div class="step-title">Missed call — no text follow-up</div><div class="step-sub">Patient never hears back. Revenue walks out.</div></div></div>
+        <div class="step-row" data-delay="2100"><div class="step-icon">❌</div><div class="step-content"><div class="step-title">No consistent patient experience</div><div class="step-sub">What patients say about you depends on who picks up.</div></div></div>
+        <div class="revenue-row step-row" data-delay="2600"><div class="rev-label">Front desk consistency</div><div class="rev-amount" id="before-counter">Unpredictable</div></div>
+      </div>
+    </div>
+    <div class="vs-divider">
+      <div class="vs-arrow"><div class="vs-arrow-dot"></div><div class="vs-arrow-dot"></div><div class="vs-arrow-dot"></div></div>
+      <div class="vs-circle">VS</div>
+      <div class="vs-arrow"><div class="vs-arrow-dot"></div><div class="vs-arrow-dot"></div><div class="vs-arrow-dot"></div></div>
+    </div>
+    <div class="after-card">
+      <div class="card-header"><div class="card-dot"></div><div class="card-label">With Scripts + AI</div></div>
+      <div class="card-body">
+        <div class="step-row" data-delay="200"><div class="step-icon">💬</div><div class="step-content"><div class="step-title">Every call handled the same way</div><div class="step-sub">Warm, professional, consistent — every single time.</div></div></div>
+        <div class="step-row" data-delay="700"><div class="step-icon">✅</div><div class="step-content"><div class="step-title">Insurance question answered instantly</div><div class="step-sub">"Great question! We accept most major plans. Let me check your coverage right now."</div></div></div>
+        <div class="step-row" data-delay="1200"><div class="step-icon">🌙</div><div class="step-content"><div class="step-title">After-hours call — AI answers</div><div class="step-sub">Patient greeted, question handled, appointment offered.</div></div></div>
+        <div class="step-row" data-delay="1700"><div class="step-icon">💬</div><div class="step-content"><div class="step-title">Missed call — auto text in 5 minutes</div><div class="step-sub">"Hi, we saw we missed your call. How can we help?"</div></div></div>
+        <div class="step-row" data-delay="2200"><div class="step-icon">⭐</div><div class="step-content"><div class="step-title">5-star patient experience, every time</div><div class="step-sub">Patients notice. Referrals happen. Reviews improve.</div></div></div>
+        <div class="revenue-row step-row" data-delay="2700"><div class="rev-label">Front desk consistency</div><div class="rev-amount" id="after-counter">100%</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="preview-section" id="whats-inside">
+  <div class="section-tag">Inside the Pack</div>
+  <h2>15+ scripts. One self-scoring rubric. Instant PDF.</h2>
+  <p class="section-sub">These aren't generic templates. They're built for local healthcare practices and are the same scripts running inside Company Periscope right now.</p>
+
+  <div class="doc-mockup">
+    <div class="doc-titlebar">
+      <div class="mac-dot r"></div><div class="mac-dot y"></div><div class="mac-dot g"></div>
+      <span class="doc-filename">Company_Periscope_Script_Pack.pdf</span>
+    </div>
+    <div class="script-preview-item"><span class="sp-num">01</span><div><div class="sp-name">New Patient Inquiry — Dental</div><div class="sp-text">"Hi! Thanks for calling [Practice Name]. Are you a new patient with us, or have you been here before?"</div></div></div>
+    <div class="script-preview-item"><span class="sp-num">02</span><div><div class="sp-name">After-Hours Handler</div><div class="sp-text">"You've reached [Practice Name] after hours. I can help you get information or schedule — what can I help with?"</div></div></div>
+    <div class="script-preview-item"><span class="sp-num">03</span><div><div class="sp-name">Insurance Question</div><div class="sp-text">"Great question. We work with most major plans. Can I grab the name on the policy so we can check your coverage?"</div></div></div>
+    <div class="script-preview-item"><span class="sp-num">04</span><div><div class="sp-name">Missed Call Follow-Up Text</div><div class="sp-text">"Hi, this is [Practice Name] — we saw we missed your call. Can we help you schedule or answer a question?"</div></div></div>
+    <div class="script-preview-item"><span class="sp-num">05</span><div><div class="sp-name">Appointment Reschedule Flow</div><div class="sp-text">"Of course! What date works best for you, and do you prefer morning or afternoon?"</div></div></div>
+    <div class="doc-more">+ 10 more scripts inside the full pack →</div>
+  </div>
+
+  <div class="inside-grid">
+    <div class="inside-card"><span class="inside-icon">📞</span><div class="inside-title">15+ Call Scripts</div><div class="inside-desc">New patients, reschedules, insurance, after-hours, emergency triage, and more. Categorized by scenario.</div></div>
+    <div class="inside-card"><span class="inside-icon">💬</span><div class="inside-title">SMS Templates</div><div class="inside-desc">Text scripts for missed call follow-ups, appointment reminders, and web inquiry responses.</div></div>
+    <div class="inside-card"><span class="inside-icon">📋</span><div class="inside-title">Self-Scoring Rubric</div><div class="inside-desc">Score your current front desk across 5 categories. See where you're strong and where you're leaking revenue.</div></div>
+  </div>
+</section>
+
+<section class="rubric-section">
+  <div class="section-tag">Rubric Preview</div>
+  <h2 style="margin-bottom:10px">Where does your practice rank?</h2>
+  <p class="section-sub">Score yourself in 2 minutes. Here's a sample from the rubric inside the pack.</p>
+  <table class="rubric-table">
+    <thead><tr><th>Category</th><th>What Good Looks Like</th><th>Typical Score</th></tr></thead>
+    <tbody>
+      <tr><td>Call Answer Rate</td><td>90%+ answered within 3 rings during business hours</td><td><span class="score-badge s-ok">Improving</span></td></tr>
+      <tr><td>After-Hours Handling</td><td>Every call gets a real response — not just a voicemail</td><td><span class="score-badge s-bad">Needs Work</span></td></tr>
+      <tr><td>Missed Call Follow-Up</td><td>Every missed call gets a text within 5 minutes</td><td><span class="score-badge s-bad">Needs Work</span></td></tr>
+      <tr><td>Web Inquiry Response</td><td>Form submissions answered within 1 business hour</td><td><span class="score-badge s-ok">Improving</span></td></tr>
+      <tr><td>Consistent Scripting</td><td>Every staff member handles common questions identically</td><td><span class="score-badge s-bad">Needs Work</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="bottom-cta">
+  <div class="section-tag">Free · Instant · No Credit Card</div>
+  <h2>Get the full pack — free.</h2>
+  <p>All 15+ scripts and the complete self-scoring rubric. Delivered to your inbox instantly.</p>
+  <div class="cta-wrap">
+    <button class="cta-btn" onclick="openModal()">Download Free Script Pack</button>
+    <p class="cta-secondary">No spam · Just the PDF and one follow-up email</p>
+  </div>
+</section>
+
+<footer>
+  <img src="companyperiscope-whitelogo.png" alt="Company Periscope"/>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="calculator.html">Revenue Calculator</a>
+    <a href="pilot.html">7-Day Pilot</a>
+  </div>
+</footer>
+
+<div class="modal-overlay" id="opt-in-modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">&#x2715;</button>
+    <div class="modal-tag">Free Download</div>
+    <div class="modal-title">Get the Script Pack</div>
+    <p class="modal-sub">Enter your email and we'll send the full PDF — 15+ scripts plus the self-scoring rubric — directly to your inbox.</p>
+    <!-- Replace with GHL Script Pack Form embed -->
+    <div class="ghl-placeholder"><div class="ph-icon">📋</div><p>GoHighLevel Script Pack Download Form</p><code><!-- Paste GHL embed code here --></code></div>
+  </div>
+</div>
+
+<script>
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  class Particle {
+    constructor() { this.reset(true); }
+    reset(init) {
+      this.x = Math.random() * canvas.width;
+      this.y = init ? Math.random() * canvas.height : (Math.random() < .5 ? -5 : canvas.height + 5);
+      this.vx = (Math.random() - .5) * .35; this.vy = (Math.random() - .5) * .35;
+      this.r = Math.random() * 1.8 + .6; this.alpha = Math.random() * .4 + .1;
+    }
+    update() {
+      this.x += this.vx; this.y += this.vy;
+      if (this.x < -10 || this.x > canvas.width+10 || this.y < -10 || this.y > canvas.height+10) this.reset(false);
+    }
+    draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, Math.PI*2); ctx.fillStyle=`rgba(0,229,192,${this.alpha})`; ctx.fill(); }
+  }
+  function initParticles() { particles=[]; for(let i=0;i<70;i++) particles.push(new Particle()); }
+  function drawConnections() {
+    for(let i=0;i<particles.length;i++) for(let j=i+1;j<particles.length;j++){
+      const dx=particles[i].x-particles[j].x, dy=particles[i].y-particles[j].y, dist=Math.sqrt(dx*dx+dy*dy);
+      if(dist<130){ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.strokeStyle=`rgba(0,229,192,${(1-dist/130)*.14})`;ctx.lineWidth=.7;ctx.stroke();}
+    }
+  }
+  function animate(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.update();p.draw();});drawConnections();requestAnimationFrame(animate);}
+  resizeCanvas();initParticles();animate();
+  window.addEventListener('resize',()=>{resizeCanvas();initParticles();});
+
+  const transformSection = document.getElementById('transform');
+  let animTriggered = false;
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting && !animTriggered){
+        animTriggered=true;
+        transformSection.querySelectorAll('.step-row').forEach(row=>{
+          setTimeout(()=>row.classList.add('visible'), parseInt(row.dataset.delay)||0);
+        });
+      }
+    });
+  },{threshold:.2});
+  observer.observe(transformSection);
+
+  function openModal(){document.getElementById('opt-in-modal').classList.add('active');document.body.style.overflow='hidden';}
+  function closeModal(){document.getElementById('opt-in-modal').classList.remove('active');document.body.style.overflow='';}
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+</script>
+</body>
+</html>

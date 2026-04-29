@@ -1,0 +1,2073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Receptionist, Customized for Your Business | Company Periscope</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:  #050D1A;
+      --deep:  #07111F;
+      --blue:  #1A6CF6;
+      --glow:  #2F7FFF;
+      --teal:  #00E5C0;
+      --cyan:  #00C9E5;
+      --white: #FFFFFF;
+      --dim:   rgba(255,255,255,0.55);
+      --dimmer:rgba(255,255,255,0.3);
+      --glass: rgba(255,255,255,0.04);
+      --border:rgba(255,255,255,0.08);
+      --font:  'Montserrat', system-ui, sans-serif;
+      --body:  'Inter', system-ui, sans-serif;
+      --mono:  'Montserrat', system-ui, sans-serif;
+    }
+
+    html { font-family: var(--body); background: var(--navy); color: var(--white); scroll-behavior: smooth; }
+    body { overflow-x: hidden; }
+
+    /* ===================== NAV ===================== */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 48px;
+      background: rgba(5,13,26,0.6);
+      backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--font);
+      font-weight: 700;
+      font-size: 1.15rem;
+      letter-spacing: 0.08em;
+      color: var(--white);
+      text-decoration: none;
+      display: flex; align-items: center; gap: 10px;
+    }
+
+    .nav-logo-mark {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: linear-gradient(135deg, #1A6CF6, #00E5C0);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px;
+      box-shadow: 0 0 16px rgba(26,108,246,0.5);
+    }
+
+    .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+    .nav-links a { color: var(--dimmer); font-size: 0.88rem; font-weight: 500; text-decoration: none; transition: color .2s; }
+    .nav-links a:hover { color: var(--white); }
+
+    .nav-login {
+      color: rgba(255,255,255,0.7);
+      font-family: var(--font);
+      font-weight: 600;
+      font-size: 0.88rem;
+      padding: 10px 20px;
+      border-radius: 100px;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+      transition: all .2s;
+    }
+    .nav-login:hover { color: var(--white); border-color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.1); }
+
+    .nav-cta {
+      background: linear-gradient(135deg, #1A6CF6, #00C9E5);
+      color: var(--white);
+      font-family: var(--font);
+      font-weight: 600;
+      font-size: 0.88rem;
+      padding: 10px 24px;
+      border-radius: 100px;
+      text-decoration: none;
+      border: none; cursor: pointer;
+      box-shadow: 0 0 24px rgba(26,108,246,0.4);
+      transition: all .2s;
+    }
+    .nav-cta:hover { transform: scale(1.04); box-shadow: 0 0 36px rgba(26,108,246,0.6); }
+
+    /* ===================== HERO ===================== */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      overflow: hidden;
+    }
+
+    /* Ocean background */
+    .ocean-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: linear-gradient(
+        180deg,
+        #020810 0%,
+        #050D1A 20%,
+        #061525 40%,
+        #071A2E 60%,
+        #051220 80%,
+        #030C18 100%
+      );
+    }
+
+    /* Animated light rays from surface */
+    .light-rays {
+      position: absolute; top: 0; left: 0; right: 0; height: 60%;
+      z-index: 1; overflow: hidden;
+    }
+
+    .ray {
+      position: absolute; top: 0;
+      width: 2px;
+      background: linear-gradient(180deg, rgba(26,108,246,0.3) 0%, rgba(0,229,192,0.1) 50%, transparent 100%);
+      transform-origin: top center;
+      animation: rayPulse 4s ease-in-out infinite;
+    }
+    .ray:nth-child(1)  { left: 10%; height: 55%; width: 120px; opacity: .4; animation-delay: 0s; transform: skewX(-8deg); background: linear-gradient(180deg,rgba(26,108,246,.25) 0%,transparent 100%); }
+    .ray:nth-child(2)  { left: 25%; height: 65%; width: 80px;  opacity: .3; animation-delay: .8s; transform: skewX(3deg);  background: linear-gradient(180deg,rgba(0,229,192,.2) 0%,transparent 100%); }
+    .ray:nth-child(3)  { left: 45%; height: 70%; width: 160px; opacity: .35; animation-delay: 1.5s; transform: skewX(-5deg); background: linear-gradient(180deg,rgba(26,108,246,.3) 0%,transparent 100%); }
+    .ray:nth-child(4)  { left: 65%; height: 50%; width: 90px;  opacity: .25; animation-delay: 2.3s; transform: skewX(10deg); background: linear-gradient(180deg,rgba(0,201,229,.2) 0%,transparent 100%); }
+    .ray:nth-child(5)  { left: 80%; height: 60%; width: 100px; opacity: .3; animation-delay: .4s; transform: skewX(-12deg); background: linear-gradient(180deg,rgba(26,108,246,.2) 0%,transparent 100%); }
+
+    @keyframes rayPulse {
+      0%, 100% { opacity: .1; transform: scaleX(1) skewX(-8deg); }
+      50%       { opacity: .5; transform: scaleX(1.15) skewX(-8deg); }
+    }
+
+    /* Floating particles */
+    .particles { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+    .particle {
+      position: absolute; border-radius: 50%;
+      background: rgba(0,229,192,0.6);
+      animation: float linear infinite;
+    }
+    @keyframes float {
+      0%   { transform: translateY(100vh) translateX(0);   opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 0.6; }
+      100% { transform: translateY(-20px) translateX(30px); opacity: 0; }
+    }
+
+    /* ---- SUBMARINE SCENE ---- */
+    .submarine-scene {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 50%;
+      z-index: 2; overflow: visible;
+    }
+
+    /* Water surface shimmer */
+    .water-surface {
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, transparent, rgba(26,108,246,0.6), rgba(0,229,192,0.4), rgba(26,108,246,0.5), transparent);
+      animation: waterShimmer 3s ease-in-out infinite;
+      box-shadow: 0 0 30px rgba(26,108,246,0.3), 0 0 60px rgba(0,229,192,0.15);
+    }
+    @keyframes waterShimmer {
+      0%, 100% { opacity: 0.7; transform: scaleX(1); }
+      50%       { opacity: 1;   transform: scaleX(1.02); }
+    }
+
+    /* Submarine SVG wrapper */
+    .sub-wrapper {
+      position: absolute;
+      bottom: 25%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 480px;
+      animation: subBob 6s ease-in-out infinite;
+    }
+
+    @keyframes subBob {
+      0%, 100% { transform: translateX(-50%) translateY(0);    }
+      25%       { transform: translateX(-50%) translateY(-8px) rotate(.3deg); }
+      75%       { transform: translateX(-50%) translateY(5px)  rotate(-.2deg); }
+    }
+
+    /* Periscope above sub */
+    .periscope-shaft {
+      position: absolute;
+      bottom: calc(100% - 4px);
+      left: 50%; transform: translateX(-14px);
+      width: 10px;
+      height: 0;
+      background: linear-gradient(90deg, #1a2a4a, #2a4a7a, #1a2a4a);
+      border-radius: 5px 5px 0 0;
+      box-shadow: 0 0 8px rgba(26,108,246,0.4);
+      animation: periscopeRise 3s cubic-bezier(.22,1,.36,1) forwards .5s, shaftGlow 4s ease-in-out infinite 3.5s;
+    }
+
+    @keyframes periscopeRise {
+      from { height: 0; }
+      to   { height: 160px; }
+    }
+
+    @keyframes shaftGlow {
+      0%, 100% { box-shadow: 0 0 8px rgba(26,108,246,0.3); }
+      50%       { box-shadow: 0 0 20px rgba(26,108,246,0.7); }
+    }
+
+    /* Periscope head / lens */
+    .periscope-head {
+      position: absolute;
+      bottom: calc(100% - 4px);
+      left: 50%; transform: translateX(-24px);
+      width: 30px; height: 20px;
+      background: linear-gradient(135deg, #1a3a6a, #2a5aa0);
+      border-radius: 6px 6px 2px 2px;
+      opacity: 0;
+      box-shadow: 0 0 12px rgba(26,108,246,0.5);
+      animation: headAppear .4s ease forwards 3.3s;
+    }
+
+    .periscope-lens {
+      position: absolute;
+      right: 4px; top: 4px;
+      width: 10px; height: 10px;
+      background: radial-gradient(circle, #00E5C0 0%, #00a0c0 60%, #005070 100%);
+      border-radius: 50%;
+      box-shadow: 0 0 8px #00E5C0, 0 0 16px rgba(0,229,192,0.5);
+      animation: lensGlow 2s ease-in-out infinite 3.5s;
+    }
+
+    @keyframes lensGlow {
+      0%, 100% { box-shadow: 0 0 8px #00E5C0, 0 0 16px rgba(0,229,192,0.4); }
+      50%       { box-shadow: 0 0 16px #00E5C0, 0 0 40px rgba(0,229,192,0.7), 0 0 60px rgba(0,229,192,0.3); }
+    }
+
+    @keyframes headAppear {
+      from { opacity: 0; transform: translateX(-24px) translateY(10px); }
+      to   { opacity: 1; transform: translateX(-24px) translateY(0); }
+    }
+
+    /* Sonar sweep */
+    .sonar-beam {
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      width: 0; height: 0;
+      opacity: 0;
+      animation: sonarAppear .1s ease forwards 3.8s;
+    }
+
+    @keyframes sonarAppear { to { opacity: 1; } }
+
+    .sonar-inner {
+      position: absolute;
+      top: -6px; left: -6px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: conic-gradient(
+        from 0deg,
+        transparent 0deg,
+        rgba(0,229,192,0.15) 20deg,
+        rgba(0,229,192,0.05) 40deg,
+        transparent 60deg
+      );
+      transform-origin: 6px 6px;
+      animation: sonarSpin 3s linear infinite 3.8s;
+    }
+
+    @keyframes sonarSpin { to { transform: rotate(360deg); } }
+
+    /* Sonar rings */
+    .sonar-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(0,229,192,0.2);
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%) scale(0);
+      opacity: 0;
+      animation: sonarPing 4s ease-out infinite;
+    }
+    .sonar-ring:nth-child(2) { animation-delay: 1.3s; }
+    .sonar-ring:nth-child(3) { animation-delay: 2.6s; }
+
+    @keyframes sonarPing {
+      0%   { transform: translate(-50%,-50%) scale(0); opacity: .8; width: 20px; height: 20px; }
+      100% { transform: translate(-50%,-50%) scale(1); opacity: 0; width: 300px; height: 300px; }
+    }
+
+    /* Grid overlay */
+    .grid-overlay {
+      position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(26,108,246,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(26,108,246,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 80%);
+    }
+
+    /* ===================== HERO CONTENT ===================== */
+    .hero-content {
+      position: relative; z-index: 10;
+      display: flex; flex-direction: column; align-items: center;
+      max-width: 900px;
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(26,108,246,0.1);
+      border: 1px solid rgba(26,108,246,0.25);
+      color: rgba(150,200,255,0.9);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 7px 16px;
+      border-radius: 100px;
+      margin-bottom: 40px;
+      backdrop-filter: blur(10px);
+    }
+
+    .badge-live { width: 6px; height: 6px; background: var(--teal); border-radius: 50%; animation: blink 1.8s ease-in-out infinite; }
+    @keyframes blink { 0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,229,192,.5)} 50%{opacity:.5;box-shadow:0 0 0 4px rgba(0,229,192,0)} }
+
+    /* BIG HEADLINE */
+    .hero-headline {
+      font-family: var(--font);
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 700;
+      line-height: 1.04;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    /* Rotating words line */
+    .hero-rotating-line {
+      font-family: var(--font);
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 700;
+      line-height: 1.04;
+      letter-spacing: -0.03em;
+      height: clamp(3.5rem, 8vw, 7rem);
+      overflow: hidden;
+      margin-bottom: 32px;
+      position: relative;
+    }
+
+    .rotating-words {
+      display: flex; flex-direction: column;
+      animation: slideWords 10s ease-in-out infinite;
+    }
+
+    .rotating-word {
+      height: clamp(3.5rem, 8vw, 7rem);
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #1A6CF6 0%, #00E5C0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      white-space: nowrap;
+    }
+
+    @keyframes slideWords {
+      0%,18%   { transform: translateY(0); }
+      25%,43%  { transform: translateY(-25%); }
+      50%,68%  { transform: translateY(-50%); }
+      75%,93%  { transform: translateY(-75%); }
+      100%     { transform: translateY(0); }
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--dim);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 52px;
+      font-weight: 400;
+    }
+
+    /* CTA GROUP */
+    .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-bottom: 56px; }
+
+    .cta-primary {
+      font-family: var(--font); font-weight: 700; font-size: 1rem;
+      padding: 18px 44px; border-radius: 100px; border: none; cursor: pointer;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 10px;
+      background: linear-gradient(135deg, #1A6CF6 0%, #00C9E5 100%);
+      color: var(--white);
+      box-shadow: 0 0 0 1px rgba(26,108,246,.3), 0 8px 40px rgba(26,108,246,.5), inset 0 1px 0 rgba(255,255,255,.15);
+      transition: all .25s;
+      position: relative; overflow: hidden;
+    }
+
+    .cta-primary::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,.1), transparent);
+      opacity: 0; transition: opacity .2s;
+    }
+    .cta-primary:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 0 0 1px rgba(26,108,246,.4), 0 16px 60px rgba(26,108,246,.65), inset 0 1px 0 rgba(255,255,255,.2); }
+    .cta-primary:hover::before { opacity: 1; }
+
+    .cta-secondary {
+      font-family: var(--font); font-weight: 600; font-size: 1rem;
+      padding: 18px 36px; border-radius: 100px; cursor: pointer;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.8);
+      backdrop-filter: blur(12px);
+      transition: all .25s;
+    }
+    .cta-secondary:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.25); transform: translateY(-2px); }
+
+    /* Trust strip */
+    .trust-strip { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; }
+    .trust-item { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: rgba(255,255,255,.35); font-weight: 500; }
+    .trust-dot { color: var(--teal); font-size: 0.65rem; }
+
+    /* ===================== SCROLL INDICATOR ===================== */
+    .scroll-indicator {
+      position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+      z-index: 10; display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: rgba(255,255,255,.2); font-size: 0.7rem; letter-spacing: .15em; text-transform: uppercase;
+      animation: fadeFloat 2s ease-in-out infinite;
+    }
+
+    .scroll-line { width: 1px; height: 40px; background: linear-gradient(180deg, rgba(26,108,246,.5), transparent); }
+
+    @keyframes fadeFloat {
+      0%,100% { opacity:.4; transform: translateX(-50%) translateY(0); }
+      50%      { opacity:.8; transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ===================== SECTION COMMONS ===================== */
+    section { padding: 100px 24px; }
+
+    .section-eyebrow {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: .2em;
+      text-transform: uppercase; color: var(--teal);
+      margin-bottom: 20px; display: block;
+    }
+
+    .section-title {
+      font-family: var(--font); font-size: clamp(2rem, 4.5vw, 3.4rem);
+      font-weight: 700; letter-spacing: -.025em; line-height: 1.08;
+      color: var(--white); margin-bottom: 20px;
+    }
+
+    .section-sub {
+      font-size: 1.05rem; color: var(--dim); max-width: 520px;
+      line-height: 1.7; margin: 0 auto;
+    }
+
+    /* ===================== CHANNELS SECTION ===================== */
+    .channels-section { background: var(--navy); text-align: center; }
+
+    .channels-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      max-width: 1040px; margin: 64px auto 0;
+    }
+
+    .channel-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 20px; padding: 36px 24px;
+      text-align: center;
+      transition: all .3s;
+      cursor: pointer;
+      position: relative; overflow: hidden;
+    }
+
+    .channel-card::before {
+      content: ''; position: absolute; inset: 0; border-radius: 20px;
+      background: linear-gradient(135deg, rgba(26,108,246,0), rgba(0,229,192,0));
+      transition: all .3s;
+    }
+
+    .channel-card:hover {
+      border-color: rgba(26,108,246,.4);
+      transform: translateY(-6px);
+      box-shadow: 0 16px 60px rgba(26,108,246,.15), 0 0 0 1px rgba(26,108,246,.2);
+    }
+    .channel-card:hover::before { background: linear-gradient(135deg, rgba(26,108,246,.08), rgba(0,229,192,.04)); }
+
+    .ch-icon { font-size: 2rem; margin-bottom: 16px; display: block; }
+    .ch-title { font-family: var(--font); font-size: 1rem; font-weight: 600; color: var(--white); margin-bottom: 8px; }
+    .ch-desc { font-size: 0.82rem; color: var(--dim); line-height: 1.6; }
+
+    /* ===================== INDUSTRIES ===================== */
+    .industries-section {
+      background: linear-gradient(180deg, var(--navy) 0%, #060F1E 100%);
+      text-align: center;
+    }
+
+    .industry-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px; max-width: 1040px; margin: 64px auto 0;
+    }
+
+    .industry-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 20px; padding: 32px 24px;
+      text-align: left; transition: all .3s; cursor: pointer;
+      position: relative; overflow: hidden;
+    }
+
+    .industry-card::after {
+      content: ''; position: absolute; top: 0; right: 0;
+      width: 60px; height: 60px;
+      background: radial-gradient(circle, rgba(0,229,192,.1), transparent);
+      border-radius: 0 20px 0 60px; opacity: 0; transition: opacity .3s;
+    }
+
+    .industry-card:hover { border-color: rgba(0,229,192,.3); transform: translateY(-4px); box-shadow: 0 12px 48px rgba(0,229,192,.1); }
+    .industry-card:hover::after { opacity: 1; }
+
+    .ind-emoji { font-size: 2rem; display: block; margin-bottom: 16px; }
+    .ind-name { font-family: var(--font); font-size: 1.05rem; font-weight: 600; color: var(--white); margin-bottom: 8px; }
+    .ind-desc { font-size: 0.82rem; color: var(--dim); line-height: 1.55; }
+    .ind-tag {
+      display: inline-block; margin-top: 14px;
+      background: rgba(0,229,192,.1); border: 1px solid rgba(0,229,192,.2);
+      color: var(--teal); font-size: 0.7rem; font-weight: 600;
+      letter-spacing: .1em; text-transform: uppercase;
+      padding: 4px 10px; border-radius: 100px;
+    }
+
+    /* ===================== STATS ===================== */
+    .stats-section {
+      background: #040B16;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+
+    .stats-section::before {
+      content: '';
+      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 800px; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(26,108,246,.5), rgba(0,229,192,.3), transparent);
+    }
+
+    .stats-grid {
+      display: flex; flex-wrap: wrap; gap: 0;
+      max-width: 1000px; margin: 64px auto 0;
+      border: 1px solid var(--border);
+      border-radius: 24px; overflow: hidden;
+    }
+
+    .stat {
+      flex: 1; min-width: 200px;
+      padding: 56px 32px;
+      border-right: 1px solid var(--border);
+      position: relative;
+    }
+
+    .stat:last-child { border-right: none; }
+
+    .stat::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(26,108,246,.4), transparent);
+      opacity: 0; transition: opacity .3s;
+    }
+    .stat:hover::before { opacity: 1; }
+
+    .stat-num {
+      font-family: var(--mono);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 700; line-height: 1;
+      background: linear-gradient(135deg, #60AAFF, #00E5C0);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: 12px;
+    }
+
+    .stat-label { font-size: 0.88rem; color: var(--dim); line-height: 1.5; font-weight: 500; }
+
+    /* ===================== JORDAN CTA ===================== */
+    .jordan-section {
+      background: var(--navy);
+      text-align: center; position: relative; overflow: hidden;
+    }
+
+    .jordan-glow {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      width: 600px; height: 400px;
+      background: radial-gradient(ellipse, rgba(26,108,246,.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .jordan-card {
+      position: relative; z-index: 1;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 32px;
+      padding: 80px 60px;
+      max-width: 720px; margin: 0 auto;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 0 0 1px rgba(26,108,246,.1), 0 40px 120px rgba(0,0,0,.4);
+    }
+
+    .jordan-card .section-title { margin-bottom: 16px; }
+    .jordan-card p { color: var(--dim); font-size: 1.1rem; line-height: 1.7; margin-bottom: 40px; max-width: 480px; margin-left: auto; margin-right: auto; }
+
+    .cta-jordan {
+      font-family: var(--font); font-weight: 700; font-size: 1.1rem;
+      padding: 20px 56px; border-radius: 100px; border: none; cursor: pointer;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 12px;
+      background: linear-gradient(135deg, #1A6CF6 0%, #00C9E5 100%);
+      color: var(--white);
+      box-shadow: 0 0 0 1px rgba(26,108,246,.3), 0 16px 60px rgba(26,108,246,.45);
+      transition: all .25s; letter-spacing: .01em;
+    }
+    .cta-jordan:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 0 0 1px rgba(26,108,246,.4), 0 24px 80px rgba(26,108,246,.6); }
+
+    .cta-sub { margin-top: 16px !important; font-size: 0.82rem !important; color: rgba(255,255,255,.3) !important; margin-bottom: 0 !important; }
+
+    /* ===================== PRICING ===================== */
+    .pricing-section { background: #040B16; text-align: center; }
+
+    .pricing-grid {
+      display: flex; gap: 24px; justify-content: center;
+      max-width: 960px; margin: 56px auto 0; flex-wrap: wrap;
+    }
+    .offer-card {
+      flex: 1; min-width: 280px; max-width: 440px; position: relative;
+      background: linear-gradient(160deg, rgba(26,108,246,.12), rgba(0,229,192,.05));
+      border: 1px solid rgba(26,108,246,.4);
+      border-radius: 28px; padding: 48px 40px;
+      box-shadow: 0 0 0 1px rgba(26,108,246,.15), 0 32px 80px rgba(26,108,246,.15);
+      text-align: left;
+    }
+    .offer-card.popular {
+      border-color: rgba(0,229,192,.5);
+      background: linear-gradient(160deg, rgba(0,201,122,.1), rgba(0,229,192,.04));
+      box-shadow: 0 0 0 1px rgba(0,229,192,.2), 0 32px 80px rgba(0,201,122,.15);
+    }
+    .popular-badge {
+      position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+      background: linear-gradient(135deg, #00C97A, #00E5C0);
+      color: #050D1A; font-family: var(--font); font-weight: 800;
+      font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 5px 16px; border-radius: 20px; white-space: nowrap;
+    }
+    .plan-name {
+      font-family: var(--font); font-weight: 700; font-size: 0.7rem;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--teal); margin-bottom: 12px;
+    }
+    .plan-minutes {
+      font-family: var(--mono); font-size: 3.5rem; font-weight: 700;
+      color: var(--white); line-height: 1;
+    }
+    .plan-minutes-label {
+      font-size: 0.75rem; color: rgba(255,255,255,.4);
+      font-family: var(--font); font-weight: 600; margin-bottom: 20px; margin-top: 4px;
+    }
+
+    .offer-total {
+      display: flex; align-items: flex-end; gap: 12px; margin-bottom: 6px;
+    }
+    .offer-total-amount {
+      font-family: var(--mono); font-size: 4rem; font-weight: 700;
+      color: var(--white); line-height: 1;
+    }
+    .offer-total-label {
+      font-family: var(--font); font-size: 0.8rem; font-weight: 600;
+      color: rgba(255,255,255,.45); padding-bottom: 10px; line-height: 1.4;
+    }
+
+    .offer-breakdown {
+      display: flex; gap: 12px; margin-bottom: 28px;
+    }
+    .offer-line {
+      flex: 1; background: rgba(0,0,0,.25); border: 1px solid rgba(255,255,255,.07);
+      border-radius: 12px; padding: 14px 16px;
+    }
+    .offer-line-amount {
+      font-family: var(--mono); font-size: 1.3rem; font-weight: 700;
+      color: var(--white); margin-bottom: 3px;
+    }
+    .offer-line-label {
+      font-size: 0.75rem; color: rgba(255,255,255,.45); line-height: 1.4;
+    }
+    .offer-line-note {
+      font-size: 0.68rem; color: rgba(255,255,255,.25); margin-top: 4px;
+    }
+
+    .offer-then {
+      font-size: 0.85rem; color: rgba(255,255,255,.45);
+      margin-bottom: 24px; padding-top: 4px;
+    }
+    .offer-then strong { color: rgba(255,255,255,.75); }
+
+    .offer-divider { border: none; border-top: 1px solid rgba(255,255,255,.08); margin-bottom: 24px; }
+
+    .p-check { color: var(--teal); font-size: .7rem; margin-top: 3px; flex-shrink: 0; }
+    .p-features { list-style: none; margin-bottom: 28px; }
+    .p-features li { display: flex; align-items: flex-start; gap: 10px; font-size: .9rem; color: var(--dim); margin-bottom: 12px; line-height: 1.4; }
+
+    .offer-guarantee {
+      display: flex; align-items: flex-start; gap: 14px;
+      background: rgba(0,201,122,.06); border: 1px solid rgba(0,201,122,.2);
+      border-radius: 12px; padding: 16px 18px; margin-bottom: 28px;
+    }
+    .offer-guarantee-icon { font-size: 1.5rem; flex-shrink: 0; line-height: 1; }
+    .offer-guarantee-title { font-family: var(--font); font-weight: 700; font-size: 0.88rem; color: #00c97a; margin-bottom: 4px; }
+    .offer-guarantee-desc { font-size: 0.8rem; color: rgba(255,255,255,.5); line-height: 1.55; }
+
+    .p-btn {
+      width: 100%; font-family: var(--font); font-weight: 800; font-size: 1rem;
+      padding: 18px 24px; border-radius: 12px; cursor: pointer;
+      text-decoration: none; text-align: center; display: block; transition: all .2s;
+      background: linear-gradient(135deg, #1A6CF6, #00C9E5);
+      border: none; color: var(--white);
+      box-shadow: 0 8px 32px rgba(26,108,246,.4);
+      letter-spacing: 0.01em;
+    }
+    .p-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 48px rgba(26,108,246,.6); }
+
+    .offer-fine { text-align: center; margin-top: 14px; font-size: 0.75rem; color: rgba(255,255,255,.25); }
+    .offer-enterprise { margin-top: 32px; font-size: 0.88rem; color: rgba(255,255,255,.35); }
+    .offer-enterprise a { color: rgba(0,229,192,.7); text-decoration: none; }
+    .offer-enterprise a:hover { color: var(--teal); }
+
+    /* ===================== FOOTER ===================== */
+    footer {
+      background: #020810;
+      padding: 64px 48px 32px;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-top {
+      display: flex; gap: 48px; flex-wrap: wrap;
+      justify-content: space-between; margin-bottom: 48px;
+    }
+
+    .footer-brand .f-logo {
+      font-family: var(--font); font-weight: 700; font-size: 1.1rem;
+      letter-spacing: .08em; color: var(--white);
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; margin-bottom: 14px;
+    }
+
+    .footer-brand p { font-size: .88rem; color: rgba(255,255,255,.3); max-width: 220px; line-height: 1.6; }
+
+    .f-col h4 { font-size: .72rem; font-weight: 600; letter-spacing: .15em; text-transform: uppercase; color: rgba(255,255,255,.25); margin-bottom: 16px; }
+    .f-col ul { list-style: none; }
+    .f-col li { margin-bottom: 10px; }
+    .f-col a { color: rgba(255,255,255,.45); text-decoration: none; font-size: .88rem; transition: color .2s; }
+    .f-col a:hover { color: rgba(255,255,255,.8); }
+
+    .footer-trust {
+      display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;
+      padding: 32px 0; margin-bottom: 40px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .f-trust-badge {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 100px;
+      padding: 8px 16px;
+      font-size: 0.78rem; font-weight: 600;
+      color: rgba(255,255,255,0.55);
+    }
+    .f-trust-badge span { font-size: 0.9rem; }
+
+    .footer-disclaimer {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.18);
+      line-height: 1.7;
+      max-width: 720px;
+      margin: 20px auto 0;
+      text-align: center;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,.06);
+      padding-top: 24px;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+    }
+
+    .footer-bottom span, .footer-bottom a { font-size: .78rem; color: rgba(255,255,255,.2); text-decoration: none; }
+    .footer-bottom a:hover { color: rgba(255,255,255,.5); }
+    .f-legal { display: flex; gap: 20px; }
+
+    /* ===================== CALL SIM ===================== */
+    .call-sim {
+      display: flex; align-items: center; justify-content: center;
+      flex-wrap: wrap; gap: 12px;
+      max-width: 1000px; margin: 0 auto;
+    }
+
+    /* Incoming call card */
+    .sim-phone {
+      flex: 0 0 auto; width: 160px;
+      background: #0A1628;
+      border: 1.5px solid rgba(26,108,246,.4);
+      border-radius: 20px; padding: 24px 16px;
+      text-align: center;
+      box-shadow: 0 0 32px rgba(26,108,246,.2);
+    }
+
+    .call-ring-anim {
+      position: relative; width: 72px; height: 72px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 14px;
+    }
+
+    .phone-emoji { font-size: 1.8rem; position: relative; z-index: 2; animation: phoneShake .6s ease 1s both; }
+
+    @keyframes phoneShake {
+      0%,100%{transform:rotate(0)} 20%{transform:rotate(-8deg)} 40%{transform:rotate(8deg)} 60%{transform:rotate(-5deg)} 80%{transform:rotate(5deg)}
+    }
+
+    .ring {
+      position: absolute; border-radius: 50%;
+      border: 1.5px solid rgba(26,108,246,.5);
+      animation: ringOut 2s ease-out infinite;
+    }
+    .r1 { width: 32px; height: 32px; animation-delay: 0s; }
+    .r2 { width: 32px; height: 32px; animation-delay: .65s; }
+    .r3 { width: 32px; height: 32px; animation-delay: 1.3s; }
+
+    @keyframes ringOut {
+      0%   { width: 32px; height: 32px; opacity: .9; }
+      100% { width: 78px; height: 78px; opacity: 0; }
+    }
+
+    .caller-name { font-family: var(--font); font-size: .88rem; font-weight: 700; color: var(--white); margin-bottom: 5px; }
+    .caller-sub  { font-size: .7rem; color: var(--dim); }
+
+    /* Arrows — horizontal on desktop, vertical on mobile */
+    .sim-arrow {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      flex: 0 0 auto;
+    }
+
+    .arrow-line {
+      width: 48px; height: 2px;
+      background: linear-gradient(90deg, rgba(26,108,246,.5), rgba(0,229,192,.7));
+      position: relative;
+    }
+    .arrow-line::after {
+      content: '▶'; position: absolute; right: -9px; top: -7px;
+      color: var(--teal); font-size: .65rem;
+    }
+
+    .arrow-label { font-size: .62rem; color: rgba(255,255,255,.35); text-align: center; white-space: nowrap; }
+
+    /* Chat */
+    .sim-chat {
+      flex: 1 1 260px; max-width: 320px;
+      background: #0A1628;
+      border: 1.5px solid rgba(26,108,246,.3);
+      border-radius: 20px; overflow: hidden;
+    }
+
+    .chat-header {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 14px;
+      background: rgba(26,108,246,.1);
+      border-bottom: 1px solid rgba(26,108,246,.12);
+    }
+
+    .chat-avatar { font-size: 1.3rem; }
+    .chat-name   { font-family: var(--font); font-size: .75rem; font-weight: 600; color: var(--white); }
+    .chat-status { display: flex; align-items: center; gap: 5px; font-size: .62rem; color: var(--teal); margin-top: 2px; }
+    .status-dot  { width: 5px; height: 5px; background: var(--teal); border-radius: 50%; animation: blink 1.5s infinite; }
+
+    .chat-body { padding: 12px; min-height: 180px; display: flex; flex-direction: column; gap: 8px; overflow: hidden; }
+
+    .msg {
+      max-width: 88%; padding: 7px 11px; font-size: .73rem; line-height: 1.5;
+      animation: msgPop .3s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    @keyframes msgPop { from{opacity:0;transform:scale(.8) translateY(8px)} to{opacity:1;transform:scale(1) translateY(0)} }
+
+    .msg.ai   { background: rgba(26,108,246,.15); border: 1px solid rgba(26,108,246,.2); color: rgba(255,255,255,.85); align-self: flex-start; border-radius: 4px 14px 14px 14px; }
+    .msg.user { background: rgba(0,229,192,.12);  border: 1px solid rgba(0,229,192,.2);  color: rgba(255,255,255,.85); align-self: flex-end;  border-radius: 14px 4px 14px 14px; }
+
+    .typing { display: flex; gap: 4px; padding: 9px 12px; align-self: flex-start; }
+    .typing span { width: 5px; height: 5px; background: rgba(26,108,246,.6); border-radius: 50%; animation: typingDot .8s ease-in-out infinite; }
+    .typing span:nth-child(2){ animation-delay:.15s; }
+    .typing span:nth-child(3){ animation-delay:.3s; }
+    @keyframes typingDot { 0%,60%,100%{transform:translateY(0);opacity:.4} 30%{transform:translateY(-5px);opacity:1} }
+
+    /* Result */
+    .sim-result {
+      flex: 0 0 auto; width: 160px;
+      background: linear-gradient(160deg, rgba(0,229,192,.1), rgba(26,108,246,.07));
+      border: 1.5px solid rgba(0,229,192,.35);
+      border-radius: 20px; padding: 22px 16px; text-align: center;
+      box-shadow: 0 0 32px rgba(0,229,192,.1);
+      opacity: 0; transform: translateY(12px);
+      transition: opacity .5s ease, transform .5s ease;
+    }
+    .sim-result.visible { opacity: 1; transform: translateY(0); }
+
+    .result-icon  { font-size: 1.8rem; margin-bottom: 8px; }
+    .result-title { font-family: var(--font); font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 14px; }
+    .result-details { text-align: left; }
+    .result-row   { display: flex; align-items: center; gap: 7px; font-size: .7rem; color: var(--dim); margin-bottom: 7px; }
+    .result-badge {
+      margin-top: 12px; display: inline-block;
+      background: rgba(0,229,192,.12); border: 1px solid rgba(0,229,192,.3);
+      color: var(--teal); font-size: .62rem; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase; padding: 4px 10px; border-radius: 100px;
+    }
+
+    /* ===================== MERMAID ===================== */
+    .mermaid-wrap {
+      max-width: 860px; margin: 0 auto;
+      background: rgba(255,255,255,.02);
+      border: 1px solid var(--border);
+      border-radius: 20px; padding: 36px 20px;
+      overflow-x: auto; -webkit-overflow-scrolling: touch;
+    }
+    .mermaid { display: flex; justify-content: center; min-width: 500px; }
+    .mermaid svg { max-width: 100%; height: auto; }
+
+    /* ===================== RESPONSIVE ===================== */
+    /* ===================== HAMBURGER ===================== */
+    .hamburger {
+      display: none;
+      flex-direction: column; gap: 5px; cursor: pointer;
+      padding: 4px; background: none; border: none; z-index: 300;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--white); border-radius: 2px;
+      transition: all .3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed; inset: 0; z-index: 190;
+      background: rgba(5,13,26,0.97);
+      backdrop-filter: blur(20px);
+      flex-direction: column; align-items: center; justify-content: center;
+      gap: 36px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: var(--font); font-size: 1.5rem; font-weight: 700;
+      color: var(--white); text-decoration: none; letter-spacing: .02em;
+      transition: color .2s;
+    }
+    .mobile-menu a:hover { color: var(--teal); }
+    .mobile-menu .mobile-cta {
+      background: linear-gradient(135deg, #1A6CF6, #00C9E5);
+      padding: 16px 48px; border-radius: 100px; font-size: 1.1rem;
+      box-shadow: 0 0 32px rgba(26,108,246,0.5);
+    }
+
+    /* ===================== TABLET ===================== */
+    @media (max-width: 900px) {
+      .pricing-grid { flex-direction: column; align-items: center; }
+      .p-card { max-width: 480px; width: 100%; }
+    }
+
+    /* ===================== MOBILE ===================== */
+    @media (max-width: 768px) {
+      /* Nav */
+      nav { padding: 14px 20px; }
+      .nav-links { display: none; }
+      .nav-cta { display: none; }
+      .nav-login { display: none; }
+      .hamburger { display: flex; }
+
+      /* Footer trust */
+      .footer-trust { gap: 8px; padding: 24px 0; margin-bottom: 28px; }
+      .f-trust-badge { font-size: 0.72rem; padding: 6px 12px; }
+      .footer-disclaimer { font-size: 0.68rem; text-align: left; margin-top: 16px; }
+
+      /* Sections */
+      section { padding: 64px 16px; }
+
+      /* Hero */
+      .hero { padding: 100px 20px 60px; min-height: 100svh; }
+      .submarine-scene { height: 35%; opacity: 0.5; }
+      .sub-wrapper { width: 240px; }
+      .hero-content { width: 100%; max-width: 100%; padding: 0 4px; }
+      .hero-headline { font-size: clamp(2rem, 8vw, 3rem); }
+      .hero-rotating-line { font-size: 1.85rem; height: 5rem; }
+      .rotating-word { height: 5rem; white-space: normal; line-height: 1.25; align-items: center; padding: 0 2px; }
+      .hero-sub { font-size: 0.95rem; margin-bottom: 36px; max-width: 100%; padding: 0 4px; }
+      .hero-ctas { flex-direction: column; align-items: center; gap: 12px; }
+      .cta-primary, .cta-secondary { width: 100%; max-width: 320px; justify-content: center; padding: 16px 24px; }
+      .trust-strip { gap: 10px; }
+      .trust-item { font-size: 0.75rem; }
+
+      /* Channels */
+      .channels-grid { grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 40px; }
+      .channel-card { padding: 24px 16px; }
+
+      /* Industries */
+      .industry-grid { grid-template-columns: 1fr; gap: 12px; margin-top: 40px; }
+
+      /* Any Business block */
+      .any-biz-block { flex-direction: column !important; text-align: center; padding: 32px 24px !important; }
+      .any-biz-block a { width: 100%; justify-content: center; }
+
+      /* Stats */
+      .stats-grid { border-radius: 0; flex-direction: column; }
+      .stat { border-right: none; border-bottom: 1px solid var(--border); padding: 36px 24px; }
+      .stat:last-child { border-bottom: none; }
+      .stat-num { font-size: 2.8rem; }
+
+      /* Jordan */
+      .jordan-card { padding: 40px 20px; }
+      .cta-jordan { padding: 16px 32px; font-size: 1rem; width: 100%; justify-content: center; }
+
+      /* Pricing */
+      .pricing-grid { flex-direction: column; align-items: stretch; }
+      .p-card { max-width: 100%; min-width: unset; }
+
+      /* Call sim */
+      .call-sim { flex-direction: column; align-items: center; gap: 8px; }
+      .sim-phone, .sim-result { width: 100%; max-width: 340px; }
+      .sim-chat { width: 100%; max-width: 100%; flex: none; }
+
+      /* Arrows point down */
+      .sim-arrow { padding: 4px 0; }
+      .arrow-line { width: 2px; height: 32px; background: linear-gradient(180deg, rgba(26,108,246,.5), rgba(0,229,192,.7)); }
+      .arrow-line::after { content: '▼'; right: -7px; top: auto; bottom: -12px; }
+
+      /* Mermaid scrolls horizontally */
+      .mermaid-wrap { padding: 20px 12px; border-radius: 14px; }
+      .mermaid { min-width: 480px; }
+
+      /* Footer */
+      footer { padding: 48px 20px 24px; }
+      .footer-top { flex-direction: column; gap: 32px; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; gap: 8px; }
+    }
+
+    /* ===================== SPLIT VIEW ===================== */
+    .split-view-section { background: #040B16; padding: 100px 24px; overflow: hidden; text-align: center; }
+
+    .split-container {
+      max-width: 1040px; margin: 64px auto 0;
+      border-radius: 28px; overflow: hidden;
+      border: 1px solid var(--border);
+      position: relative;
+    }
+
+    .above-world {
+      background: linear-gradient(180deg, #071A2E 0%, #061220 100%);
+      min-height: 260px; position: relative; overflow: hidden;
+      padding: 36px 40px 56px;
+      display: flex; flex-direction: column;
+    }
+
+    .below-world {
+      background: linear-gradient(180deg, #020810 0%, #010408 100%);
+      min-height: 260px; position: relative; overflow: hidden;
+      padding: 56px 40px 36px;
+      display: flex; flex-direction: column;
+    }
+
+    .world-divider {
+      height: 3px; position: relative;
+      background: linear-gradient(90deg, transparent 0%, rgba(26,108,246,0.9) 30%, rgba(0,229,192,0.7) 50%, rgba(26,108,246,0.9) 70%, transparent 100%);
+      box-shadow: 0 0 24px rgba(26,108,246,0.5), 0 0 60px rgba(0,229,192,0.2);
+      animation: dividerPulse 3s ease-in-out infinite;
+      z-index: 10;
+    }
+    @keyframes dividerPulse { 0%,100%{opacity:.7} 50%{opacity:1} }
+
+    /* Periscope at waterline */
+    .scope-at-surface {
+      position: absolute; left: 50%; transform: translateX(-50%);
+      bottom: -3px; z-index: 20;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .scope-head {
+      width: 36px; height: 22px;
+      background: linear-gradient(135deg, #1a3a6a, #2a5aa0);
+      border-radius: 8px 8px 3px 3px;
+      box-shadow: 0 0 16px rgba(26,108,246,0.6);
+      position: relative;
+      display: flex; align-items: center; justify-content: flex-end;
+      padding-right: 5px;
+    }
+    .scope-lens {
+      width: 12px; height: 12px;
+      background: radial-gradient(circle, #00E5C0 0%, #00a0c0 60%, #005070 100%);
+      border-radius: 50%;
+      box-shadow: 0 0 10px #00E5C0, 0 0 20px rgba(0,229,192,0.6);
+      animation: lensGlow 2s ease-in-out infinite;
+    }
+    .scope-shaft {
+      width: 10px; height: 60px;
+      background: linear-gradient(90deg, #1a2a4a, #2a4a7a, #1a2a4a);
+      border-radius: 0 0 4px 4px;
+      box-shadow: 0 0 8px rgba(26,108,246,0.4);
+    }
+
+    .world-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font); font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      padding: 6px 16px; border-radius: 100px; margin-bottom: 28px;
+      align-self: flex-start;
+    }
+    .world-tag.with-cp {
+      background: rgba(0,229,192,0.1); border: 1px solid rgba(0,229,192,0.3);
+      color: var(--teal);
+    }
+    .world-tag.without-cp {
+      background: rgba(255,80,80,0.07); border: 1px solid rgba(255,80,80,0.18);
+      color: rgba(255,130,130,0.8);
+    }
+    .world-tag-dot { width: 6px; height: 6px; border-radius: 50%; }
+    .world-tag.with-cp .world-tag-dot { background: var(--teal); animation: blink 1.8s ease-in-out infinite; }
+    .world-tag.without-cp .world-tag-dot { background: rgba(255,100,100,0.8); }
+
+    .pills-row { display: flex; flex-wrap: wrap; gap: 10px; }
+
+    .pill {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-family: var(--font); font-size: 0.82rem; font-weight: 600;
+      padding: 9px 18px; border-radius: 100px;
+      animation: pillBob ease-in-out infinite;
+      animation-duration: var(--dur, 4s);
+      animation-delay: var(--del, 0s);
+    }
+    @keyframes pillBob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
+
+    .pill.up {
+      background: rgba(0,229,192,0.08); border: 1px solid rgba(0,229,192,0.22);
+      color: rgba(255,255,255,0.85);
+    }
+    .pill.down {
+      background: rgba(255,60,60,0.05); border: 1px solid rgba(255,60,60,0.14);
+      color: rgba(255,255,255,0.35);
+      text-decoration: line-through;
+      animation-name: pillSink;
+    }
+    @keyframes pillSink { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
+
+    /* Floating particles above */
+    .split-particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .sp { position: absolute; border-radius: 50%; animation: spFloat linear infinite; opacity: 0; }
+    @keyframes spFloat {
+      0%   { transform: translateY(100%) translateX(0); opacity:0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 0.5; }
+      100% { transform: translateY(-10px) translateX(var(--drift,10px)); opacity:0; }
+    }
+    .sp-sink { animation-name: spSink; }
+    @keyframes spSink {
+      0%   { transform: translateY(-100%) translateX(0); opacity:0; }
+      10%  { opacity: 0.8; }
+      90%  { opacity: 0.3; }
+      100% { transform: translateY(100%) translateX(var(--drift,-8px)); opacity:0; }
+    }
+
+    @media (max-width: 768px) {
+      .above-world, .below-world { padding: 28px 20px 44px; min-height: 200px; }
+      .scope-shaft { height: 40px; }
+      .pills-row { gap: 8px; }
+      .pill { font-size: 0.75rem; padding: 7px 14px; }
+      .world-tag { font-size: 0.65rem; }
+    }
+
+    @media (max-width: 420px) {
+      .channels-grid { grid-template-columns: 1fr; }
+      .hero-headline { font-size: 1.8rem; }
+      .hero-rotating-line { font-size: 1.6rem; height: 4.5rem; }
+      .rotating-word { height: 4.5rem; }
+    }
+
+    /* ===================== CALCULATOR CTA ===================== */
+    .calc-cta-section {
+      background: #060e1c;
+      text-align: center;
+      padding: 100px 24px 120px;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Top divider glow */
+    .calc-cta-section::before {
+      content: '';
+      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 900px; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0,229,192,.6), rgba(26,108,246,.4), transparent);
+    }
+    /* Radial glow behind calculator */
+    .calc-cta-section::after {
+      content: '';
+      position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%);
+      width: 800px; height: 600px;
+      background: radial-gradient(ellipse, rgba(0,229,192,0.09) 0%, rgba(26,108,246,0.05) 45%, transparent 70%);
+      pointer-events: none; z-index: 0;
+    }
+    /* Dot grid texture */
+    .calc-cta-section .calc-grid-bg {
+      position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      background-image: radial-gradient(circle, rgba(0,229,192,0.07) 1px, transparent 1px);
+      background-size: 36px 36px;
+      mask-image: radial-gradient(ellipse 70% 80% at 50% 50%, black 20%, transparent 80%);
+      -webkit-mask-image: radial-gradient(ellipse 70% 80% at 50% 50%, black 20%, transparent 80%);
+    }
+
+    .calc-cta-section > * { position: relative; z-index: 1; }
+
+    /* Live / interactive badge */
+    .calc-live-tag {
+      display: inline-flex; align-items: center; gap: 10px;
+      margin: 24px auto 0;
+      padding: 10px 22px; border-radius: 100px;
+      font-family: var(--font); font-size: 0.75rem; font-weight: 800;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      cursor: default;
+      animation: badge-flash 1.4s ease-in-out infinite;
+    }
+    @keyframes badge-flash {
+      0%, 100% {
+        background: rgba(255, 45, 45, 0.12);
+        border: 1.5px solid rgba(255, 45, 45, 0.55);
+        color: #ff5f5f;
+        box-shadow: 0 0 18px rgba(255,45,45,0.18), 0 0 40px rgba(255,45,45,0.08);
+      }
+      50% {
+        background: rgba(255, 45, 45, 0.22);
+        border: 1.5px solid rgba(255, 80, 80, 0.9);
+        color: #ff8080;
+        box-shadow: 0 0 28px rgba(255,45,45,0.38), 0 0 60px rgba(255,45,45,0.15);
+      }
+    }
+    .live-pulse {
+      width: 9px; height: 9px; border-radius: 50%;
+      background: #ff4444;
+      flex-shrink: 0;
+      animation: pulse-ring 1.4s ease-out infinite;
+    }
+    @keyframes pulse-ring {
+      0%   { box-shadow: 0 0 0 0 rgba(255,68,68,0.8); transform: scale(1); }
+      60%  { box-shadow: 0 0 0 9px rgba(255,68,68,0); transform: scale(1.1); }
+      100% { box-shadow: 0 0 0 0 rgba(255,68,68,0); transform: scale(1); }
+    }
+
+    /* Calculator section subtitle */
+    .calc-section-sub {
+      font-size: 1rem; color: rgba(255,255,255,0.42);
+      line-height: 1.7; max-width: 460px; margin: 16px auto 0;
+    }
+
+    .calc-embed-wrapper {
+      max-width: 580px; margin: 52px auto 0;
+      border-radius: 24px; overflow: hidden;
+      border: 1px solid rgba(0,229,192,0.2);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.03),
+        0 40px 100px rgba(0,0,0,0.65),
+        0 0 60px rgba(0,229,192,0.06);
+    }
+    .calc-embed-frame {
+      width: 100%; height: 720px;
+      border: none; display: block;
+      background: #050D1A;
+    }
+
+    @media (max-width: 640px) {
+      .calc-embed-frame { height: 760px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="companyperiscope-whitelogo.png" alt="Company Periscope" style="height:32px;width:auto;display:block;">
+  </a>
+  <ul class="nav-links">
+    <li><a href="#channels">Features</a></li>
+    <li><a href="#industries">Practices</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+  </ul>
+  <a href="pilot.html" class="nav-cta">Get Started Today →</a>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#channels" class="mobile-link">Features</a>
+  <a href="#industries" class="mobile-link">Practices</a>
+  <a href="#pricing" class="mobile-link">Pricing</a>
+  <a href="pilot.html" class="mobile-cta">Get Started Today →</a>
+</div>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <!-- Backgrounds -->
+  <div class="ocean-bg"></div>
+  <div class="grid-overlay"></div>
+  <div class="light-rays">
+    <div class="ray"></div><div class="ray"></div><div class="ray"></div>
+    <div class="ray"></div><div class="ray"></div>
+  </div>
+
+  <!-- Particles -->
+  <div class="particles" id="particles"></div>
+
+  <!-- Submarine Scene -->
+  <div class="submarine-scene">
+    <div class="water-surface"></div>
+    <div class="sub-wrapper">
+      <!-- Periscope above sub -->
+      <div class="periscope-shaft"></div>
+      <div class="periscope-head">
+        <div class="periscope-lens"></div>
+      </div>
+      <!-- Sonar -->
+      <div class="sonar-beam">
+        <div class="sonar-inner"></div>
+        <div class="sonar-ring"></div>
+        <div class="sonar-ring"></div>
+        <div class="sonar-ring"></div>
+      </div>
+      <!-- Submarine SVG -->
+      <svg viewBox="0 0 480 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Main hull -->
+        <ellipse cx="230" cy="72" rx="180" ry="36" fill="#0D2040"/>
+        <ellipse cx="230" cy="72" rx="180" ry="36" fill="url(#hullGrad)"/>
+        <!-- Conning tower -->
+        <rect x="195" y="36" width="60" height="36" rx="8" fill="#112236"/>
+        <rect x="195" y="36" width="60" height="36" rx="8" fill="url(#towerGrad)"/>
+        <!-- Hull highlight -->
+        <ellipse cx="230" cy="58" rx="140" ry="10" fill="rgba(26,108,246,0.12)"/>
+        <!-- Portholes -->
+        <circle cx="160" cy="72" r="7" fill="#0A1830" stroke="rgba(26,108,246,0.4)" stroke-width="1.5"/>
+        <circle cx="160" cy="72" r="3.5" fill="rgba(0,229,192,0.3)"/>
+        <circle cx="200" cy="72" r="7" fill="#0A1830" stroke="rgba(26,108,246,0.4)" stroke-width="1.5"/>
+        <circle cx="200" cy="72" r="3.5" fill="rgba(0,229,192,0.25)"/>
+        <circle cx="240" cy="72" r="7" fill="#0A1830" stroke="rgba(26,108,246,0.4)" stroke-width="1.5"/>
+        <circle cx="240" cy="72" r="3.5" fill="rgba(0,229,192,0.2)"/>
+        <!-- Nose -->
+        <ellipse cx="50" cy="72" rx="40" ry="28" fill="#0D2040"/>
+        <ellipse cx="50" cy="72" rx="40" ry="28" fill="url(#noseGrad)"/>
+        <!-- Tail fins -->
+        <path d="M380 72 L420 52 L420 92 Z" fill="#0A1830" stroke="rgba(26,108,246,0.2)" stroke-width="1"/>
+        <path d="M380 72 L415 60 L415 84 Z" fill="#0D2040"/>
+        <!-- Bottom fin -->
+        <path d="M230 108 L210 130 L250 130 Z" fill="#0A1830" stroke="rgba(26,108,246,0.2)" stroke-width="1"/>
+        <!-- Propeller -->
+        <circle cx="400" cy="72" r="12" fill="none" stroke="rgba(26,108,246,0.3)" stroke-width="2"/>
+        <line x1="400" y1="60" x2="400" y2="84" stroke="rgba(26,108,246,0.4)" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="388" y1="72" x2="412" y2="72" stroke="rgba(26,108,246,0.4)" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- Gradient defs -->
+        <defs>
+          <linearGradient id="hullGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="rgba(26,108,246,0.15)"/>
+            <stop offset="100%" stop-color="rgba(0,10,30,0.3)"/>
+          </linearGradient>
+          <linearGradient id="towerGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="rgba(26,108,246,0.2)"/>
+            <stop offset="100%" stop-color="rgba(0,0,20,0.4)"/>
+          </linearGradient>
+          <linearGradient id="noseGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="rgba(0,229,192,0.08)"/>
+            <stop offset="100%" stop-color="rgba(26,108,246,0.15)"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Hero Content -->
+  <div class="hero-content">
+    <div class="hero-badge">
+      <div class="badge-live"></div>
+      <span style="font-weight:400;opacity:0.75;">company</span><span style="font-weight:700;">periscope</span>&nbsp;— Live in 48 Hours
+    </div>
+
+    <h1 class="hero-headline">Every Missed Call<br/>Has a Price Tag.</h1>
+    <p style="font-family:var(--font);font-size:clamp(0.95rem,2vw,1.15rem);font-weight:500;color:var(--teal);letter-spacing:0.04em;margin-bottom:12px;margin-top:-4px;">You don't need to be on the line. You just need to be in the loop.</p>
+
+    <div class="hero-rotating-line">
+      <div class="rotating-words">
+        <span class="rotating-word">Every Inbound Call.</span>
+        <span class="rotating-word">Every Appointment Booked.</span>
+        <span class="rotating-word">Every Lead Captured.</span>
+        <span class="rotating-word">Every Opportunity. Handled.</span>
+      </div>
+    </div>
+
+    <p class="hero-sub">
+      Whether it's 9am or 2am, your patients and customers expect the same level of care and responsiveness.
+      Company Periscope's AI Receptionist answers every call, books every appointment, and captures every lead —
+      because top-tier service doesn't clock out.
+    </p>
+
+    <div class="hero-ctas">
+      <a href="pilot.html" class="cta-primary" style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+        <span>🚀 Get Your AI Live Today</span>
+        <span style="font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;opacity:0.65;">Click here</span>
+      </a>
+      <a href="#pricing" class="cta-secondary">
+        View Pricing →
+      </a>
+    </div>
+
+    <div class="trust-strip">
+      <div class="trust-item"><span class="trust-dot">●</span> Live in 48 hours</div>
+      <div class="trust-item"><span class="trust-dot">●</span> HIPAA compliant (medical)</div>
+      <div class="trust-item"><span class="trust-dot">●</span> No contracts</div>
+      <div class="trust-item"><span class="trust-dot">●</span> Fully customizable</div>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+    <span>Explore</span>
+  </div>
+</section>
+
+
+<!-- ===== CHANNELS ===== -->
+<section class="channels-section" id="channels">
+  <span class="section-eyebrow">Total Coverage</span>
+  <h2 class="section-title">One AI. Every Channel.</h2>
+  <p class="section-sub">Most tools do one thing. Company Periscope handles your entire communication stack from a single platform — purpose-built for practices.</p>
+  <div class="channels-grid">
+    <div class="channel-card">
+      <span class="ch-icon">📞</span>
+      <div class="ch-title">Inbound Calls</div>
+      <p class="ch-desc">Answers, qualifies and routes every call — after-hours or 24/7 calls</p>
+    </div>
+    <div class="channel-card">
+      <span class="ch-icon">📋</span>
+      <div class="ch-title">Intake & Booking</div>
+      <p class="ch-desc">Captures lead info, history, and preferences before the first visit</p>
+    </div>
+    <div class="channel-card">
+      <span class="ch-icon">🚨</span>
+      <div class="ch-title">Emergency Alerts</div>
+      <p class="ch-desc">Instant text, phone, and email alerts for urgent situations — critical for medical and dental</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HOW IT WORKS (ANIMATED) ===== -->
+<section style="background:#040B16;padding:100px 24px;overflow:hidden;">
+  <div style="text-align:center;margin-bottom:72px;">
+    <span class="section-eyebrow">See It In Action</span>
+    <h2 class="section-title">Every Call Answered.<br/>Every Lead Captured.</h2>
+    <p class="section-sub">Watch how Company Periscope handles a real inbound call — capturing every detail and notifying your team, automatically, 24/7.</p>
+  </div>
+
+  <!-- Animated call simulation -->
+  <div class="call-sim">
+
+    <!-- Incoming call card -->
+    <div class="sim-phone">
+      <div class="call-ring-anim">
+        <div class="ring r1"></div>
+        <div class="ring r2"></div>
+        <div class="ring r3"></div>
+        <span class="phone-emoji">📱</span>
+      </div>
+      <div class="caller-name">Incoming Call</div>
+      <div class="caller-sub">After hours · 9:47 PM</div>
+    </div>
+
+    <!-- Arrow -->
+    <div class="sim-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">AI answers instantly</div>
+    </div>
+
+    <!-- Chat window -->
+    <div class="sim-chat">
+      <div class="chat-header">
+        <div class="chat-avatar">🤖</div>
+        <div>
+          <div class="chat-name">Jordan · AI Receptionist</div>
+          <div class="chat-status"><span class="status-dot"></span> Live</div>
+        </div>
+      </div>
+      <div class="chat-body" id="chatBody"></div>
+    </div>
+
+    <!-- Arrow 2 -->
+    <div class="sim-arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">Details captured</div>
+    </div>
+
+    <!-- Result card -->
+    <div class="sim-result" id="simResult">
+      <div class="result-icon">✅</div>
+      <div class="result-title">Captured.</div>
+      <div class="result-details">
+        <div class="result-row"><span>👤</span> Lead captured</div>
+        <div class="result-row"><span>📋</span> Details logged</div>
+        <div class="result-row"><span>📲</span> Team notified</div>
+        <div class="result-row"><span>📅</span> Office confirms</div>
+      </div>
+      <div class="result-badge">While you slept.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== INDUSTRIES ===== -->
+<section class="industries-section" id="industries">
+  <span class="section-eyebrow">Built for Your Specialty</span>
+  <h2 class="section-title">AI That Knows<br/>Your Practice.</h2>
+  <p class="section-sub">Not generic chatbots. Our AI is trained on the workflows, terminology, and requirements of your exact industry — whether you run a practice or a service business.</p>
+  <div class="industry-grid">
+    <div class="industry-card">
+      <span class="ind-emoji">🦷</span>
+      <div class="ind-name">Dental Practices</div>
+      <p class="ind-desc">Knows how to answer insurance questions, HIPAA, emergency triage, and new patient onboarding</p>
+      <span class="ind-tag">HIPAA Ready</span>
+    </div>
+    <div class="industry-card">
+      <span class="ind-emoji">⚖️</span>
+      <div class="ind-name">Law Firms</div>
+      <p class="ind-desc">Qualifies leads, handles new client intake, and captures case details around the clock</p>
+      <span class="ind-tag">Intake Trained</span>
+    </div>
+    <div class="industry-card">
+      <span class="ind-emoji">🏥</span>
+      <div class="ind-name">Medical Practices</div>
+      <p class="ind-desc">Appointment booking, prescription refill routing, and after-hours triage</p>
+      <span class="ind-tag">HIPAA Ready</span>
+    </div>
+    <div class="industry-card">
+      <span class="ind-emoji">🔧</span>
+      <div class="ind-name">HVAC & Home Services</div>
+      <p class="ind-desc">Emergency dispatch, service scheduling, and seasonal demand management</p>
+      <span class="ind-tag">24/7 Dispatch</span>
+    </div>
+    <div class="industry-card">
+      <span class="ind-emoji">🚗</span>
+      <div class="ind-name">Auto Repair</div>
+      <p class="ind-desc">Service bay scheduling, estimate follow-ups, and repair status updates</p>
+      <span class="ind-tag">Auto Booked</span>
+    </div>
+    <div class="industry-card">
+      <span class="ind-emoji">🏠</span>
+      <div class="ind-name">Real Estate</div>
+      <p class="ind-desc">Instant response to listing inquiries, showing scheduling, and lead capture</p>
+      <span class="ind-tag">Always On</span>
+    </div>
+  </div>
+
+  <!-- Any Business block -->
+  <div class="any-biz-block" style="max-width:1040px;margin:24px auto 0;background:linear-gradient(135deg,rgba(26,108,246,0.1),rgba(0,229,192,0.07));border:1px solid rgba(0,229,192,0.25);border-radius:20px;padding:40px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px;">
+    <div>
+      <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--teal);margin-bottom:10px;">Any Industry. Any Business.</div>
+      <p style="font-family:var(--font);font-size:clamp(1.15rem,2.5vw,1.5rem);font-weight:700;color:var(--white);line-height:1.3;max-width:480px;">AI customized by our team<br/>for your specific business.</p>
+      <p style="font-size:0.9rem;color:var(--dim);margin-top:10px;max-width:460px;line-height:1.6;">Not a law firm. Not a dental office. Something else entirely? We build and train your AI around your exact workflows, terminology, and customers.</p>
+    </div>
+    <a href="https://companyperiscope.com" class="cta-primary" style="white-space:nowrap;">Let's Build Yours →</a>
+  </div>
+</section>
+
+<!-- ===== STATS ===== -->
+<section class="stats-section">
+  <span class="section-eyebrow">The Numbers</span>
+  <h2 class="section-title" style="text-align:center;">What You're Currently Missing</h2>
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">$400</div>
+      <div class="stat-label">Average value of a<br/>single missed practice call</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">40%</div>
+      <div class="stat-label">Of voicemails that are<br/>never returned</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">90s</div>
+      <div class="stat-label">Our AI response time,<br/>around the clock</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">48h</div>
+      <div class="stat-label">From signup to your<br/>first call answered</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CALCULATOR CTA ===== -->
+<section class="calc-cta-section">
+  <div class="calc-grid-bg" aria-hidden="true"></div>
+
+  <span class="section-eyebrow">Free Tool</span>
+  <h2 class="section-title" style="font-size:clamp(2rem,4vw,3rem);letter-spacing:-0.01em;">Missed Call<br/>Revenue Calculator</h2>
+  <p class="calc-section-sub">Find out exactly how much unanswered calls are costing your business — personalized to your industry in under 2 minutes.</p>
+
+  <div class="calc-live-tag">
+    <span class="live-pulse"></span>
+    Interactive &mdash; try it now
+  </div>
+
+  <div class="calc-embed-wrapper">
+    <iframe
+      src="calculator-embed.html"
+      id="calc-frame"
+      class="calc-embed-frame"
+      frameborder="0"
+      scrolling="no"
+      title="Missed Call Revenue Calculator"
+    ></iframe>
+  </div>
+</section>
+
+<!-- ===== FLOW DIAGRAM ===== -->
+<section style="background:var(--navy);padding:100px 24px;overflow:hidden;">
+  <div style="text-align:center;margin-bottom:64px;">
+    <span class="section-eyebrow">The Intelligence Layer</span>
+    <h2 class="section-title">Every Call Gets Handled<br/>The Right Way.</h2>
+    <p class="section-sub">Our AI doesn't just answer — it routes, qualifies, books, and notifies, all in real time.</p>
+  </div>
+  <div class="mermaid-wrap">
+    <div class="mermaid">
+%%{init:{'theme':'base','themeVariables':{'primaryColor':'#0D2040','primaryTextColor':'#e2e8f0','primaryBorderColor':'#1A6CF6','lineColor':'#1A6CF6','background':'#050D1A','mainBkg':'#0D2040','fontFamily':'Inter,sans-serif','fontSize':'13px','edgeLabelBackground':'#071525'}}}%%
+flowchart TD
+    A["📱 Phone Rings"] --> B["🤖 AI Picks Up\nInstantly · 24/7"]
+    B --> C{"Caller needs?"}
+    C --> D["📅 Book Appt"]
+    C --> E["❓ Quick Q"]
+    C --> F["🚨 Urgent"]
+    C --> G["🔁 Follow-Up"]
+    D --> H["✅ Scheduled\n+ Confirmed"]
+    E --> I["💬 Answered\nAutomatically"]
+    F --> J["📲 Owner\nAlerted Now"]
+    G --> K["📋 Logged\n+ Routed"]
+    H --> L["📊 Your Dashboard"]
+    I --> L
+    J --> L
+    K --> L
+    </div>
+  </div>
+</section>
+
+<!-- ===== JORDAN ===== -->
+<section class="jordan-section">
+  <div class="jordan-glow"></div>
+  <div class="jordan-card">
+    <span class="section-eyebrow" style="display:block;text-align:center;">Live Demo</span>
+    <h2 class="section-title">Talk to Jordan.<br/>Right Now.</h2>
+    <p>Jordan is our AI — live, trained, and ready. Experience exactly how your patients and clients will be handled before you spend a dollar.</p>
+    <a href="https://companyperiscope.com" class="cta-jordan">💬 Start a Free Conversation →</a>
+    <p class="cta-sub">No signup required · See it live in 30 seconds</p>
+  </div>
+</section>
+
+<!-- ===== PRICING ===== -->
+<section class="pricing-section" id="pricing" style="padding:100px 24px;">
+  <span class="section-eyebrow">Pricing</span>
+  <h2 class="section-title">Two Plans.<br/>One Clear Goal.</h2>
+  <p class="section-sub">Both include full AI setup, dedicated onboarding, and 24/7 coverage. Choose the plan that matches your call volume.</p>
+
+  <div class="pricing-grid">
+
+    <!-- STARTER — 300 MIN -->
+    <div class="offer-card">
+      <div class="plan-name">Starter</div>
+      <div class="plan-minutes">300</div>
+      <div class="plan-minutes-label">minutes / month included</div>
+
+      <div class="offer-total">
+        <div class="offer-total-amount">$1,000</div>
+        <div class="offer-total-label">to get started<br/>today</div>
+      </div>
+
+      <div class="offer-breakdown">
+        <div class="offer-line">
+          <div class="offer-line-amount">$500</div>
+          <div class="offer-line-label">Setup Fee</div>
+          <div class="offer-line-note">One-time · full AI configuration</div>
+        </div>
+        <div class="offer-line">
+          <div class="offer-line-amount">$500</div>
+          <div class="offer-line-label">First Month</div>
+          <div class="offer-line-note">Included in today's payment</div>
+        </div>
+      </div>
+
+      <p class="offer-then">Then <strong>$500/month</strong>, billed monthly. Cancel anytime.</p>
+
+      <hr class="offer-divider"/>
+
+      <ul class="p-features">
+        <li><span class="p-check">✓</span> AI Receptionist — live 24/7, answers every missed call</li>
+        <li><span class="p-check">✓</span> Dedicated onboarding call — configured for your business</li>
+        <li><span class="p-check">✓</span> Live in 48 hours — no tech setup on your end</li>
+        <li><span class="p-check">✓</span> Lead capture, intake &amp; appointment booking</li>
+        <li><span class="p-check">✓</span> After-hours &amp; overflow coverage — 365 days</li>
+        <li><span class="p-check">✓</span> Full analytics dashboard</li>
+      </ul>
+
+      <div class="offer-guarantee">
+        <div class="offer-guarantee-icon">🛡️</div>
+        <div>
+          <div class="offer-guarantee-title">30-Day Money-Back Guarantee</div>
+          <div class="offer-guarantee-desc">Not satisfied in 30 days? We refund your $500 subscription — no questions asked.</div>
+        </div>
+      </div>
+
+      <a href="https://buy.stripe.com/dRm8wP74O6AEeG220b8N206" class="p-btn">Get Started — $1,000 Today →</a>
+      <p class="offer-fine">Secure checkout via Stripe · Live in 48 hours</p>
+    </div>
+
+    <!-- PRO — 1,000 MIN -->
+    <div class="offer-card popular">
+      <div class="popular-badge">Most Popular</div>
+      <div class="plan-name">Pro</div>
+      <div class="plan-minutes">1,000</div>
+      <div class="plan-minutes-label">minutes / month included</div>
+
+      <div class="offer-total">
+        <div class="offer-total-amount">$1,500</div>
+        <div class="offer-total-label">to get started<br/>today</div>
+      </div>
+
+      <div class="offer-breakdown">
+        <div class="offer-line">
+          <div class="offer-line-amount">$500</div>
+          <div class="offer-line-label">Setup Fee</div>
+          <div class="offer-line-note">One-time · full AI configuration</div>
+        </div>
+        <div class="offer-line">
+          <div class="offer-line-amount">$1,000</div>
+          <div class="offer-line-label">First Month</div>
+          <div class="offer-line-note">Included in today's payment</div>
+        </div>
+      </div>
+
+      <p class="offer-then">Then <strong>$1,000/month</strong>, billed monthly. Cancel anytime.</p>
+
+      <hr class="offer-divider"/>
+
+      <ul class="p-features">
+        <li><span class="p-check">✓</span> AI Receptionist — live 24/7, answers every missed call</li>
+        <li><span class="p-check">✓</span> Dedicated onboarding call — configured for your business</li>
+        <li><span class="p-check">✓</span> Live in 48 hours — no tech setup on your end</li>
+        <li><span class="p-check">✓</span> Lead capture, intake &amp; appointment booking</li>
+        <li><span class="p-check">✓</span> After-hours &amp; overflow coverage — 365 days</li>
+        <li><span class="p-check">✓</span> Full analytics dashboard</li>
+      </ul>
+
+      <div class="offer-guarantee">
+        <div class="offer-guarantee-icon">🛡️</div>
+        <div>
+          <div class="offer-guarantee-title">30-Day Money-Back Guarantee</div>
+          <div class="offer-guarantee-desc">Not satisfied in 30 days? We refund your $1,000 subscription — no questions asked.</div>
+        </div>
+      </div>
+
+      <a href="https://buy.stripe.com/dRm3cv3SC2koeG26gr8N207" class="p-btn" style="background:linear-gradient(135deg,#00C97A,#00E5C0);color:#050D1A;box-shadow:0 8px 32px rgba(0,201,122,.4);">Get Started — $1,500 Today →</a>
+      <p class="offer-fine">Secure checkout via Stripe · Live in 48 hours</p>
+    </div>
+
+  </div>
+
+  <p class="offer-enterprise">Multi-location or franchise? <a href="mailto:hello@companyperiscope.com">Contact us</a> for custom pricing. &nbsp;·&nbsp; $0.75/min overage after included minutes.</p>
+
+</section>
+
+<!-- ===== ROI MATH ===== -->
+<section style="background:#040B16;padding:48px 24px 80px;text-align:center;">
+  <div style="max-width:640px;margin:0 auto;background:rgba(26,108,246,0.07);border:1px solid rgba(26,108,246,0.2);border-radius:20px;padding:40px 36px;">
+    <p style="font-size:0.72rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);margin-bottom:16px;">The Math Is Simple</p>
+    <p style="font-family:var(--font);font-size:clamp(1.3rem,3vw,1.9rem);font-weight:700;color:var(--white);line-height:1.25;margin-bottom:16px;">One new client or job per month<br/>covers the entire cost.</p>
+    <p style="font-size:0.95rem;color:var(--dim);line-height:1.7;">$500/month after onboarding. Average dental new patient value: $800–$3,000. Average HVAC emergency job: $500–$2,000. The AI pays for itself with the first call it captures — everything after that is pure profit.</p>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+
+  <!-- Trust badges -->
+  <div class="footer-trust">
+    <div class="f-trust-badge"><span>🔒</span> HIPAA Compliant (Medical)</div>
+    <div class="f-trust-badge"><span>📋</span> No Contracts</div>
+    <div class="f-trust-badge"><span>⚡</span> Live in 48 Hours</div>
+    <div class="f-trust-badge"><span>🛡️</span> Secure & Encrypted</div>
+    <div class="f-trust-badge"><span>🕐</span> 24/7 AI Coverage</div>
+    <div class="f-trust-badge"><span>🎯</span> Fully Customizable</div>
+  </div>
+
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="/" class="f-logo">
+        <img src="companyperiscope-whitelogo.png" alt="Company Periscope" style="height:26px;width:auto;display:block;">
+      </a>
+      <p>AI-powered communication for businesses that never miss a customer.</p>
+      <a href="pilot.html" style="display:inline-block;margin-top:14px;font-family:var(--font);font-size:0.82rem;font-weight:700;color:var(--teal);text-decoration:none;border:1px solid rgba(0,229,192,0.3);border-radius:100px;padding:7px 18px;transition:all .2s;" onmouseover="this.style.borderColor='rgba(0,229,192,0.7)'" onmouseout="this.style.borderColor='rgba(0,229,192,0.3)'">Get Started Today →</a>
+    </div>
+    <div class="f-col">
+      <h4>Product</h4>
+      <ul>
+        <li><a href="#channels">Features</a></li>
+        <li><a href="#industries">Practices</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="pilot.html">Get Started Today</a></li>
+        <li><a href="mailto:support@companyperiscope.com">Support</a></li>
+      </ul>
+    </div>
+    <div class="f-col">
+      <h4>Specialties</h4>
+      <ul>
+        <li><a href="https://companyperiscope.com">Dental</a></li>
+        <li><a href="https://companyperiscope.com">Legal</a></li>
+        <li><a href="https://companyperiscope.com">Medical</a></li>
+        <li><a href="https://companyperiscope.com">HVAC</a></li>
+        <li><a href="https://companyperiscope.com">Auto Repair</a></li>
+        <li><a href="https://companyperiscope.com">Real Estate</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Disclaimer -->
+  <p class="footer-disclaimer">
+    Company Periscope is an AI-powered communication platform. HIPAA compliance applies to medical and dental practice integrations only. Company Periscope is not a licensed medical provider and does not provide medical advice, diagnosis, or treatment. AI response times and results may vary based on configuration, volume, and industry. All pricing is subject to change. $0.75/min overage applies after included minutes. Cancel any time — no long-term contracts required.
+  </p>
+
+  <div class="footer-bottom">
+    <span>© 2026 Company Periscope. All rights reserved.</span>
+    <div class="f-legal">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">HIPAA Notice</a>
+      <a href="#">Accessibility</a>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#0D2040',
+      primaryTextColor: '#e2e8f0',
+      primaryBorderColor: '#1A6CF6',
+      lineColor: '#1A6CF6',
+      secondaryColor: '#071525',
+      background: '#050D1A',
+      mainBkg: '#0D2040',
+      fontFamily: 'Montserrat, Inter, sans-serif',
+      fontSize: '14px',
+      edgeLabelBackground: '#071525',
+      clusterBkg: '#071525',
+    }
+  });
+</script>
+<script>
+  // Generate floating particles
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 28; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 3 + 1;
+    p.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${Math.random()*100}%;
+      animation-duration:${Math.random()*20+12}s;
+      animation-delay:-${Math.random()*20}s;
+      background:${Math.random()>.5 ? 'rgba(0,229,192,0.5)' : 'rgba(26,108,246,0.5)'};
+    `;
+    container.appendChild(p);
+  }
+
+  // Chat animation
+  const chatBody = document.getElementById('chatBody');
+  const simResult = document.getElementById('simResult');
+
+  const conversation = [
+    { role: 'ai',   text: "Thanks for calling. I'm Jordan, the AI assistant. How can I help you today?", delay: 1200 },
+    { role: 'user', text: "Hi, I'd like to make an appointment.", delay: 2800 },
+    { role: 'ai',   text: "Of course! Can I get your name and best callback number?", delay: 4400 },
+    { role: 'user', text: "Sarah Johnson — 555-0192.", delay: 6200 },
+    { role: 'ai',   text: "Got it, Sarah. What day and time works best for you?", delay: 7800 },
+    { role: 'user', text: "Tomorrow morning if possible.", delay: 9400 },
+    { role: 'ai',   text: "Perfect. I've captured all your details. The office will reach out shortly to confirm — you're all set!", delay: 11000 },
+  ];
+
+  let started = false;
+
+  function runChat() {
+    if (started) return;
+    started = true;
+    conversation.forEach(({ role, text, delay }) => {
+      // Show typing indicator first for AI messages
+      if (role === 'ai') {
+        setTimeout(() => {
+          const t = document.createElement('div');
+          t.className = 'typing';
+          t.id = 'typing-' + delay;
+          t.innerHTML = '<span></span><span></span><span></span>';
+          chatBody.appendChild(t);
+          chatBody.scrollTop = chatBody.scrollHeight;
+        }, delay - 800);
+      }
+      setTimeout(() => {
+        // Remove typing indicator
+        const t = document.getElementById('typing-' + delay);
+        if (t) t.remove();
+        const m = document.createElement('div');
+        m.className = `msg ${role}`;
+        m.textContent = text;
+        chatBody.appendChild(m);
+        chatBody.scrollTop = chatBody.scrollHeight;
+        // Show result after last message
+        if (delay === 11000) {
+          setTimeout(() => simResult.classList.add('visible'), 800);
+        }
+      }, delay);
+    });
+  }
+
+  // Start chat when section scrolls into view
+  const chatObserver = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) runChat();
+  }, { threshold: 0.3 });
+  if (chatBody) chatObserver.observe(chatBody);
+
+  // Above/below particles
+  function makeParticles(containerId, sinking) {
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    for (let i = 0; i < 22; i++) {
+      const p = document.createElement('div');
+      const size = Math.random() * 3 + 1.5;
+      const isTeal = Math.random() > 0.4;
+      p.className = 'sp' + (sinking ? ' sp-sink' : '');
+      p.style.cssText = `
+        width:${size}px; height:${size}px;
+        left:${Math.random()*100}%;
+        bottom:${sinking ? 'auto' : '0'};
+        top:${sinking ? '0' : 'auto'};
+        --drift:${(Math.random()-0.5)*30}px;
+        animation-duration:${Math.random()*12+8}s;
+        animation-delay:-${Math.random()*12}s;
+        background:${sinking
+          ? 'rgba(255,80,80,0.5)'
+          : (isTeal ? 'rgba(0,229,192,0.6)' : 'rgba(26,108,246,0.5)')};
+      `;
+      el.appendChild(p);
+    }
+  }
+  makeParticles('upParticles', false);
+  makeParticles('downParticles', true);
+
+  // Hamburger menu
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+  });
+  document.querySelectorAll('.mobile-link').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // Nav scroll effect
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    nav.style.background = window.scrollY > 60
+      ? 'rgba(5,13,26,0.95)'
+      : 'rgba(5,13,26,0.6)';
+  });
+
+  // Animate stats on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.channel-card, .industry-card, .stat, .p-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(24px)';
+    el.style.transition = 'opacity .5s ease, transform .5s ease';
+    observer.observe(el);
+  });
+
+  window.addEventListener('message', function(e) {
+    if (e.data && e.data.calcHeight) {
+      var frame = document.getElementById('calc-frame');
+      if (frame) frame.style.height = (e.data.calcHeight + 24) + 'px';
+    }
+  });
+</script>
+
+
+<!-- ===== JORDAN POPUP ===== -->
+<div id="jordanModal" style="display:none;position:fixed;inset:0;z-index:9999;align-items:center;justify-content:center;">
+  <div id="jordanBackdrop" onclick="closeJordan()" style="position:absolute;inset:0;background:rgba(5,13,26,.85);backdrop-filter:blur(8px);"></div>
+  <div style="position:relative;z-index:1;width:100%;max-width:520px;margin:16px;background:#0A1628;border:1.5px solid rgba(26,108,246,.35);border-radius:24px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.6),0 0 0 1px rgba(26,108,246,.15);">
+    <!-- Modal header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:linear-gradient(135deg,rgba(26,108,246,.15),rgba(0,229,192,.07));border-bottom:1px solid rgba(26,108,246,.15);">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#1A6CF6,#00E5C0);display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 0 16px rgba(26,108,246,.5);">🤖</div>
+        <div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.95rem;color:#fff;">Jordan</div>
+          <div style="display:flex;align-items:center;gap:5px;font-size:.68rem;color:#00E5C0;"><span style="width:5px;height:5px;background:#00E5C0;border-radius:50%;display:inline-block;animation:blink 1.5s infinite;"></span>AI Receptionist · Live</div>
+        </div>
+      </div>
+      <button onclick="closeJordan()" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.6);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .2s;" onmouseover="this.style.background='rgba(255,255,255,.15)'" onmouseout="this.style.background='rgba(255,255,255,.08)'">✕</button>
+    </div>
+    <!-- iframe -->
+    <iframe
+      id="jordanFrame"
+      src=""
+      data-src="https://companyperiscope.com/custom-ai"
+      title="Talk to Jordan — Company Periscope AI"
+      style="width:100%;height:560px;border:none;display:block;background:#050D1A;"
+    ></iframe>
+  </div>
+</div>
+
+<!-- Floating Jordan button -->
+<div id="jordanBtn" onclick="openJordan()" style="position:fixed;bottom:28px;right:28px;z-index:1000;display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#1A6CF6,#00C9E5);color:#fff;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.9rem;padding:14px 22px 14px 16px;border-radius:100px;cursor:pointer;box-shadow:0 8px 32px rgba(26,108,246,.5),0 0 0 1px rgba(26,108,246,.3);transition:all .25s;user-select:none;" onmouseover="this.style.transform='scale(1.05)';this.style.boxShadow='0 12px 48px rgba(26,108,246,.7)'" onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 8px 32px rgba(26,108,246,.5)'">
+  <div style="width:34px;height:34px;background:rgba(255,255,255,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;">🤖</div>
+  <span>Talk to Jordan</span>
+  <span style="width:8px;height:8px;background:#00E5C0;border-radius:50%;animation:blink 1.5s infinite;flex-shrink:0;"></span>
+</div>
+
+<script>
+  function openJordan() {
+    const modal = document.getElementById('jordanModal');
+    const frame = document.getElementById('jordanFrame');
+    // Lazy-load iframe only on first open
+    if (!frame.src || frame.src === window.location.href) {
+      frame.src = frame.dataset.src;
+    }
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+  function closeJordan() {
+    document.getElementById('jordanModal').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeJordan(); });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Welcome to Company Periscope — Complete Your Onboarding</title>
+  <meta name="description" content="Payment confirmed. Complete your onboarding form so we can configure your AI receptionist and get you live within 48 hours."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- ============================================================
+       TRACKING PIXELS — $1,000 PURCHASE CONVERSION
+       Uncomment and fill in your IDs when ready.
+
+  Facebook Pixel:
+  <script>
+    fbq('init', 'YOUR_PIXEL_ID');
+    fbq('track', 'Purchase', {value: 1000.00, currency: 'USD'});
+  </script>
+
+  Google Ads:
+  <script>
+    gtag('event', 'conversion', {
+      'send_to': 'AW-XXXXXXX/XXXXXXX',
+      'value': 1000.0,
+      'currency': 'USD'
+    });
+  </script>
+  ============================================================ -->
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #050D1A; --teal: #00E5C0; --green: #00C97A; --blue: #1A6CF6;
+      --white: #fff; --font: 'Montserrat', sans-serif; --body: 'Inter', sans-serif;
+    }
+    html { font-family: var(--body); background: var(--navy); color: var(--white); }
+    body { overflow-x: hidden; }
+
+    /* ── NAV ────────────────────────────────────────── */
+    nav {
+      display: flex; align-items: center; padding: 20px 48px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    nav img { height: 28px; }
+
+    /* ── CONFIRMATION HERO ──────────────────────────── */
+    .confirm-hero {
+      text-align: center; padding: 72px 24px 56px;
+      position: relative; overflow: hidden;
+    }
+    .confirm-hero::before {
+      content: '';
+      position: absolute; top: -60px; left: 50%; transform: translateX(-50%);
+      width: 700px; height: 500px;
+      background: radial-gradient(ellipse, rgba(0,201,122,0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .success-icon {
+      width: 88px; height: 88px; border-radius: 50%;
+      background: rgba(0,201,122,0.12); border: 2px solid rgba(0,201,122,0.35);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.4rem; margin: 0 auto 28px;
+      animation: pop 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    }
+    @keyframes pop {
+      from { opacity: 0; transform: scale(0.6); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    .confirm-badge {
+      display: inline-block; font-family: var(--font); font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--green); background: rgba(0,201,122,0.1);
+      border: 1px solid rgba(0,201,122,0.25); padding: 5px 14px;
+      border-radius: 20px; margin-bottom: 22px;
+    }
+
+    .confirm-hero h1 {
+      font-family: var(--font); font-weight: 900;
+      font-size: clamp(1.9rem, 4vw, 2.8rem);
+      line-height: 1.1; margin-bottom: 16px;
+    }
+    .confirm-hero h1 span { color: var(--teal); }
+
+    .confirm-hero p {
+      font-size: 1rem; color: rgba(255,255,255,0.6);
+      line-height: 1.7; max-width: 520px; margin: 0 auto 40px;
+    }
+
+    /* ── NEXT STEPS STRIP ───────────────────────────── */
+    .next-steps {
+      display: flex; justify-content: center; gap: 0;
+      max-width: 720px; margin: 0 auto 60px;
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; overflow: hidden;
+    }
+    .ns-item {
+      flex: 1; padding: 22px 20px; text-align: center;
+      border-right: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+    }
+    .ns-item:last-child { border-right: none; }
+    .ns-num {
+      font-family: var(--font); font-weight: 900; font-size: 0.68rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--teal); margin-bottom: 8px;
+    }
+    .ns-title { font-family: var(--font); font-weight: 700; font-size: 0.87rem; margin-bottom: 4px; }
+    .ns-desc { font-size: 0.75rem; color: rgba(255,255,255,0.4); line-height: 1.5; }
+
+    /* ── FORM SECTION ───────────────────────────────── */
+    .form-section {
+      max-width: 860px; margin: 0 auto; padding: 0 24px 100px;
+    }
+    .form-header {
+      text-align: center; margin-bottom: 36px;
+    }
+    .form-eyebrow {
+      display: inline-block; font-family: var(--font); font-size: 0.65rem; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--teal); background: rgba(0,229,192,0.1);
+      padding: 4px 10px; border-radius: 4px; margin-bottom: 14px;
+    }
+    .form-header h2 {
+      font-family: var(--font); font-weight: 900; font-size: clamp(1.5rem, 3vw, 2rem);
+      margin-bottom: 10px; line-height: 1.2;
+    }
+    .form-header p {
+      font-size: 0.95rem; color: rgba(255,255,255,0.5); line-height: 1.7;
+      max-width: 480px; margin: 0 auto;
+    }
+
+    .form-wrapper {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      overflow: hidden;
+      min-height: 2775px;
+    }
+
+    /* ── FOOTER ─────────────────────────────────────── */
+    footer {
+      padding: 28px 48px; border-top: 1px solid rgba(255,255,255,0.07);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    footer img { height: 22px; opacity: 0.5; }
+    .footer-note { font-size: 0.78rem; color: rgba(255,255,255,0.25); font-family: var(--font); font-weight: 500; }
+
+    @media (max-width: 640px) {
+      nav { padding: 16px 20px; }
+      .confirm-hero { padding: 52px 20px 40px; }
+      .next-steps { flex-direction: column; border-radius: 14px; max-width: 100%; margin: 0 20px 48px; }
+      .ns-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+      .ns-item:last-child { border-bottom: none; }
+      .form-section { padding: 0 16px 72px; }
+      footer { padding: 24px 20px; flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <img src="companyperiscope-whitelogo.png" alt="Company Periscope"/>
+</nav>
+
+<!-- CONFIRMATION HERO -->
+<section class="confirm-hero">
+  <div class="success-icon">🎉</div>
+  <div class="confirm-badge">Payment Confirmed — Welcome Aboard</div>
+  <h1>You're in. Let's get your<br/><span>AI live in 48 hours.</span></h1>
+  <p>
+    Your $1,000 payment has been received. Complete the onboarding form below and our team will reach out within 24 hours to schedule your setup call — then you're live.
+  </p>
+
+  <!-- NEXT STEPS -->
+  <div class="next-steps">
+    <div class="ns-item">
+      <div class="ns-num">Step 1 — Now</div>
+      <div class="ns-title">Complete this form</div>
+      <div class="ns-desc">Takes 5–10 minutes. Gives us everything we need to build your AI.</div>
+    </div>
+    <div class="ns-item">
+      <div class="ns-num">Step 2 — Within 24 hrs</div>
+      <div class="ns-title">Onboarding call</div>
+      <div class="ns-desc">We'll reach out to schedule a 30–45 min setup call with your team.</div>
+    </div>
+    <div class="ns-item">
+      <div class="ns-num">Step 3 — 48 hrs</div>
+      <div class="ns-title">You go live</div>
+      <div class="ns-desc">Your AI receptionist is active. No call goes unanswered from here on.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ONBOARDING FORM -->
+<section class="form-section">
+  <div class="form-header">
+    <span class="form-eyebrow">Onboarding Form</span>
+    <h2>Tell us about your business</h2>
+    <p>The more detail you provide here, the better your AI will be configured on day one. This form takes about 5–10 minutes.</p>
+  </div>
+
+  <div class="form-wrapper">
+    <iframe
+      src="https://api.leadconnectorhq.com/widget/form/bFgRJHPMYxWQjB7yK5HS"
+      style="width:100%;height:2775px;border:none;border-radius:0px"
+      id="inline-bFgRJHPMYxWQjB7yK5HS"
+      data-layout="{'id':'INLINE'}"
+      data-trigger-type="alwaysShow"
+      data-trigger-value=""
+      data-activation-type="alwaysActivated"
+      data-activation-value=""
+      data-deactivation-type="neverDeactivate"
+      data-deactivation-value=""
+      data-form-name="DR Client Onboarding"
+      data-height="2775"
+      data-layout-iframe-id="inline-bFgRJHPMYxWQjB7yK5HS"
+      data-form-id="bFgRJHPMYxWQjB7yK5HS"
+      title="DR Client Onboarding"
+    ></iframe>
+    <script src="https://link.msgsndr.com/js/form_embed.js"></script>
+  </div>
+</section>
+
+<footer>
+  <img src="companyperiscope-whitelogo.png" alt="Company Periscope"/>
+  <span class="footer-note">Questions? Email us at hello@companyperiscope.com</span>
+</footer>
+
+</body>
+</html>

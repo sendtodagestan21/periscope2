@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Company Periscope — Funnel Launch Plan & Approval Request</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:  #050D1A;
+      --deep:  #07111F;
+      --blue:  #1A6CF6;
+      --teal:  #00E5C0;
+      --cyan:  #00C9E5;
+      --white: #FFFFFF;
+      --red:   #FF4D6A;
+      --green: #00C97A;
+      --font:  'Montserrat', system-ui, sans-serif;
+      --body:  'Inter', system-ui, sans-serif;
+    }
+
+    html {
+      font-family: var(--body);
+      background: #f4f6fa;
+      color: #1a1a2e;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    body {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 0 80px 0;
+    }
+
+    /* ============ COVER ============ */
+    .cover {
+      background: linear-gradient(160deg, #050D1A 0%, #07111F 40%, #0a1628 100%);
+      color: white;
+      padding: 72px 64px 64px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cover::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(0,229,192,0.08) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .cover-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0,229,192,0.12);
+      border: 1px solid rgba(0,229,192,0.3);
+      color: #00E5C0;
+      font-family: var(--font);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 32px;
+    }
+
+    .cover-badge::before {
+      content: '';
+      width: 7px; height: 7px;
+      background: #00E5C0;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #00E5C0;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .cover-eyebrow {
+      font-family: var(--font);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 16px;
+    }
+
+    .cover-title {
+      font-family: var(--font);
+      font-size: 2.8rem;
+      font-weight: 800;
+      line-height: 1.1;
+      color: white;
+      margin-bottom: 16px;
+    }
+
+    .cover-title span { color: #00E5C0; }
+
+    .cover-subtitle {
+      font-size: 1.05rem;
+      font-weight: 400;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.6;
+      max-width: 540px;
+      margin-bottom: 48px;
+    }
+
+    .cover-meta {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .meta-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      font-family: var(--font);
+    }
+
+    .meta-value {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: white;
+      font-family: var(--font);
+    }
+
+    /* ============ DOCUMENT BODY ============ */
+    .doc-section {
+      background: white;
+      padding: 56px 64px;
+      border-bottom: 1px solid #e8ecf4;
+    }
+
+    .doc-section:last-child { border-bottom: none; }
+
+    .doc-section.alt {
+      background: #f9fafd;
+    }
+
+    .section-tag {
+      display: inline-block;
+      font-family: var(--font);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #1A6CF6;
+      background: rgba(26,108,246,0.08);
+      padding: 4px 10px;
+      border-radius: 4px;
+      margin-bottom: 16px;
+    }
+
+    .section-tag.teal {
+      color: #007a6a;
+      background: rgba(0,229,192,0.1);
+    }
+
+    .section-tag.red {
+      color: #c0001a;
+      background: rgba(255,77,106,0.1);
+    }
+
+    .section-tag.green {
+      color: #006b40;
+      background: rgba(0,201,122,0.1);
+    }
+
+    .section-tag.purple {
+      color: #6b39c9;
+      background: rgba(107,57,201,0.1);
+    }
+
+    h2 {
+      font-family: var(--font);
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: #050D1A;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    h3 {
+      font-family: var(--font);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #050D1A;
+      margin-bottom: 10px;
+    }
+
+    h4 {
+      font-family: var(--font);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #050D1A;
+      margin-bottom: 6px;
+    }
+
+    p {
+      font-size: 0.97rem;
+      line-height: 1.75;
+      color: #3a3a5c;
+      margin-bottom: 16px;
+    }
+
+    p:last-child { margin-bottom: 0; }
+
+    .section-intro {
+      font-size: 1.05rem;
+      color: #555577;
+      line-height: 1.8;
+      margin-bottom: 40px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid #eaeef8;
+    }
+
+    /* ============ CALLOUT BOXES ============ */
+    .callout {
+      border-left: 4px solid #1A6CF6;
+      background: rgba(26,108,246,0.04);
+      padding: 20px 24px;
+      border-radius: 0 8px 8px 0;
+      margin: 24px 0;
+    }
+
+    .callout.teal { border-left-color: #00E5C0; background: rgba(0,229,192,0.04); }
+    .callout.red { border-left-color: #FF4D6A; background: rgba(255,77,106,0.04); }
+    .callout.green { border-left-color: #00C97A; background: rgba(0,201,122,0.04); }
+
+    .callout-title {
+      font-family: var(--font);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #1A6CF6;
+      margin-bottom: 8px;
+    }
+
+    .callout.teal .callout-title { color: #007a6a; }
+    .callout.red .callout-title { color: #c0001a; }
+    .callout.green .callout-title { color: #006b40; }
+
+    .callout p { margin-bottom: 0; font-size: 0.93rem; }
+
+    /* ============ STAT PILLS ============ */
+    .stat-row {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin: 32px 0;
+    }
+
+    .stat-pill {
+      flex: 1;
+      min-width: 160px;
+      background: #050D1A;
+      color: white;
+      border-radius: 12px;
+      padding: 24px 20px;
+      text-align: center;
+    }
+
+    .stat-pill .num {
+      font-family: var(--font);
+      font-size: 2rem;
+      font-weight: 800;
+      color: #00E5C0;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .stat-pill .lbl {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.4;
+    }
+
+    /* ============ FUNNEL STAGES ============ */
+    .funnel-flow {
+      margin: 32px 0;
+    }
+
+    .funnel-stage {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      padding: 24px 0;
+      border-bottom: 1px solid #eaeef8;
+    }
+
+    .funnel-stage:last-child { border-bottom: none; }
+
+    .stage-number {
+      flex-shrink: 0;
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: #050D1A;
+      color: #00E5C0;
+      font-family: var(--font);
+      font-weight: 800;
+      font-size: 0.9rem;
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 2px;
+    }
+
+    .stage-body { flex: 1; }
+    .stage-title { font-family: var(--font); font-weight: 700; font-size: 1rem; color: #050D1A; margin-bottom: 6px; }
+    .stage-desc { font-size: 0.9rem; line-height: 1.65; color: #555577; margin-bottom: 8px; }
+
+    .stage-tags {
+      display: flex; gap: 8px; flex-wrap: wrap;
+    }
+
+    .tag {
+      font-family: var(--font);
+      font-size: 0.68rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.06em;
+    }
+
+    .tag-blue { background: rgba(26,108,246,0.1); color: #1A6CF6; }
+    .tag-teal { background: rgba(0,229,192,0.1); color: #007a6a; }
+    .tag-red { background: rgba(255,77,106,0.1); color: #c0001a; }
+    .tag-green { background: rgba(0,201,122,0.1); color: #006b40; }
+    .tag-navy { background: rgba(5,13,26,0.08); color: #050D1A; }
+
+    .arrow-down {
+      text-align: center;
+      color: #c0c8e0;
+      font-size: 1.4rem;
+      padding: 4px 0;
+    }
+
+    /* ============ OPT-IN CARDS ============ */
+    .optin-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 32px 0;
+    }
+
+    .optin-card {
+      background: #050D1A;
+      border-radius: 12px;
+      padding: 28px 22px;
+      color: white;
+    }
+
+    .optin-icon {
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      background: rgba(0,229,192,0.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 16px;
+    }
+
+    .optin-label {
+      font-family: var(--font);
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #00E5C0;
+      margin-bottom: 8px;
+    }
+
+    .optin-title {
+      font-family: var(--font);
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: white;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .optin-desc {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.6;
+    }
+
+    /* ============ STRIPE SECTION ============ */
+    .stripe-card {
+      background: white;
+      border: 2px solid #e8ecf4;
+      border-radius: 12px;
+      padding: 32px 28px;
+      margin-bottom: 20px;
+    }
+
+    .stripe-card-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #eaeef8;
+    }
+
+    .stripe-number {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      background: #635bff;
+      color: white;
+      font-family: var(--font);
+      font-weight: 800;
+      font-size: 0.85rem;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .stripe-card-title {
+      font-family: var(--font);
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #050D1A;
+    }
+
+    .stripe-price {
+      font-family: var(--font);
+      font-weight: 800;
+      font-size: 1.3rem;
+      color: #635bff;
+      margin-left: auto;
+    }
+
+    .stripe-field {
+      margin-bottom: 16px;
+    }
+
+    .stripe-field:last-child { margin-bottom: 0; }
+
+    .stripe-field-label {
+      font-family: var(--font);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #8898b0;
+      margin-bottom: 6px;
+    }
+
+    .stripe-field-value {
+      font-size: 0.93rem;
+      color: #1a1a2e;
+      background: #f4f6fa;
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-family: var(--body);
+      line-height: 1.5;
+    }
+
+    .stripe-field-value code {
+      font-family: 'Courier New', monospace;
+      font-size: 0.88rem;
+      color: #635bff;
+    }
+
+    .stripe-note {
+      font-size: 0.82rem;
+      color: #8898b0;
+      font-style: italic;
+      margin-top: 6px;
+    }
+
+    /* ============ RESPONSIBILITY TABLE ============ */
+    .resp-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+      font-size: 0.9rem;
+    }
+
+    .resp-table th {
+      font-family: var(--font);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 12px 16px;
+      text-align: left;
+    }
+
+    .resp-table th:first-child {
+      background: #050D1A;
+      color: white;
+      border-radius: 8px 0 0 0;
+    }
+
+    .resp-table th.dan {
+      background: #1A6CF6;
+      color: white;
+    }
+
+    .resp-table th.cyrus {
+      background: #00C97A;
+      color: white;
+      border-radius: 0 8px 0 0;
+    }
+
+    .resp-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid #eaeef8;
+      vertical-align: top;
+      line-height: 1.55;
+    }
+
+    .resp-table tr:last-child td { border-bottom: none; }
+
+    .resp-table td:first-child {
+      font-weight: 600;
+      color: #050D1A;
+      background: #f9fafd;
+      font-family: var(--font);
+      font-size: 0.85rem;
+    }
+
+    .resp-table td.dan-col {
+      color: #1a3a80;
+    }
+
+    .resp-table td.cyrus-col {
+      color: #006b40;
+    }
+
+    .check { color: #00C97A; font-weight: 700; margin-right: 4px; }
+    .dot { color: #1A6CF6; font-weight: 700; margin-right: 4px; }
+
+    /* ============ TIMELINE ============ */
+    .timeline {
+      margin: 32px 0;
+      position: relative;
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 20px;
+      padding-bottom: 32px;
+      position: relative;
+    }
+
+    .timeline-item:last-child { padding-bottom: 0; }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: 19px;
+      top: 40px;
+      bottom: 0;
+      width: 2px;
+      background: #eaeef8;
+    }
+
+    .timeline-item:last-child::before { display: none; }
+
+    .timeline-dot {
+      flex-shrink: 0;
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .timeline-dot.blue { background: rgba(26,108,246,0.12); }
+    .timeline-dot.teal { background: rgba(0,229,192,0.12); }
+    .timeline-dot.green { background: rgba(0,201,122,0.12); }
+    .timeline-dot.purple { background: rgba(107,57,201,0.12); }
+
+    .timeline-content { flex: 1; padding-top: 8px; }
+
+    .timeline-phase {
+      font-family: var(--font);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #8898b0;
+      margin-bottom: 4px;
+    }
+
+    .timeline-title {
+      font-family: var(--font);
+      font-weight: 700;
+      font-size: 1rem;
+      color: #050D1A;
+      margin-bottom: 8px;
+    }
+
+    .timeline-desc {
+      font-size: 0.9rem;
+      color: #555577;
+      line-height: 1.65;
+    }
+
+    /* ============ ACTION BOX ============ */
+    .action-box {
+      background: linear-gradient(160deg, #050D1A 0%, #07111F 100%);
+      border-radius: 16px;
+      padding: 48px 40px;
+      color: white;
+      margin: 40px 0 0;
+      text-align: center;
+    }
+
+    .action-box h2 {
+      color: white;
+      font-size: 1.6rem;
+      margin-bottom: 12px;
+    }
+
+    .action-box p {
+      color: rgba(255,255,255,0.65);
+      max-width: 500px;
+      margin: 0 auto 32px;
+    }
+
+    .action-steps {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+
+    .action-step {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 16px 20px;
+      text-align: left;
+      min-width: 180px;
+    }
+
+    .action-step-num {
+      font-family: var(--font);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #00E5C0;
+      margin-bottom: 8px;
+    }
+
+    .action-step-text {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.8);
+      line-height: 1.5;
+    }
+
+    .contact-line {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .contact-line strong {
+      color: #00E5C0;
+    }
+
+    /* ============ DIVIDER ============ */
+    .divider {
+      height: 1px;
+      background: #eaeef8;
+      margin: 32px 0;
+    }
+
+    /* ============ REVENUE PROJECTION ============ */
+    .revenue-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 28px 0;
+    }
+
+    .rev-card {
+      border-radius: 12px;
+      padding: 24px 20px;
+      text-align: center;
+    }
+
+    .rev-card.conservative { background: rgba(26,108,246,0.06); border: 1px solid rgba(26,108,246,0.15); }
+    .rev-card.moderate { background: rgba(0,229,192,0.06); border: 1px solid rgba(0,229,192,0.2); }
+    .rev-card.strong { background: rgba(0,201,122,0.06); border: 1px solid rgba(0,201,122,0.2); }
+
+    .rev-scenario {
+      font-family: var(--font);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .rev-card.conservative .rev-scenario { color: #1A6CF6; }
+    .rev-card.moderate .rev-scenario { color: #007a6a; }
+    .rev-card.strong .rev-scenario { color: #006b40; }
+
+    .rev-clients {
+      font-family: var(--font);
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #050D1A;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .rev-detail {
+      font-size: 0.78rem;
+      color: #777799;
+      margin-bottom: 12px;
+    }
+
+    .rev-monthly {
+      font-family: var(--font);
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #050D1A;
+    }
+
+    /* ============ PRINT ============ */
+    @media print {
+      body { background: white; padding: 0; max-width: 100%; }
+      .doc-section { padding: 40px 48px; }
+      .cover { padding: 56px 48px 48px; }
+      .optin-grid { grid-template-columns: repeat(3, 1fr); }
+      .revenue-grid { grid-template-columns: repeat(3, 1fr); }
+      .action-box { break-inside: avoid; }
+      .stripe-card { break-inside: avoid; }
+      .funnel-stage { break-inside: avoid; }
+    }
+
+    /* ============ MOBILE ============ */
+    @media (max-width: 640px) {
+      .cover { padding: 48px 28px 40px; }
+      .cover-title { font-size: 1.9rem; }
+      .cover-meta { gap: 24px; }
+      .doc-section { padding: 40px 24px; }
+      .optin-grid { grid-template-columns: 1fr; }
+      .revenue-grid { grid-template-columns: 1fr; }
+      .stat-row { flex-direction: column; }
+      .stripe-card-header { flex-wrap: wrap; }
+      .stripe-price { margin-left: 0; width: 100%; }
+      .action-steps { flex-direction: column; }
+      .action-step { min-width: unset; }
+      .resp-table { font-size: 0.82rem; }
+      .resp-table td, .resp-table th { padding: 10px 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- COVER -->
+<!-- ============================================================ -->
+<div class="cover">
+  <div class="cover-badge">Approval Request</div>
+  <div class="cover-eyebrow">Company Periscope — Growth Funnel</div>
+  <h1 class="cover-title">Here's the plan.<br>Here's what we <span>need from you.</span></h1>
+  <p class="cover-subtitle">
+    This document outlines the full lead-generation and conversion funnel we're building for Company Periscope — three opt-in offers, a structured entry offer, and a clear path to recurring monthly revenue. Once you approve, we can move fast.
+  </p>
+  <div class="cover-meta">
+    <div class="meta-item">
+      <span class="meta-label">Prepared by</span>
+      <span class="meta-value">Cyrus Igono</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">For</span>
+      <span class="meta-value">Dan Brown &amp; Stephanie</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Date</span>
+      <span class="meta-value">April 2026</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Status</span>
+      <span class="meta-value">Awaiting Approval</span>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 1: THE PROBLEM -->
+<!-- ============================================================ -->
+<div class="doc-section">
+  <div class="section-tag red">The Opportunity</div>
+  <h2>Most small practices are losing patients before the phone even rings.</h2>
+  <p class="section-intro">
+    The numbers are staggering — and most business owners have no idea how much revenue is slipping through the cracks of a missed call, a slow text response, or an after-hours voicemail nobody checks. This is the exact problem Company Periscope was built to solve.
+  </p>
+
+  <div class="stat-row">
+    <div class="stat-pill">
+      <span class="num">$400</span>
+      <span class="lbl">Average revenue value of a missed call in dental/medical</span>
+    </div>
+    <div class="stat-pill">
+      <span class="num">40%</span>
+      <span class="lbl">Of calls to small practices go unanswered during business hours</span>
+    </div>
+    <div class="stat-pill">
+      <span class="num">68%</span>
+      <span class="lbl">Of callers who reach voicemail do not leave a message — they call a competitor</span>
+    </div>
+  </div>
+
+  <div class="callout red">
+    <div class="callout-title">Why this matters for our funnel</div>
+    <p>These stats are the hook. Every opt-in we offer puts a number on this problem — and makes Company Periscope the obvious solution. We're not selling software. We're showing business owners exactly what they're already losing.</p>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 2: THE STRATEGY OVERVIEW -->
+<!-- ============================================================ -->
+<div class="doc-section alt">
+  <div class="section-tag">Strategy Overview</div>
+  <h2>Three doors in. One funnel out.</h2>
+  <p class="section-intro">
+    We're not running one campaign. We're building three separate opt-in offers that each speak to a different type of business owner — but all lead into the same funnel. This increases our surface area for lead capture without fragmenting the brand.
+  </p>
+
+  <div class="optin-grid">
+    <div class="optin-card">
+      <div class="optin-icon">📊</div>
+      <div class="optin-label">Opt-In 1</div>
+      <div class="optin-title">Missed Call Revenue Calculator</div>
+      <div class="optin-desc">Enter your industry and average call volume. See exactly how much you're losing per month — in dollars — from missed calls.</div>
+    </div>
+    <div class="optin-card">
+      <div class="optin-icon">🔍</div>
+      <div class="optin-label">Opt-In 2</div>
+      <div class="optin-title">Free Response Time Stress Test</div>
+      <div class="optin-desc">We call or text their practice as a "patient" and send a personalized report on how fast (or slow) they responded — and what it's costing them.</div>
+    </div>
+    <div class="optin-card">
+      <div class="optin-icon">📋</div>
+      <div class="optin-label">Opt-In 3</div>
+      <div class="optin-title">AI Receptionist Script Pack</div>
+      <div class="optin-desc">A done-for-you pack of AI response scripts and self-scoring rubric. Let them test how well their current setup stacks up.</div>
+    </div>
+  </div>
+
+  <div class="callout teal">
+    <div class="callout-title">Domain Note</div>
+    <p><strong>missedcallmetrics.com</strong> will forward directly to the calculator page at <strong>companyperiscope.com/calculator</strong>. The vanity domain is easy to say out loud, put on cards, and use in ads — it drives people straight to the highest-converting opt-in without confusion.</p>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 3: THE FULL FUNNEL -->
+<!-- ============================================================ -->
+<div class="doc-section">
+  <div class="section-tag teal">The Funnel</div>
+  <h2>From curious stranger to paying client — in 5 stages.</h2>
+  <p class="section-intro">
+    Each stage is designed to deliver value before asking for anything. By the time a prospect reaches the offer, they've already gotten something useful from us — and they understand exactly what they're getting into.
+  </p>
+
+  <div class="funnel-flow">
+
+    <div class="funnel-stage">
+      <div class="stage-number">1</div>
+      <div class="stage-body">
+        <div class="stage-title">Lead Magnet — Choose Your Opt-In</div>
+        <div class="stage-desc">
+          A prospect lands on one of our three opt-in pages. They enter their email to get the Calculator result, request the Stress Test, or download the Script Pack. This is the first value exchange — we give something genuinely useful, they give us their contact info.
+        </div>
+        <div class="stage-tags">
+          <span class="tag tag-blue">Landing Page (GoHighLevel)</span>
+          <span class="tag tag-navy">Email Capture</span>
+          <span class="tag tag-teal">No credit card</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow-down">↓</div>
+
+    <div class="funnel-stage">
+      <div class="stage-number">2</div>
+      <div class="stage-body">
+        <div class="stage-title">Email Nurture Sequence (2–3 Days)</div>
+        <div class="stage-desc">
+          After opting in, the lead enters an automated email sequence. These emails aren't sales emails — they're education. We reinforce the problem they just discovered, share a case study or two, and build trust in Company Periscope before we ever mention pricing. On day 2 or 3, we introduce the entry offer.
+        </div>
+        <div class="stage-tags">
+          <span class="tag tag-blue">Automated (GoHighLevel)</span>
+          <span class="tag tag-navy">3–5 Emails</span>
+          <span class="tag tag-teal">Value-first sequence</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow-down">↓</div>
+
+    <div class="funnel-stage">
+      <div class="stage-number">3</div>
+      <div class="stage-body">
+        <div class="stage-title">Entry Offer — 2-Day Free Trial</div>
+        <div class="stage-desc">
+          We offer a genuine 2-day free trial of Company Periscope — no credit card required. This removes all perceived risk and lets the product do the selling. During the trial, the AI receptionist handles their actual calls, and the business owner sees firsthand how it works. At the end of day 2, they get an email with their trial results and a link to activate the paid pilot.
+        </div>
+        <div class="stage-tags">
+          <span class="tag tag-green">No Payment Required</span>
+          <span class="tag tag-blue">Live AI Demo</span>
+          <span class="tag tag-navy">2 Days</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow-down">↓</div>
+
+    <div class="funnel-stage">
+      <div class="stage-number">4</div>
+      <div class="stage-body">
+        <div class="stage-title">7-Day Paid Pilot — $297</div>
+        <div class="stage-desc">
+          This is the first real transaction. At $297, it's low enough that a decision-maker can approve it without a long internal conversation. The pilot includes one full week of live AI receptionist service, a setup call, and a performance report at the end. The goal of this stage is not to profit on $297 — it's to get them live, get results, and set up the monthly conversation. This is where we earn the long-term client.
+        </div>
+        <div class="stage-tags">
+          <span class="tag tag-blue">$297 One-Time</span>
+          <span class="tag tag-navy">Stripe Checkout</span>
+          <span class="tag tag-green">7 Days Live</span>
+          <span class="tag tag-teal">Performance Report</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow-down">↓</div>
+
+    <div class="funnel-stage">
+      <div class="stage-number">5</div>
+      <div class="stage-body">
+        <div class="stage-title">Monthly Subscription — $500–$1,000/mo</div>
+        <div class="stage-desc">
+          After the pilot, clients who continue pay a monthly retainer. Pricing varies by use case and volume — $500/mo for core plans, up to $1,000/mo for more complex setups (multi-location, HIPAA-compliant, custom integrations). A separate one-time onboarding fee of $500 applies when they move to a full subscription. This is the recurring revenue engine that makes Company Periscope a real business.
+        </div>
+        <div class="stage-tags">
+          <span class="tag tag-green">$500–$1,000/mo Recurring</span>
+          <span class="tag tag-blue">$500 Onboarding (One-Time)</span>
+          <span class="tag tag-navy">Monthly Stripe Subscription</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 4: REVENUE PROJECTION -->
+<!-- ============================================================ -->
+<div class="doc-section alt">
+  <div class="section-tag green">Revenue Projection</div>
+  <h2>What this looks like at scale.</h2>
+  <p class="section-intro">
+    These projections assume a mix of $500/mo and $750/mo average subscription values. Even a modest conversion rate through the funnel produces meaningful recurring revenue. The pilot offer at $297 is not the goal — the monthly subscription is.
+  </p>
+
+  <div class="revenue-grid">
+    <div class="rev-card conservative">
+      <div class="rev-scenario">Conservative</div>
+      <span class="rev-clients">5 clients</span>
+      <div class="rev-detail">at $500–$750/mo avg</div>
+      <div class="rev-monthly">$2,500–$3,750/mo</div>
+    </div>
+    <div class="rev-card moderate">
+      <div class="rev-scenario">Moderate</div>
+      <span class="rev-clients">10 clients</span>
+      <div class="rev-detail">at $500–$750/mo avg</div>
+      <div class="rev-monthly">$5,000–$7,500/mo</div>
+    </div>
+    <div class="rev-card strong">
+      <div class="rev-scenario">Strong</div>
+      <span class="rev-clients">20 clients</span>
+      <div class="rev-detail">at $500–$1,000/mo avg</div>
+      <div class="rev-monthly">$10,000–$20,000/mo</div>
+    </div>
+  </div>
+
+  <div class="callout green">
+    <div class="callout-title">Key Leverage Point</div>
+    <p>Every business that completes the 7-day pilot and stays for one month represents $500–$1,000 in predictable recurring revenue. Churn risk is low because the service becomes embedded in their daily operations — turning it off means going back to missed calls.</p>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 5: STRIPE SETUP — DAN'S PART -->
+<!-- ============================================================ -->
+<div class="doc-section">
+  <div class="section-tag" style="color: #635bff; background: rgba(99,91,255,0.08);">Stripe Setup</div>
+  <h2>Dan — here's exactly what to create in Stripe.</h2>
+  <p class="section-intro">
+    Once you give the green light, we'll need three Stripe products set up. These become the hosted checkout links that we drop into GoHighLevel. You'll create these in your Stripe dashboard under <strong>Products → Add Product</strong>. Here is exactly what to put in each one.
+  </p>
+
+  <!-- Stripe Product 1 -->
+  <div class="stripe-card">
+    <div class="stripe-card-header">
+      <div class="stripe-number">1</div>
+      <div class="stripe-card-title">7-Day Pilot Program</div>
+      <div class="stripe-price">$297</div>
+    </div>
+    <div class="stripe-field">
+      <div class="stripe-field-label">Product Name</div>
+      <div class="stripe-field-value"><code>Company Periscope — 7-Day Pilot Program</code></div>
+    </div>
+    <div class="stripe-field">
+      <div class="stripe-field-label">Price</div>
+      <div class="stripe-field-value"><code>$297.00</code> — One-time payment</div>
+    </div>
+    <div class="stripe-field">
+      <div class="stripe-field-label">Description (shown on checkout page)</div>
+      <div class="stripe-field-value">
+        7 days of live AI receptionist service for your practice. Includes setup, onboarding call, and a performance report at the end of your pilot. No subscription required — continue only if you love it.
+      </div>
+    </div>
+    <div class="stripe-field">
+      <div class="stripe-field-label">Payment Type</div>
+      <div class="stripe-field-value">One-time — <em>do not set this as a recurring subscription</em></div>
+    </div>
+    <div class="stripe-note">After creating, share the Payment Link URL with Cyrus — this goes on the GHL funnel page.</div>
+  </div>
+
+  <!-- Stripe Product 2 -->
+  <div class="stripe-card">
+    <div class="stripe-card-header">
+      <div class="stripe-number">2</div>
+      <div class="stripe-card-title">Monthly Subscription — Starter</div>
+      <div class="stripe-price">$500/mo</div>
+    </div>
+    <div class="stripe-field">
+      <div class="stripe-field-label">Product Name</div>
+      <div class="stripe-field-value"><code>Company Periscope — Starter Plan</code></div>
+    </div>
+    <div class="stripe-field">
+      <div class="stripe-field-label">Price</div>
+      <div class="stripe-field-value"><code>$500.00 / month</code> — Recurring subscription</div>
+    </div>
+    <div class="stripe-field">
+      <div class="stripe-field-label">Description (shown on checkout page)</div>
+      <div class="stripe-field-value">
+        Full AI receptionist service for your practice. Handles missed calls, after-hours inquiries, appointment requests, and more — 24/7. Month-to-month, cancel anytime.
+      </div>
+    </div>
+    <div class="stripe-field">
+      <div class="stripe-field-label">Billing Interval</div>
+      <div class="stripe-field-value">Monthly — no trial period in Stripe (trial is managed separately)</div>
+    </div>
+    <div class="stripe-note">Share the Payment Link URL with Cyrus after creating.</div>
+  </div>
+
+  <!-- Stripe Product 3 -->
+  <div class="stripe-card">
+    <div class="stripe-card-header">
+      <div class="stripe-number">3</div>
+      <div class="stripe-card-title">Monthly Subscription — Pro</div>
+      <div class="stripe-price">$1,000/mo</div>
+    </div>
+    <div class="stripe-field">
+      <div class="stripe-field-label">Product Name</div>
+      <div class="stripe-field-value"><code>Company Periscope — Pro Plan</code></div>
+    </div>
+    <div class="stripe-field">
+      <div class="stripe-field-label">Price</div>
+      <div class="stripe-field-value"><code>$1,000.00 / month</code> — Recurring subscription</div>
+    </div>
+    <div class="stripe-field">
+      <div class="stripe-field-label">Description (shown on checkout page)</div>
+      <div class="stripe-field-value">
+        Advanced AI receptionist service for multi-location practices or HIPAA-compliant environments. Includes custom integrations, priority support, and dedicated onboarding. Month-to-month, cancel anytime.
+      </div>
+    </div>
+    <div class="stripe-field">
+      <div class="stripe-field-label">Billing Interval</div>
+      <div class="stripe-field-value">Monthly recurring</div>
+    </div>
+    <div class="stripe-note">Share the Payment Link URL with Cyrus after creating.</div>
+  </div>
+
+  <!-- Stripe Product 4: Onboarding -->
+  <div class="stripe-card">
+    <div class="stripe-card-header">
+      <div class="stripe-number">4</div>
+      <div class="stripe-card-title">One-Time Onboarding Fee</div>
+      <div class="stripe-price">$500</div>
+    </div>
+    <div class="stripe-field">
+      <div class="stripe-field-label">Product Name</div>
+      <div class="stripe-field-value"><code>Company Periscope — Onboarding & Setup</code></div>
+    </div>
+    <div class="stripe-field">
+      <div class="stripe-field-label">Price</div>
+      <div class="stripe-field-value"><code>$500.00</code> — One-time payment</div>
+    </div>
+    <div class="stripe-field">
+      <div class="stripe-field-label">Description</div>
+      <div class="stripe-field-value">
+        One-time setup and onboarding for your Company Periscope subscription. Includes custom AI configuration, integration setup, and a dedicated onboarding call.
+      </div>
+    </div>
+    <div class="stripe-field">
+      <div class="stripe-field-label">When to Charge</div>
+      <div class="stripe-field-value">Only charged when a client moves from pilot → full monthly subscription. Can be sent as a separate Stripe invoice or a second link on the subscription page.</div>
+    </div>
+    <div class="stripe-note">Share the Payment Link URL with Cyrus after creating.</div>
+  </div>
+
+  <div class="callout" style="border-left-color: #635bff; background: rgba(99,91,255,0.04);">
+    <div class="callout-title" style="color: #635bff;">Quick Stripe Checklist</div>
+    <p>
+      ✅ Log in to Stripe Dashboard → Products → Add Product<br>
+      ✅ Create all 4 products above with the exact names and prices listed<br>
+      ✅ For each product, click "Create payment link" and copy that URL<br>
+      ✅ Send all 4 payment link URLs to Cyrus — that's it, you're done
+    </p>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 6: WHO DOES WHAT -->
+<!-- ============================================================ -->
+<div class="doc-section alt">
+  <div class="section-tag purple">Division of Work</div>
+  <h2>Here's what Cyrus handles once you approve.</h2>
+  <p class="section-intro">
+    Your part is approving the plan and creating the Stripe products. Everything below is what Cyrus will build independently — no back-and-forth required once those Stripe links are shared.
+  </p>
+
+  <table class="resp-table">
+    <thead>
+      <tr>
+        <th>Task</th>
+        <th class="dan">Dan / Stephanie</th>
+        <th class="cyrus">Cyrus</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Stripe Products</td>
+        <td class="dan-col"><span class="dot">●</span>Create 4 products, share payment link URLs</td>
+        <td class="cyrus-col"><span class="check">✓</span>Embeds links into pages</td>
+      </tr>
+      <tr>
+        <td>Calculator Opt-In Page</td>
+        <td class="dan-col">Review &amp; approve copy</td>
+        <td class="cyrus-col"><span class="check">✓</span>Builds in GoHighLevel, connects form, sets up email sequence</td>
+      </tr>
+      <tr>
+        <td>Stress Test Opt-In Page</td>
+        <td class="dan-col">Approve page; confirm how stress test calls are conducted</td>
+        <td class="cyrus-col"><span class="check">✓</span>Builds page, form, and email delivery workflow</td>
+      </tr>
+      <tr>
+        <td>Script Pack Opt-In Page</td>
+        <td class="dan-col">Provide or approve the script content</td>
+        <td class="cyrus-col"><span class="check">✓</span>Builds page, automates PDF delivery via email</td>
+      </tr>
+      <tr>
+        <td>missedcallmetrics.com</td>
+        <td class="dan-col">Confirm domain ownership / purchase if not owned</td>
+        <td class="cyrus-col"><span class="check">✓</span>Sets up 301 redirect → companyperiscope.com/calculator</td>
+      </tr>
+      <tr>
+        <td>Email Nurture Sequences</td>
+        <td class="dan-col">Review &amp; approve email copy</td>
+        <td class="cyrus-col"><span class="check">✓</span>Writes, builds, and automates all 3 sequences in GHL</td>
+      </tr>
+      <tr>
+        <td>2-Day Trial Workflow</td>
+        <td class="dan-col">Confirm how trial access is provisioned on your backend</td>
+        <td class="cyrus-col"><span class="check">✓</span>Builds confirmation flow and trial-end email with pilot offer</td>
+      </tr>
+      <tr>
+        <td>7-Day Pilot Checkout Page</td>
+        <td class="dan-col">Share $297 Stripe payment link</td>
+        <td class="cyrus-col"><span class="check">✓</span>Builds checkout page, thank-you page, and post-purchase onboarding email</td>
+      </tr>
+      <tr>
+        <td>Subscription Checkout Pages</td>
+        <td class="dan-col">Share $500/mo and $1,000/mo Stripe links</td>
+        <td class="cyrus-col"><span class="check">✓</span>Builds pages for each plan, connects to GHL CRM pipeline</td>
+      </tr>
+      <tr>
+        <td>Website Updates</td>
+        <td class="dan-col">Review deployed site, flag anything to adjust</td>
+        <td class="cyrus-col"><span class="check">✓</span>All edits implemented and deployed on Netlify</td>
+      </tr>
+      <tr>
+        <td>Analytics / Tracking</td>
+        <td class="dan-col">Approve or share any existing tracking accounts</td>
+        <td class="cyrus-col"><span class="check">✓</span>Sets up conversion tracking across all opt-in and checkout pages</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 7: LAUNCH TIMELINE -->
+<!-- ============================================================ -->
+<div class="doc-section">
+  <div class="section-tag">Launch Timeline</div>
+  <h2>From approval to live funnel.</h2>
+  <p class="section-intro">
+    Once Dan approves and shares the Stripe payment links, this is the realistic buildout timeline. All three opt-in pages can be built in parallel. The full funnel goes live approximately 5–7 days after we have the Stripe links in hand.
+  </p>
+
+  <div class="timeline">
+
+    <div class="timeline-item">
+      <div class="timeline-dot blue">✅</div>
+      <div class="timeline-content">
+        <div class="timeline-phase">Day 0</div>
+        <div class="timeline-title">Approval &amp; Stripe Setup</div>
+        <div class="timeline-desc">Dan reviews and approves this document. Dan creates 4 Stripe products and shares payment links with Cyrus. Cyrus already has GHL access and the website is live.</div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot teal">🔨</div>
+      <div class="timeline-content">
+        <div class="timeline-phase">Days 1–3</div>
+        <div class="timeline-title">Build All 3 Opt-In Pages</div>
+        <div class="timeline-desc">Calculator page + form + GHL automation. Stress Test page + form + delivery workflow. Script Pack page + form + PDF delivery. All three built and tested simultaneously.</div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot teal">✉️</div>
+      <div class="timeline-content">
+        <div class="timeline-phase">Days 2–4</div>
+        <div class="timeline-title">Email Sequences Written &amp; Automated</div>
+        <div class="timeline-desc">Nurture sequences for each opt-in built in GHL. Dan/Stephanie reviews and approves copy. Sequences activated and tested end-to-end.</div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot blue">💳</div>
+      <div class="timeline-content">
+        <div class="timeline-phase">Days 3–5</div>
+        <div class="timeline-title">Pilot &amp; Subscription Checkout Pages</div>
+        <div class="timeline-desc">$297 pilot checkout page built with Stripe link embedded. Thank-you page and post-purchase onboarding email built. Subscription pages built for $500/mo and $1,000/mo plans.</div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot green">🚀</div>
+      <div class="timeline-content">
+        <div class="timeline-phase">Day 5–7</div>
+        <div class="timeline-title">Full Funnel Live</div>
+        <div class="timeline-desc">All pages connected end-to-end. missedcallmetrics.com redirect live. Tracking confirmed on all conversion events. Ready to drive traffic.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 8: WHY THIS WORKS -->
+<!-- ============================================================ -->
+<div class="doc-section alt">
+  <div class="section-tag teal">Why It Works</div>
+  <h2>The psychology behind every stage.</h2>
+  <p class="section-intro">
+    This funnel isn't built on pressure or urgency tactics — it's built on genuine value delivery at every stage. Each step earns the right to ask for the next one.
+  </p>
+
+  <div class="funnel-flow">
+    <div class="funnel-stage">
+      <div class="stage-number" style="background: rgba(5,13,26,0.08); color: #050D1A;">💡</div>
+      <div class="stage-body">
+        <div class="stage-title">The Calculator Makes the Problem Real</div>
+        <div class="stage-desc">Abstract problems don't convert. Dollar amounts do. When a dental practice owner sees "$8,400/month in missed revenue" with their actual call volume entered, the problem stops being hypothetical. They feel it. That's what makes them want a solution.</div>
+      </div>
+    </div>
+    <div class="funnel-stage">
+      <div class="stage-number" style="background: rgba(5,13,26,0.08); color: #050D1A;">🤝</div>
+      <div class="stage-body">
+        <div class="stage-title">The Trial Removes All Risk</div>
+        <div class="stage-desc">Most B2B SaaS requires a demo, a proposal, a contract, a card. We flip the model — try it first, pay after. This works especially well for local business owners who are skeptical of tech tools and have been burned before. The 2-day trial converts to paid pilots at a much higher rate than cold pitches.</div>
+      </div>
+    </div>
+    <div class="funnel-stage">
+      <div class="stage-number" style="background: rgba(5,13,26,0.08); color: #050D1A;">🔢</div>
+      <div class="stage-body">
+        <div class="stage-title">$297 Is Below the Decision Threshold</div>
+        <div class="stage-desc">For most small practices, anything under $300 can be approved without involving a partner or running it by an accountant. The pilot priced at $297 is deliberate — it's just low enough to be a "yes" decision, while still being high enough to signal real commitment from the prospect.</div>
+      </div>
+    </div>
+    <div class="funnel-stage">
+      <div class="stage-number" style="background: rgba(5,13,26,0.08); color: #050D1A;">📈</div>
+      <div class="stage-body">
+        <div class="stage-title">The Pilot Creates Product Stickiness Before the Ask</div>
+        <div class="stage-desc">By the end of the 7-day pilot, the business owner has seen what life looks like with Company Periscope. Missed calls are being handled. Patients are being followed up with. Turning it off now feels like a loss, not a choice. That's when the subscription conversation is easiest.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- CTA / APPROVAL BOX -->
+<!-- ============================================================ -->
+<div class="doc-section">
+  <div class="action-box">
+    <div class="cover-badge" style="margin: 0 auto 24px; display: inline-flex;">Ready to Move</div>
+    <h2>Approve the plan. Share the links. We'll handle the rest.</h2>
+    <p>Once you give the green light, Cyrus will start building immediately. All we need from you are the four Stripe payment links — everything else is already in motion.</p>
+    <div class="action-steps">
+      <div class="action-step">
+        <div class="action-step-num">Step 1</div>
+        <div class="action-step-text">Review this document and confirm the plan</div>
+      </div>
+      <div class="action-step">
+        <div class="action-step-num">Step 2</div>
+        <div class="action-step-text">Create 4 Stripe products using the exact details above</div>
+      </div>
+      <div class="action-step">
+        <div class="action-step-num">Step 3</div>
+        <div class="action-step-text">Share the 4 payment link URLs with Cyrus</div>
+      </div>
+      <div class="action-step">
+        <div class="action-step-num">Step 4</div>
+        <div class="action-step-text">Cyrus builds — full funnel live within 5–7 days</div>
+      </div>
+    </div>
+    <p class="contact-line">Questions? Reach Cyrus at <strong>cyrus.igono@gmail.com</strong></p>
+  </div>
+</div>
+
+
+</body>
+</html>
