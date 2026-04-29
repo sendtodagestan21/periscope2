@@ -512,7 +512,11 @@
       border-radius: 20px; padding: 32px 24px;
       text-align: left; transition: all .3s; cursor: pointer;
       position: relative; overflow: hidden;
+      display: flex; flex-direction: column;
+      text-decoration: none; color: inherit;
     }
+    .ind-cta { margin-top: auto; padding-top: 18px; font-family: var(--font); font-size: 0.8rem; font-weight: 700; color: var(--teal); letter-spacing: 0.04em; display: flex; align-items: center; gap: 6px; transition: gap .2s; }
+    .industry-card:hover .ind-cta { gap: 10px; }
 
     .industry-card::after {
       content: ''; position: absolute; top: 0; right: 0;
@@ -1529,42 +1533,48 @@
   <h2 class="section-title">AI That Knows<br/>Your Practice.</h2>
   <p class="section-sub">Not generic chatbots. Our AI is trained on the workflows, terminology, and requirements of your exact industry — whether you run a practice or a service business.</p>
   <div class="industry-grid">
-    <div class="industry-card">
+    <a href="dental.html" class="industry-card">
       <span class="ind-emoji">🦷</span>
       <div class="ind-name">Dental Practices</div>
       <p class="ind-desc">Knows how to answer insurance questions, HIPAA, emergency triage, and new patient onboarding</p>
       <span class="ind-tag">HIPAA Ready</span>
-    </div>
-    <div class="industry-card">
+      <div class="ind-cta">See Dental Page →</div>
+    </a>
+    <a href="legal.html" class="industry-card">
       <span class="ind-emoji">⚖️</span>
       <div class="ind-name">Law Firms</div>
       <p class="ind-desc">Qualifies leads, handles new client intake, and captures case details around the clock</p>
       <span class="ind-tag">Intake Trained</span>
-    </div>
-    <div class="industry-card">
+      <div class="ind-cta">See Legal Page →</div>
+    </a>
+    <a href="medical.html" class="industry-card">
       <span class="ind-emoji">🏥</span>
       <div class="ind-name">Medical Practices</div>
       <p class="ind-desc">Appointment booking, prescription refill routing, and after-hours triage</p>
       <span class="ind-tag">HIPAA Ready</span>
-    </div>
-    <div class="industry-card">
+      <div class="ind-cta">See Medical Page →</div>
+    </a>
+    <a href="hvac.html" class="industry-card">
       <span class="ind-emoji">🔧</span>
       <div class="ind-name">HVAC & Home Services</div>
       <p class="ind-desc">Emergency dispatch, service scheduling, and seasonal demand management</p>
       <span class="ind-tag">24/7 Dispatch</span>
-    </div>
-    <div class="industry-card">
+      <div class="ind-cta">See HVAC Page →</div>
+    </a>
+    <a href="auto-repair.html" class="industry-card">
       <span class="ind-emoji">🚗</span>
       <div class="ind-name">Auto Repair</div>
       <p class="ind-desc">Service bay scheduling, estimate follow-ups, and repair status updates</p>
       <span class="ind-tag">Auto Booked</span>
-    </div>
-    <div class="industry-card">
+      <div class="ind-cta">See Auto Repair Page →</div>
+    </a>
+    <a href="real-estate.html" class="industry-card">
       <span class="ind-emoji">🏠</span>
       <div class="ind-name">Real Estate</div>
       <p class="ind-desc">Instant response to listing inquiries, showing scheduling, and lead capture</p>
       <span class="ind-tag">Always On</span>
-    </div>
+      <div class="ind-cta">See Real Estate Page →</div>
+    </a>
   </div>
 
   <!-- Any Business block -->
