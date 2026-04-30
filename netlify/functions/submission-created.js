@@ -6,7 +6,8 @@
 //   RESEND_FROM     — sender address (default: onboarding@resend.dev until domain verified)
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
-const NOTIFY_EMAIL   = process.env.NOTIFY_EMAIL  || 'support@companyperiscope.com';
+const NOTIFY_EMAILS  = (process.env.NOTIFY_EMAIL || 'support@companyperiscope.com')
+                         .split(',').map(e => e.trim()).filter(Boolean);
 const RESEND_FROM    = process.env.RESEND_FROM   || 'Company Periscope <onboarding@resend.dev>';
 
 // ─── Field label map ─────────────────────────────────────────────────────────
@@ -267,7 +268,7 @@ exports.handler = async (event) => {
       },
       body: JSON.stringify({
         from: RESEND_FROM,
-        to: [NOTIFY_EMAIL],
+        to: NOTIFY_EMAILS,
         ...(replyTo ? { reply_to: replyTo } : {}),
         subject: `New Onboarding: ${bizName} — ${formTitle}`,
         html
