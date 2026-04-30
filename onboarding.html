@@ -598,13 +598,12 @@
     </div>
     <div class="field-row">
       <div class="field-group">
-        <label class="field-label">Call Forwarding Type</label>
-        <select name="call_forwarding_type">
-          <option value="" disabled selected>Select type</option>
-          <option>All Calls</option>
-          <option>After Hours Only</option>
-          <option>No Answer / Overflow</option>
-        </select>
+        <label class="field-label">Call Forwarding — When should AI answer? (select all that apply)</label>
+        <div class="check-grid" style="flex-direction:column;gap:10px;margin-top:4px;">
+          <label class="check-item"><input type="checkbox" name="forward_all_calls" value="Yes"/><span class="check-box"></span><span class="check-label">All Calls — 24/7, every inbound call</span></label>
+          <label class="check-item"><input type="checkbox" name="forward_after_hours" value="Yes"/><span class="check-box"></span><span class="check-label">After Hours — outside of business hours</span></label>
+          <label class="check-item"><input type="checkbox" name="forward_overflow" value="Yes"/><span class="check-box"></span><span class="check-label">Overflow / No Answer — when staff can't pick up</span></label>
+        </div>
       </div>
       <div class="field-group">
         <label class="field-label">Rings Before Forwarding</label>
