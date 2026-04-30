@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Onboarding — Company Periscope</title>
+  <title>Client Onboarding — Company Periscope</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -18,253 +18,562 @@
     }
     html { font-family: var(--body); background: var(--navy); color: var(--white); }
     body { overflow-x: hidden; }
-
-    /* NAV */
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 16px 40px;
-      background: rgba(5,13,26,.95); backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border);
-    }
+    nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 16px 40px; background: rgba(5,13,26,.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
     .nav-logo img { height: 28px; width: auto; display: block; }
-    .nav-cta { background: linear-gradient(135deg,#1A6CF6,#00C9E5); color: var(--white); font-family: var(--font); font-weight: 600; font-size: .88rem; padding: 10px 22px; border-radius: 100px; text-decoration: none; transition: all .2s; box-shadow: 0 0 20px rgba(26,108,246,.35); }
-    .nav-cta:hover { transform: scale(1.03); }
+    .nav-back { color: var(--teal); font-family: var(--font); font-size: .88rem; font-weight: 600; text-decoration: none; transition: opacity .2s; }
+    .nav-back:hover { opacity: .7; }
 
-    /* HERO */
-    .onb-hero {
-      text-align: center; padding: 72px 24px 56px;
-      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(26,108,246,.13) 0%, transparent 70%);
-      border-bottom: 1px solid var(--border);
+    .hero { padding: 64px 24px 48px; text-align: center; border-bottom: 1px solid var(--border); background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(26,108,246,.1) 0%, transparent 70%); }
+    .eyebrow { font-size: .72rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--teal); display: block; margin-bottom: 14px; }
+    .hero h1 { font-family: var(--font); font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; letter-spacing: -.02em; margin-bottom: 12px; }
+    .hero p { font-size: .95rem; color: var(--dim); max-width: 540px; margin: 0 auto; line-height: 1.7; }
+
+    .form-wrap { max-width: 760px; margin: 0 auto; padding: 56px 24px 100px; }
+
+    /* Section headers */
+    .form-section { margin-bottom: 48px; }
+    .section-label { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+    .section-num { width: 28px; height: 28px; border-radius: 50%; background: rgba(0,229,192,.12); border: 1px solid rgba(0,229,192,.3); color: var(--teal); font-family: var(--font); font-size: .72rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .section-title { font-family: var(--font); font-size: 1rem; font-weight: 700; color: var(--white); }
+
+    /* Field groups */
+    .field-group { margin-bottom: 20px; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+    label { display: block; font-family: var(--font); font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.5); margin-bottom: 8px; }
+    label .req { color: var(--teal); margin-left: 2px; }
+    input[type="text"], input[type="email"], input[type="tel"], input[type="url"], input[type="number"], select, textarea {
+      width: 100%; background: rgba(255,255,255,.06); border: 1.5px solid rgba(255,255,255,.14);
+      border-radius: 10px; padding: 13px 16px; font-family: var(--body); font-size: .92rem; color: var(--white);
+      outline: none; transition: border-color .2s, background .2s; appearance: none;
     }
-    .eyebrow { font-size: .72rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--teal); margin-bottom: 20px; display: block; }
-    .onb-hero h1 { font-family: var(--font); font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 700; line-height: 1.1; letter-spacing: -.025em; margin-bottom: 18px; }
-    .onb-hero h1 span { background: linear-gradient(135deg,#60AAFF,#00E5C0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .onb-hero p { font-size: 1.05rem; color: var(--dim); max-width: 540px; margin: 0 auto; line-height: 1.75; }
+    input:focus, select:focus, textarea:focus { border-color: rgba(0,229,192,.5); background: rgba(0,229,192,.04); }
+    input::placeholder, textarea::placeholder { color: rgba(255,255,255,.25); }
+    textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+    select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,0.4)' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px; cursor: pointer; }
+    select option { background: #0D1A2E; color: var(--white); }
 
-    /* TIMELINE */
-    .timeline-section { padding: 80px 24px; max-width: 760px; margin: 0 auto; }
-    .timeline-section h2 { font-family: var(--font); font-size: clamp(1.5rem,3vw,2rem); font-weight: 700; letter-spacing: -.02em; margin-bottom: 48px; text-align: center; }
-    .timeline { position: relative; display: flex; flex-direction: column; gap: 0; }
-    .timeline::before { content: ''; position: absolute; left: 27px; top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg, rgba(26,108,246,.6) 0%, rgba(0,229,192,.6) 100%); }
+    /* Yes/No toggles */
+    .yn-group { display: flex; gap: 10px; }
+    .yn-btn { flex: 1; padding: 11px; border: 1.5px solid rgba(255,255,255,.12); border-radius: 8px; background: transparent; color: rgba(255,255,255,.5); font-family: var(--font); font-size: .82rem; font-weight: 600; cursor: pointer; transition: all .15s; text-align: center; }
+    .yn-btn:hover { border-color: rgba(0,229,192,.3); color: var(--white); }
+    input[type="radio"] { display: none; }
+    input[type="radio"]:checked + .yn-btn { background: rgba(0,229,192,.12); border-color: rgba(0,229,192,.5); color: var(--teal); }
 
-    .tl-item { display: flex; gap: 24px; padding-bottom: 44px; position: relative; }
-    .tl-item:last-child { padding-bottom: 0; }
-    .tl-num {
-      width: 56px; height: 56px; border-radius: 50%; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.3rem; position: relative; z-index: 1;
-      background: linear-gradient(135deg, #0D2040, #0A1830);
-      border: 2px solid rgba(26,108,246,.5);
-      box-shadow: 0 0 20px rgba(26,108,246,.3);
-    }
-    .tl-item.done .tl-num { background: linear-gradient(135deg, #0A2A1A, #0A1A2A); border-color: rgba(0,229,192,.5); box-shadow: 0 0 20px rgba(0,229,192,.3); }
-    .tl-item.active .tl-num { background: linear-gradient(135deg, #1A6CF6, #00C9E5); border-color: transparent; box-shadow: 0 0 28px rgba(26,108,246,.6); }
-    .tl-body { padding-top: 10px; }
-    .tl-tag { font-size: .65rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.3); margin-bottom: 6px; display: block; }
-    .tl-item.done .tl-tag { color: var(--teal); }
-    .tl-item.active .tl-tag { color: #60AAFF; }
-    .tl-body h3 { font-family: var(--font); font-size: 1.05rem; font-weight: 600; color: var(--white); margin-bottom: 6px; }
-    .tl-body p { font-size: .88rem; color: var(--dim); line-height: 1.65; max-width: 500px; }
+    /* Checkboxes */
+    .check-group { display: flex; flex-direction: column; gap: 10px; }
+    .check-item { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+    .check-item input[type="checkbox"] { display: none; }
+    .check-box { width: 20px; height: 20px; border-radius: 5px; border: 1.5px solid rgba(255,255,255,.2); background: transparent; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+    .check-item input[type="checkbox"]:checked + .check-box { background: var(--teal); border-color: var(--teal); }
+    .check-item input[type="checkbox"]:checked + .check-box::after { content: '✓'; color: var(--navy); font-size: .75rem; font-weight: 700; }
+    .check-item span { font-size: .9rem; color: var(--dim); }
 
-    /* WHAT TO PREPARE */
-    .prep-section { padding: 0 24px 80px; max-width: 1000px; margin: 0 auto; }
-    .prep-section h2 { font-family: var(--font); font-size: clamp(1.5rem,3vw,2rem); font-weight: 700; letter-spacing: -.02em; margin-bottom: 12px; text-align: center; }
-    .prep-section > p { font-size: 1rem; color: var(--dim); text-align: center; max-width: 480px; margin: 0 auto 48px; line-height: 1.7; }
-    .prep-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 16px; }
-    .prep-card { background: var(--glass); border: 1px solid var(--border); border-radius: 18px; padding: 28px 24px; }
-    .prep-card:hover { border-color: rgba(0,229,192,.2); }
-    .prep-icon { font-size: 1.6rem; margin-bottom: 14px; }
-    .prep-card h3 { font-family: var(--font); font-size: .95rem; font-weight: 600; color: var(--white); margin-bottom: 10px; }
-    .prep-card ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
-    .prep-card li { font-size: .83rem; color: var(--dim); display: flex; gap: 8px; align-items: flex-start; line-height: 1.5; }
-    .prep-card li::before { content: '→'; color: var(--teal); flex-shrink: 0; font-weight: 700; margin-top: 1px; }
+    /* Submit */
+    .submit-bar { display: flex; flex-direction: column; align-items: center; gap: 12px; padding-top: 16px; border-top: 1px solid var(--border); margin-top: 40px; }
+    .submit-btn { width: 100%; max-width: 400px; padding: 16px; border-radius: 12px; border: none; background: linear-gradient(135deg, #1A6CF6, #0050d0); color: #fff; font-family: var(--font); font-weight: 700; font-size: 1rem; cursor: pointer; transition: transform .2s, box-shadow .2s; letter-spacing: .02em; }
+    .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(26,108,246,.4); }
+    .submit-note { font-size: .78rem; color: rgba(255,255,255,.3); text-align: center; }
 
-    /* FORM CARD */
-    .form-section { padding: 0 24px 100px; max-width: 900px; margin: 0 auto; }
-    .form-header { text-align: center; margin-bottom: 40px; }
-    .form-header h2 { font-family: var(--font); font-size: clamp(1.8rem,4vw,2.6rem); font-weight: 700; letter-spacing: -.02em; margin-bottom: 14px; }
-    .form-header p { font-size: 1rem; color: var(--dim); max-width: 500px; margin: 0 auto; line-height: 1.7; }
-    .form-card { background: var(--glass); border: 1px solid var(--border); border-radius: 24px; overflow: hidden; }
-    .form-card-header { padding: 18px 28px; background: linear-gradient(135deg, rgba(26,108,246,.12), rgba(0,229,192,.06)); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
-    .form-card-header .dot { width: 8px; height: 8px; background: var(--teal); border-radius: 50%; animation: blink 1.5s infinite; }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.25} }
-    .form-card-header span { font-family: var(--font); font-size: .88rem; font-weight: 600; color: var(--white); }
-    .form-card iframe { width: 100%; min-height: 2200px; border: none; display: block; background: transparent; }
-
-    /* SUPPORT STRIP */
-    .support-strip { background: #020810; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 28px 24px; text-align: center; }
-    .support-strip p { font-size: .9rem; color: var(--dim); }
-    .support-strip a { color: var(--teal); text-decoration: none; font-weight: 600; }
-    .support-strip a:hover { text-decoration: underline; }
-
-    /* FOOTER */
-    footer { background: #020810; border-top: 1px solid var(--border); padding: 28px 40px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
-    .f-logo img { height: 22px; width: auto; }
+    footer { background: #020810; border-top: 1px solid var(--border); padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    footer img { height: 20px; width: auto; }
     footer span { font-size: .78rem; color: rgba(255,255,255,.2); }
     footer a { color: rgba(255,255,255,.3); font-size: .78rem; text-decoration: none; }
     footer a:hover { color: rgba(255,255,255,.6); }
-
-    @media (max-width: 768px) {
+    @media (max-width: 640px) {
       nav, footer { padding: 14px 16px; }
-      .onb-hero { padding: 56px 16px 40px; }
-      .timeline-section, .prep-section, .form-section { padding-left: 16px; padding-right: 16px; }
-      .form-card-header { padding: 14px 18px; }
+      .hero { padding: 48px 16px 36px; }
+      .form-wrap { padding: 36px 16px 80px; }
+      .field-row { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
 <nav>
-  <a href="index.html" class="nav-logo">
-    <img src="companyperiscope-whitelogo.png" alt="Company Periscope"/>
-  </a>
-  <a href="mailto:support@companyperiscope.com" class="nav-cta">Contact Support →</a>
+  <a href="index.html" class="nav-logo"><img src="companyperiscope-whitelogo.png" alt="Company Periscope"/></a>
+  <a href="index.html" class="nav-back">← Back to Home</a>
 </nav>
 
-<!-- HERO -->
-<section class="onb-hero">
-  <span class="eyebrow">Client Onboarding</span>
-  <h1>Let's Get Your<br/><span>AI Live in 48 Hours.</span></h1>
-  <p>This page walks you through everything that happens after you sign up — and includes the intake form your team fills out so we can build and launch your AI receptionist.</p>
-</section>
-
-<!-- WHAT HAPPENS / TIMELINE -->
-<div class="timeline-section">
-  <h2>What Happens After You Sign Up</h2>
-  <div class="timeline">
-
-    <div class="tl-item done">
-      <div class="tl-num">✅</div>
-      <div class="tl-body">
-        <span class="tl-tag">Step 1 · Complete</span>
-        <h3>Payment Confirmed</h3>
-        <p>Your account is set up and a receipt has been sent to your email. Welcome to Company Periscope.</p>
-      </div>
-    </div>
-
-    <div class="tl-item active">
-      <div class="tl-num">📋</div>
-      <div class="tl-body">
-        <span class="tl-tag">Step 2 · You Are Here</span>
-        <h3>Complete the Intake Form</h3>
-        <p>Fill out the form below — your business info, hours, services, AI personality, and call handling preferences. This takes about 10–15 minutes and trains your AI to sound exactly like your team.</p>
-      </div>
-    </div>
-
-    <div class="tl-item">
-      <div class="tl-num">🤖</div>
-      <div class="tl-body">
-        <span class="tl-tag">Step 3 · Within 24–48 Hours</span>
-        <h3>We Build Your AI</h3>
-        <p>Our team configures and trains your AI receptionist on your specific business, scripts, and call flows. You'll receive a test call to approve before anything goes live.</p>
-      </div>
-    </div>
-
-    <div class="tl-item">
-      <div class="tl-num">📞</div>
-      <div class="tl-body">
-        <span class="tl-tag">Step 4 · Go Live</span>
-        <h3>Your AI Starts Answering</h3>
-        <p>We set up call forwarding and your AI takes over — answering every call, booking appointments, and capturing leads around the clock. You'll have dashboard access to monitor everything in real time.</p>
-      </div>
-    </div>
-
-    <div class="tl-item">
-      <div class="tl-num">📊</div>
-      <div class="tl-body">
-        <span class="tl-tag">Step 5 · Day 7</span>
-        <h3>Review &amp; Optimize</h3>
-        <p>We review your first week of call logs together and fine-tune anything that needs adjusting. You're never on your own — ongoing support is always included.</p>
-      </div>
-    </div>
-
-  </div>
+<div class="hero">
+  <span class="eyebrow">General Business Onboarding</span>
+  <h1>Let's Build Your AI Receptionist</h1>
+  <p>Fill out the information below so our team can configure your AI. The more detail you provide, the better your AI performs from day one. Required fields are marked with a <span style="color:var(--teal)">*</span>.</p>
 </div>
 
-<!-- WHAT TO PREPARE -->
-<div class="prep-section">
-  <h2>Have These Ready</h2>
-  <p>The form below takes 10–15 minutes. Having this info handy speeds things up.</p>
-  <div class="prep-grid">
-    <div class="prep-card">
-      <div class="prep-icon">🏢</div>
-      <h3>Business Basics</h3>
-      <ul>
-        <li>Business name, address, and phone number</li>
-        <li>Website URL</li>
-        <li>Business hours (including holidays)</li>
-        <li>Owner or office manager contact</li>
-      </ul>
-    </div>
-    <div class="prep-card">
-      <div class="prep-icon">📋</div>
-      <h3>Services & Pricing</h3>
-      <ul>
-        <li>Complete list of services you offer</li>
-        <li>Pricing ranges (approximate is fine)</li>
-        <li>Services you do NOT offer</li>
-        <li>Insurance accepted (if applicable)</li>
-      </ul>
-    </div>
-    <div class="prep-card">
-      <div class="prep-icon">🤖</div>
-      <h3>AI Personality & Tone</h3>
-      <ul>
-        <li>How you want your AI to sound (warm, professional, urgent)</li>
-        <li>Name for your AI (or we'll suggest one)</li>
-        <li>Scripts or greetings you'd like used</li>
-        <li>Phrases or tone to avoid</li>
-      </ul>
-    </div>
-    <div class="prep-card">
-      <div class="prep-icon">📞</div>
-      <h3>Call Handling Rules</h3>
-      <ul>
-        <li>Who gets escalated calls (owner, manager, on-call)</li>
-        <li>Emergency vs. routine call definitions</li>
-        <li>How to handle after-hours inquiries</li>
-        <li>Voicemail or text preferences</li>
-      </ul>
-    </div>
-  </div>
-</div>
+<div class="form-wrap">
+<form name="general-onboarding" method="POST" data-netlify="true" action="form-success.html">
+  <input type="hidden" name="form-name" value="general-onboarding"/>
 
-<!-- INTAKE FORM -->
-<div class="form-section">
-  <div class="form-header">
-    <span class="eyebrow">Intake Form</span>
-    <h2>Tell Us About<br/>Your Business.</h2>
-    <p>This information directly trains your AI receptionist. The more detail you provide, the better your AI performs from day one.</p>
-  </div>
-  <div class="form-card">
-    <div class="form-card-header">
-      <div class="dot"></div>
-      <span>AI Receptionist Intake Form — Secure &amp; Confidential</span>
+  <!-- 1. YOUR INFORMATION -->
+  <div class="form-section">
+    <div class="section-label">
+      <div class="section-num">1</div>
+      <div class="section-title">Your Information</div>
     </div>
-    <iframe
-      src="https://companyperiscope.com/form"
-      title="AI Receptionist Intake Form"
-      loading="lazy"
-      allow="forms"
-    ></iframe>
-  </div>
-</div>
 
-<!-- SUPPORT STRIP -->
-<div class="support-strip">
-  <p>Questions about onboarding? Email us at <a href="mailto:support@companyperiscope.com">support@companyperiscope.com</a> — we typically respond within a few hours.</p>
+    <div class="field-row">
+      <div class="field-group">
+        <label>Business Name <span class="req">*</span></label>
+        <input type="text" name="business_name" required placeholder="e.g. Apex Plumbing Co."/>
+      </div>
+      <div class="field-group">
+        <label>Website URL <span class="req">*</span></label>
+        <input type="url" name="website_url" required placeholder="https://yourbusiness.com"/>
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field-group">
+        <label>Primary Phone <span class="req">*</span></label>
+        <input type="tel" name="primary_phone" required placeholder="(555) 000-0000"/>
+      </div>
+      <div class="field-group">
+        <label>Secondary Phones</label>
+        <input type="text" name="secondary_phones" placeholder="Any other lines"/>
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field-group">
+        <label>Your Name <span class="req">*</span></label>
+        <input type="text" name="your_name" required placeholder="Full name"/>
+      </div>
+      <div class="field-group">
+        <label>Your Email <span class="req">*</span></label>
+        <input type="email" name="your_email" required placeholder="you@business.com"/>
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field-group">
+        <label>Your Role <span class="req">*</span></label>
+        <input type="text" name="your_role" required placeholder="e.g. Owner, Office Manager"/>
+      </div>
+      <div class="field-group">
+        <label>Business Address <span class="req">*</span></label>
+        <input type="text" name="business_address" required placeholder="123 Main St, City, State"/>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. BUSINESS DETAILS -->
+  <div class="form-section">
+    <div class="section-label">
+      <div class="section-num">2</div>
+      <div class="section-title">Business Details</div>
+    </div>
+
+    <div class="field-row">
+      <div class="field-group">
+        <label>Industry <span class="req">*</span></label>
+        <select name="industry" required>
+          <option value="" disabled selected>Select your industry</option>
+          <option>Dental</option>
+          <option>Medical / Healthcare</option>
+          <option>Legal / Law Firm</option>
+          <option>HVAC / Home Services</option>
+          <option>Auto Repair</option>
+          <option>Real Estate</option>
+          <option>Financial Services</option>
+          <option>Consulting</option>
+          <option>Retail / Restaurant</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label>Business Hours</label>
+        <input type="text" name="business_hours" placeholder="e.g. Mon–Fri 8am–6pm, Sat 9am–2pm"/>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label>Business Type — Describe what you do</label>
+      <textarea name="business_type" placeholder="Tell us about your business, what you offer, and who your customers are..."></textarea>
+    </div>
+
+    <div class="field-group">
+      <label>Main Services</label>
+      <textarea name="main_services" placeholder="List your primary services or offerings..."></textarea>
+    </div>
+
+    <div class="field-group">
+      <label>Service Areas</label>
+      <input type="text" name="service_areas" placeholder="Cities, counties, or regions you serve"/>
+    </div>
+
+    <div class="field-group">
+      <label>Multiple Locations?</label>
+      <div class="yn-group">
+        <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="multiple_locations" value="Yes"/><span class="yn-btn" style="display:block">Yes</span></label>
+        <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="multiple_locations" value="No"/><span class="yn-btn" style="display:block">No</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. APPOINTMENT & BOOKING -->
+  <div class="form-section">
+    <div class="section-label">
+      <div class="section-num">3</div>
+      <div class="section-title">Appointment & Booking</div>
+    </div>
+
+    <div class="field-group">
+      <label>Appointment Policy</label>
+      <select name="appointment_policy">
+        <option value="" disabled selected>Select one</option>
+        <option>Appointment required</option>
+        <option>Walk-ins welcome</option>
+        <option>Both accepted</option>
+        <option>No appointments — service only</option>
+      </select>
+    </div>
+
+    <div class="field-row">
+      <div class="field-group">
+        <label>Booking via Phone?</label>
+        <div class="yn-group">
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="booking_phone" value="Yes"/><span class="yn-btn" style="display:block">Yes</span></label>
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="booking_phone" value="No"/><span class="yn-btn" style="display:block">No</span></label>
+        </div>
+      </div>
+      <div class="field-group">
+        <label>Booking via Email?</label>
+        <div class="yn-group">
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="booking_email" value="Yes"/><span class="yn-btn" style="display:block">Yes</span></label>
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="booking_email" value="No"/><span class="yn-btn" style="display:block">No</span></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label>Booking Advance Notice Required</label>
+      <input type="text" name="booking_advance_notice" placeholder="e.g. 24 hours, 48 hours, same day OK"/>
+    </div>
+
+    <div class="field-group">
+      <label>Other Booking Instructions</label>
+      <textarea name="booking_other_instructions" placeholder="Anything specific the AI should know about how you handle bookings..."></textarea>
+    </div>
+
+    <div class="field-group">
+      <label>Cancellation Policy</label>
+      <textarea name="cancellation_policy" placeholder="e.g. 24-hour notice required, no-show fee, etc."></textarea>
+    </div>
+
+    <div class="field-group">
+      <label>Appointment Requirements</label>
+      <textarea name="appointment_requirements" placeholder="What do callers need to bring or prepare for their appointment?"></textarea>
+    </div>
+  </div>
+
+  <!-- 4. CALL HANDLING -->
+  <div class="form-section">
+    <div class="section-label">
+      <div class="section-num">4</div>
+      <div class="section-title">Call Handling</div>
+    </div>
+
+    <div class="field-row">
+      <div class="field-group">
+        <label>Call Scheduling Enabled?</label>
+        <div class="yn-group">
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="call_scheduling" value="Yes"/><span class="yn-btn" style="display:block">Yes</span></label>
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="call_scheduling" value="No"/><span class="yn-btn" style="display:block">No</span></label>
+        </div>
+      </div>
+      <div class="field-group">
+        <label>Ask About Services?</label>
+        <div class="yn-group">
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="ask_about_services" value="Yes"/><span class="yn-btn" style="display:block">Yes</span></label>
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="ask_about_services" value="No"/><span class="yn-btn" style="display:block">No</span></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label>Other Call Instructions</label>
+      <textarea name="call_other_instructions" placeholder="Any specific call handling instructions for your AI..."></textarea>
+    </div>
+  </div>
+
+  <!-- 5. PAYMENTS -->
+  <div class="form-section">
+    <div class="section-label">
+      <div class="section-num">5</div>
+      <div class="section-title">Payments & Insurance</div>
+    </div>
+
+    <div class="field-group">
+      <label>Accept Insurance</label>
+      <input type="text" name="accept_insurance" placeholder="Which plans? Or 'We do not accept insurance'"/>
+    </div>
+
+    <div class="field-row">
+      <div class="field-group">
+        <label>Accept Credit Card?</label>
+        <div class="yn-group">
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="accept_credit_card" value="Yes"/><span class="yn-btn" style="display:block">Yes</span></label>
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="accept_credit_card" value="No"/><span class="yn-btn" style="display:block">No</span></label>
+        </div>
+      </div>
+      <div class="field-group">
+        <label>Accept Debit Card?</label>
+        <div class="yn-group">
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="accept_debit_card" value="Yes"/><span class="yn-btn" style="display:block">Yes</span></label>
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="accept_debit_card" value="No"/><span class="yn-btn" style="display:block">No</span></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field-group">
+        <label>Free Consultation Offered?</label>
+        <div class="yn-group">
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="free_consultation" value="Yes"/><span class="yn-btn" style="display:block">Yes</span></label>
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="free_consultation" value="No"/><span class="yn-btn" style="display:block">No</span></label>
+        </div>
+      </div>
+      <div class="field-group">
+        <label>Other Payment Info</label>
+        <input type="text" name="other_payment_info" placeholder="Financing, payment plans, etc."/>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. AFTER HOURS & EMERGENCY -->
+  <div class="form-section">
+    <div class="section-label">
+      <div class="section-num">6</div>
+      <div class="section-title">After Hours & Emergency</div>
+    </div>
+
+    <div class="field-group">
+      <label>Emergency Services Offered</label>
+      <input type="text" name="emergency_services" placeholder="Describe any emergency or urgent services..."/>
+    </div>
+
+    <div class="field-group">
+      <label>After Hours Action</label>
+      <select name="after_hours_action">
+        <option value="" disabled selected>What should the AI do after hours?</option>
+        <option>Take a message and notify team next business day</option>
+        <option>Escalate urgent calls immediately</option>
+        <option>Provide on-call contact number</option>
+        <option>Direct to emergency services if needed</option>
+        <option>Other (describe below)</option>
+      </select>
+    </div>
+
+    <div class="field-group">
+      <label>After Hours Instructions</label>
+      <textarea name="after_hours_instructions" placeholder="Detailed instructions for how your AI should handle after-hours calls..."></textarea>
+    </div>
+
+    <div class="field-row">
+      <div class="field-group">
+        <label>Emergency Contact Name</label>
+        <input type="text" name="emergency_contact_name" placeholder="Who to contact for emergencies"/>
+      </div>
+      <div class="field-group">
+        <label>Emergency Contact Phone</label>
+        <input type="tel" name="emergency_contact_phone" placeholder="(555) 000-0000"/>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label>Emergency Escalation Method</label>
+      <select name="emergency_escalation_method">
+        <option value="" disabled selected>How should emergencies be escalated?</option>
+        <option>Call</option>
+        <option>Text</option>
+        <option>Email</option>
+        <option>Call and Text</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- 7. AI PERSONALITY & BRAND -->
+  <div class="form-section">
+    <div class="section-label">
+      <div class="section-num">7</div>
+      <div class="section-title">AI Personality & Brand</div>
+    </div>
+
+    <div class="field-group">
+      <label>AI Tone</label>
+      <select name="ai_tone">
+        <option value="" disabled selected>Select a tone</option>
+        <option>Professional</option>
+        <option>Friendly</option>
+        <option>Sales-Focused</option>
+        <option>Support-Focused</option>
+      </select>
+    </div>
+
+    <div class="field-group">
+      <label>Friendly Personality?</label>
+      <div class="yn-group">
+        <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="friendly_personality" value="Yes"/><span class="yn-btn" style="display:block">Yes</span></label>
+        <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="friendly_personality" value="No"/><span class="yn-btn" style="display:block">No</span></label>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label>Personality Notes</label>
+      <input type="text" name="personality_notes" placeholder="e.g. Warm and reassuring, straightforward and professional..."/>
+    </div>
+
+    <div class="field-group">
+      <label>Unique Selling Points</label>
+      <textarea name="unique_selling_points" placeholder="What makes your business stand out from competitors?"></textarea>
+    </div>
+
+    <div class="field-group">
+      <label>Always Mention</label>
+      <textarea name="always_mention" placeholder="Key points the AI should always bring up in calls..."></textarea>
+    </div>
+
+    <div class="field-group">
+      <label>Avoid Topics</label>
+      <textarea name="avoid_topics" placeholder="Topics, questions, or information the AI should NOT address..."></textarea>
+    </div>
+  </div>
+
+  <!-- 8. GOALS -->
+  <div class="form-section">
+    <div class="section-label">
+      <div class="section-num">8</div>
+      <div class="section-title">AI Goals</div>
+    </div>
+
+    <div class="field-group">
+      <label>Primary Goal Priority</label>
+      <select name="primary_goal_priority">
+        <option value="" disabled selected>What is the #1 priority?</option>
+        <option>Booking Appointments</option>
+        <option>Lead Capture</option>
+        <option>Customer Support</option>
+      </select>
+    </div>
+
+    <div class="field-group">
+      <label>Additional Goals (check all that apply)</label>
+      <div class="check-group" style="flex-direction:row;flex-wrap:wrap;gap:12px;">
+        <label class="check-item"><input type="checkbox" name="goal_book_appointments" value="Yes"/><span class="check-box"></span><span>Book Appointments</span></label>
+        <label class="check-item"><input type="checkbox" name="goal_answer_questions" value="Yes"/><span class="check-box"></span><span>Answer Questions</span></label>
+        <label class="check-item"><input type="checkbox" name="goal_capture_contact" value="Yes"/><span class="check-box"></span><span>Capture Contact Info</span></label>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label>Other Goals</label>
+      <input type="text" name="other_goals" placeholder="Any additional goals not listed above..."/>
+    </div>
+
+    <div class="field-group">
+      <label>Implementation Timeframe</label>
+      <input type="text" name="implementation_timeframe" placeholder="e.g. ASAP, within 2 weeks, specific date..."/>
+    </div>
+
+    <div class="field-group">
+      <label>What Does Success Look Like?</label>
+      <textarea name="success_looks_like" placeholder="Describe what a successful AI receptionist looks like for your business..."></textarea>
+    </div>
+
+    <div class="field-group">
+      <label>Super Success Outcome</label>
+      <textarea name="super_success_outcome" placeholder="Best-case scenario — what would blow you away?"></textarea>
+    </div>
+  </div>
+
+  <!-- 9. TECHNICAL SETUP -->
+  <div class="form-section">
+    <div class="section-label">
+      <div class="section-num">9</div>
+      <div class="section-title">Technical Setup</div>
+    </div>
+
+    <div class="field-row">
+      <div class="field-group">
+        <label>Call Forwarding Type</label>
+        <select name="call_forwarding_type">
+          <option value="" disabled selected>Select type</option>
+          <option>All Calls</option>
+          <option>After Hours Only</option>
+          <option>No Answer / Overflow</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label>Number of Rings Before Forward</label>
+        <input type="number" name="rings_before_forward" min="1" max="10" placeholder="e.g. 4"/>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field-group">
+        <label>Daily Report Email</label>
+        <input type="email" name="daily_report_email" placeholder="who@yourbusiness.com"/>
+      </div>
+      <div class="field-group">
+        <label>Call Summary Delivery</label>
+        <select name="call_summary_delivery">
+          <option value="" disabled selected>When to send summaries</option>
+          <option>Immediately after each call</option>
+          <option>Daily digest</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field-group">
+        <label>Current Software Used</label>
+        <input type="text" name="current_software" placeholder="e.g. Dentrix, Jane, ServiceTitan, etc."/>
+      </div>
+      <div class="field-group">
+        <label>Multilingual Support?</label>
+        <div class="yn-group">
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="multilingual_support" value="Yes"/><span class="yn-btn" style="display:block">Yes</span></label>
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="multilingual_support" value="No"/><span class="yn-btn" style="display:block">No</span></label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. ANYTHING ELSE -->
+  <div class="form-section">
+    <div class="section-label">
+      <div class="section-num">10</div>
+      <div class="section-title">Anything Else</div>
+    </div>
+
+    <div class="field-group">
+      <label>Common Challenges or Pain Points</label>
+      <textarea name="common_challenges" placeholder="What problems are you trying to solve? What frustrates you about your current phone situation?"></textarea>
+    </div>
+
+    <div class="field-group">
+      <label>Quick Facts</label>
+      <textarea name="quick_facts" placeholder="Any important facts your AI should always know about your business..."></textarea>
+    </div>
+
+    <div class="field-group">
+      <label>Additional Information</label>
+      <textarea name="additional_information" placeholder="Anything else you'd like our team to know before configuration..."></textarea>
+    </div>
+  </div>
+
+  <div class="submit-bar">
+    <button type="submit" class="submit-btn">Submit Onboarding Form →</button>
+    <p class="submit-note">Your account manager will review and be in touch within 1 business day.</p>
+  </div>
+
+</form>
 </div>
 
 <footer>
-  <a href="index.html" class="f-logo">
-    <img src="companyperiscope-whitelogo.png" alt="Company Periscope"/>
-  </a>
-  <span>© 2026 Company Periscope. Questions? <a href="mailto:support@companyperiscope.com">support@companyperiscope.com</a></span>
+  <a href="index.html"><img src="companyperiscope-whitelogo.png" alt="Company Periscope"/></a>
+  <span>© 2026 Company Periscope. All rights reserved.</span>
   <div style="display:flex;gap:16px;">
-    <a href="index.html">Home</a>
     <a href="privacy.html">Privacy</a>
     <a href="terms.html">Terms</a>
+    <a href="index.html">Home</a>
   </div>
 </footer>
 
