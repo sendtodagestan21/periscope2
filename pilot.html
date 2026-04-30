@@ -334,7 +334,7 @@
 
 <nav>
   <a href="index.html" class="nav-logo"><img src="companyperiscope-whitelogo.png" alt="Company Periscope"/></a>
-  <a href="mailto:support@companyperiscope.com?subject=Book a Demo Call" class="nav-cta" style="margin-left:auto;background:linear-gradient(135deg,#1A6CF6,#0050d0);color:#fff;font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.82rem;letter-spacing:0.04em;padding:10px 22px;border-radius:8px;text-decoration:none;transition:transform 0.18s,box-shadow 0.18s;">Book a Demo Call →</a>
+  <a href="#" onclick="event.preventDefault();openDemoModal()" class="nav-cta" style="margin-left:auto;background:linear-gradient(135deg,#1A6CF6,#0050d0);color:#fff;font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.82rem;letter-spacing:0.04em;padding:10px 22px;border-radius:8px;text-decoration:none;transition:transform 0.18s,box-shadow 0.18s;">Book a Demo Call →</a>
 </nav>
 
 <!-- HERO -->
@@ -615,6 +615,25 @@
 </footer>
 
 <!-- MODAL — contact capture → Stripe redirect -->
+<!-- DEMO MODAL -->
+<div class="modal-overlay" id="demo-modal" onclick="if(event.target===this)closeDemoModal()">
+  <div class="modal-box" style="max-width:460px;">
+    <button class="modal-close" onclick="closeDemoModal()">&#x2715;</button>
+    <div style="font-size:2rem;margin-bottom:16px;">📬</div>
+    <div class="modal-title" style="font-size:1.2rem;">Heads up before you continue</div>
+    <p class="modal-sub">Clicking the email button below will open your <strong style="color:rgba(255,255,255,.7)">email app</strong> — it won't open in the browser. If you'd rather skip that, just give us a call or reply to this page directly.</p>
+    <div style="display:flex;flex-direction:column;gap:12px;margin-top:8px;">
+      <a href="mailto:support@companyperiscope.com?subject=Book a Demo Call" style="display:flex;align-items:center;justify-content:center;gap:10px;padding:15px 24px;border-radius:10px;background:linear-gradient(135deg,#1A6CF6,#0050d0);color:#fff;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.95rem;text-decoration:none;transition:transform .2s,box-shadow .2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 10px 32px rgba(26,108,246,.4)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+        ✉️ &nbsp;Open Email App to Book
+      </a>
+      <a href="tel:+13187272017" style="display:flex;align-items:center;justify-content:center;gap:10px;padding:15px 24px;border-radius:10px;background:rgba(0,229,192,.1);border:1.5px solid rgba(0,229,192,.35);color:#00E5C0;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.95rem;text-decoration:none;transition:background .2s;" onmouseover="this.style.background='rgba(0,229,192,.18)'" onmouseout="this.style.background='rgba(0,229,192,.1)'">
+        📞 &nbsp;Call Us Instead &nbsp;·&nbsp; (318) 727-2017
+      </a>
+    </div>
+    <p style="font-size:.72rem;color:rgba(255,255,255,.25);text-align:center;margin-top:16px;line-height:1.5;">We typically respond to emails within a few hours during business hours.</p>
+  </div>
+</div>
+
 <div class="modal-overlay" id="signup-modal" onclick="if(event.target===this)closeModal()">
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal()">&#x2715;</button>
@@ -714,7 +733,16 @@
     }, 600);
   }
 
-  document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal(); });
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') { closeModal(); closeDemoModal(); } });
+
+  function openDemoModal() {
+    document.getElementById('demo-modal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeDemoModal() {
+    document.getElementById('demo-modal').classList.remove('active');
+    document.body.style.overflow = '';
+  }
 </script>
 
 </body>
