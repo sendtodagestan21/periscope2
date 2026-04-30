@@ -12,161 +12,214 @@
     :root {
       --navy: #050D1A; --blue: #1A6CF6; --teal: #00E5C0;
       --white: #fff; --dim: rgba(255,255,255,.6); --border: rgba(255,255,255,.08);
-      --glass: rgba(255,255,255,.04);
       --font: 'Space Grotesk', system-ui, sans-serif;
       --body: 'Inter', system-ui, sans-serif;
     }
-    html { font-family: var(--body); background: var(--navy); color: var(--white); }
+    html { font-family: var(--body); background: var(--navy); color: var(--white); min-height: 100vh; }
     body { overflow-x: hidden; }
-    nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 16px 40px; background: rgba(5,13,26,.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+
+    nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 16px 40px; background: rgba(5,13,26,.97); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
     .nav-logo img { height: 28px; width: auto; display: block; }
     .nav-back { color: var(--teal); font-family: var(--font); font-size: .88rem; font-weight: 600; text-decoration: none; transition: opacity .2s; }
     .nav-back:hover { opacity: .7; }
 
-    .hero { padding: 64px 24px 48px; text-align: center; border-bottom: 1px solid var(--border); background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(0,229,192,.08) 0%, transparent 70%); }
-    .eyebrow { font-size: .72rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--teal); display: block; margin-bottom: 14px; }
-    .hero h1 { font-family: var(--font); font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; letter-spacing: -.02em; margin-bottom: 12px; }
-    .hero p { font-size: .95rem; color: var(--dim); max-width: 540px; margin: 0 auto; line-height: 1.7; }
+    .progress-shell { padding: 20px 40px 0; background: rgba(5,13,26,.97); }
+    .progress-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .progress-label { font-family: var(--font); font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--teal); }
+    .progress-count { font-size: .72rem; color: rgba(255,255,255,.3); }
+    .progress-track { height: 4px; background: rgba(255,255,255,.08); border-radius: 2px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, #00E5C0, #1A6CF6); border-radius: 2px; transition: width .4s cubic-bezier(.4,0,.2,1); }
 
-    .form-wrap { max-width: 760px; margin: 0 auto; padding: 56px 24px 100px; }
+    #sonar-stage { position: fixed; inset: 0; pointer-events: none; z-index: 9999; overflow: hidden; }
+    .sonar-ring {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 6px; height: 6px;
+      margin: -3px 0 0 -3px;
+      border-radius: 50%;
+      border: 2px solid var(--teal);
+      animation: sonar-expand .7s ease-out forwards;
+    }
+    @keyframes sonar-expand {
+      0%   { transform: scale(1);   opacity: .9; }
+      60%  { opacity: .4; }
+      100% { transform: scale(200); opacity: 0; }
+    }
 
-    .form-section { margin-bottom: 48px; }
-    .section-label { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
-    .section-num { width: 28px; height: 28px; border-radius: 50%; background: rgba(0,229,192,.12); border: 1px solid rgba(0,229,192,.3); color: var(--teal); font-family: var(--font); font-size: .72rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .section-title { font-family: var(--font); font-size: 1rem; font-weight: 700; color: var(--white); }
+    .form-wrap { max-width: 680px; margin: 0 auto; padding: 48px 24px 100px; }
+
+    .step { display: none; }
+    .step.active { display: block; animation: step-enter .35s ease forwards; }
+    @keyframes step-enter {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .step-head { margin-bottom: 32px; }
+    .step-eyebrow { font-size: .68rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--teal); display: block; margin-bottom: 10px; }
+    .step-head h2 { font-family: var(--font); font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 700; letter-spacing: -.02em; margin-bottom: 8px; line-height: 1.2; }
+    .step-head p { font-size: .9rem; color: var(--dim); line-height: 1.6; }
 
     .field-group { margin-bottom: 20px; }
     .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
-    label { display: block; font-family: var(--font); font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.5); margin-bottom: 8px; }
-    label .req { color: var(--teal); margin-left: 2px; }
+    .field-label { display: block; font-family: var(--font); font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.45); margin-bottom: 8px; }
+    .field-label .req { color: var(--teal); margin-left: 2px; }
     input[type="text"], input[type="email"], input[type="tel"], input[type="url"], input[type="number"], select, textarea {
-      width: 100%; background: rgba(255,255,255,.06); border: 1.5px solid rgba(255,255,255,.14);
+      width: 100%; background: rgba(255,255,255,.06); border: 1.5px solid rgba(255,255,255,.13);
       border-radius: 10px; padding: 13px 16px; font-family: var(--body); font-size: .92rem; color: var(--white);
       outline: none; transition: border-color .2s, background .2s; appearance: none;
     }
     input:focus, select:focus, textarea:focus { border-color: rgba(0,229,192,.5); background: rgba(0,229,192,.04); }
-    input::placeholder, textarea::placeholder { color: rgba(255,255,255,.25); }
-    textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+    input.err, select.err, textarea.err { border-color: rgba(255,80,80,.6) !important; background: rgba(255,40,40,.04) !important; }
+    input::placeholder, textarea::placeholder { color: rgba(255,255,255,.22); }
+    textarea { resize: vertical; min-height: 96px; line-height: 1.6; }
     select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,0.4)' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px; cursor: pointer; }
     select option { background: #0D1A2E; color: var(--white); }
 
     .yn-group { display: flex; gap: 10px; }
-    .yn-btn { flex: 1; padding: 11px; border: 1.5px solid rgba(255,255,255,.12); border-radius: 8px; background: transparent; color: rgba(255,255,255,.5); font-family: var(--font); font-size: .82rem; font-weight: 600; cursor: pointer; transition: all .15s; text-align: center; }
+    .yn-btn { flex: 1; padding: 11px; border: 1.5px solid rgba(255,255,255,.12); border-radius: 8px; background: transparent; color: rgba(255,255,255,.45); font-family: var(--font); font-size: .82rem; font-weight: 600; cursor: pointer; transition: all .15s; text-align: center; display: block; }
     .yn-btn:hover { border-color: rgba(0,229,192,.3); color: var(--white); }
     input[type="radio"] { display: none; }
     input[type="radio"]:checked + .yn-btn { background: rgba(0,229,192,.12); border-color: rgba(0,229,192,.5); color: var(--teal); }
 
-    .check-group { display: flex; flex-direction: column; gap: 10px; }
-    .check-item { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+    .check-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+    .check-item { display: flex; align-items: center; gap: 10px; cursor: pointer; }
     .check-item input[type="checkbox"] { display: none; }
     .check-box { width: 20px; height: 20px; border-radius: 5px; border: 1.5px solid rgba(255,255,255,.2); background: transparent; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all .15s; }
     .check-item input[type="checkbox"]:checked + .check-box { background: var(--teal); border-color: var(--teal); }
-    .check-item input[type="checkbox"]:checked + .check-box::after { content: '✓'; color: var(--navy); font-size: .75rem; font-weight: 700; }
-    .check-item span { font-size: .9rem; color: var(--dim); }
+    .check-item input[type="checkbox"]:checked + .check-box::after { content: '✓'; color: var(--navy); font-size: .72rem; font-weight: 700; }
+    .check-item .check-label { font-size: .88rem; color: var(--dim); }
 
-    .submit-bar { display: flex; flex-direction: column; align-items: center; gap: 12px; padding-top: 16px; border-top: 1px solid var(--border); margin-top: 40px; }
-    .submit-btn { width: 100%; max-width: 400px; padding: 16px; border-radius: 12px; border: none; background: linear-gradient(135deg, #1A6CF6, #0050d0); color: #fff; font-family: var(--font); font-weight: 700; font-size: 1rem; cursor: pointer; transition: transform .2s, box-shadow .2s; letter-spacing: .02em; }
-    .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(26,108,246,.4); }
-    .submit-note { font-size: .78rem; color: rgba(255,255,255,.3); text-align: center; }
+    .step-nav { display: flex; align-items: center; justify-content: space-between; margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--border); gap: 12px; }
+    .btn-back { display: inline-flex; align-items: center; gap: 6px; padding: 12px 20px; border-radius: 9px; border: 1.5px solid rgba(255,255,255,.12); background: transparent; color: rgba(255,255,255,.5); font-family: var(--font); font-weight: 600; font-size: .88rem; cursor: pointer; transition: all .2s; }
+    .btn-back:hover { border-color: rgba(255,255,255,.25); color: var(--white); }
+    .btn-next { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; border-radius: 10px; border: none; background: linear-gradient(135deg, #1A6CF6, #0050d0); color: #fff; font-family: var(--font); font-weight: 700; font-size: .95rem; cursor: pointer; transition: transform .2s, box-shadow .2s; letter-spacing: .01em; }
+    .btn-next:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(26,108,246,.4); }
+    .btn-submit { display: inline-flex; align-items: center; gap: 8px; padding: 14px 32px; border-radius: 10px; border: none; background: linear-gradient(135deg, #00E5C0, #00b89a); color: var(--navy); font-family: var(--font); font-weight: 700; font-size: .95rem; cursor: pointer; transition: transform .2s, box-shadow .2s; letter-spacing: .01em; }
+    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(0,229,192,.4); }
+    .save-note { font-size: .72rem; color: rgba(255,255,255,.2); text-align: center; }
 
     footer { background: #020810; border-top: 1px solid var(--border); padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
     footer img { height: 20px; width: auto; }
     footer span { font-size: .78rem; color: rgba(255,255,255,.2); }
     footer a { color: rgba(255,255,255,.3); font-size: .78rem; text-decoration: none; }
     footer a:hover { color: rgba(255,255,255,.6); }
+
     @media (max-width: 640px) {
       nav, footer { padding: 14px 16px; }
-      .hero { padding: 48px 16px 36px; }
-      .form-wrap { padding: 36px 16px 80px; }
+      .progress-shell { padding: 16px 16px 0; }
+      .form-wrap { padding: 32px 16px 80px; }
       .field-row { grid-template-columns: 1fr; }
+      .btn-next, .btn-submit { padding: 13px 20px; font-size: .88rem; }
     }
   </style>
 </head>
 <body>
+
+<div id="sonar-stage"></div>
 
 <nav>
   <a href="index.html" class="nav-logo"><img src="companyperiscope-whitelogo.png" alt="Company Periscope"/></a>
   <a href="index.html" class="nav-back">← Back to Home</a>
 </nav>
 
-<div class="hero">
-  <span class="eyebrow">Dental Practice Onboarding</span>
-  <h1>Let's Build Your Dental AI Receptionist</h1>
-  <p>Fill out the information below so our team can configure your AI specifically for your dental practice. The more detail you provide, the better your AI performs from day one. Required fields are marked with a <span style="color:var(--teal)">*</span>.</p>
+<div class="progress-shell">
+  <div class="progress-meta">
+    <span class="progress-label" id="prog-label">Getting Started</span>
+    <span class="progress-count" id="prog-count">Step 1 of 18</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="prog-fill" style="width:5.5%"></div></div>
 </div>
 
 <div class="form-wrap">
 <form name="dental-onboarding" method="POST" data-netlify="true" action="form-success.html">
   <input type="hidden" name="form-name" value="dental-onboarding"/>
 
-  <!-- 1. WHO YOU ARE -->
-  <div class="form-section">
-    <div class="section-label">
-      <div class="section-num">1</div>
-      <div class="section-title">Who You Are</div>
+  <!-- STEP 1 -->
+  <div class="step active" data-step="1">
+    <div class="step-head">
+      <span class="step-eyebrow">Dental Practice Onboarding</span>
+      <h2>Let's start with your practice</h2>
+      <p>A few basics to get your dental AI configured from day one.</p>
     </div>
-
-    <div class="field-row">
-      <div class="field-group">
-        <label>Practice Name <span class="req">*</span></label>
-        <input type="text" name="practice_name" required placeholder="e.g. Bright Smile Dental"/>
-      </div>
-      <div class="field-group">
-        <label>Website URL</label>
-        <input type="url" name="website_url" placeholder="https://yourpractice.com"/>
-      </div>
+    <div class="field-group">
+      <label class="field-label">Practice Name <span class="req">*</span></label>
+      <input type="text" name="practice_name" required placeholder="e.g. Bright Smile Family Dentistry"/>
     </div>
-    <div class="field-row">
-      <div class="field-group">
-        <label>Primary Phone <span class="req">*</span></label>
-        <input type="tel" name="primary_phone" required placeholder="(555) 000-0000"/>
-      </div>
-      <div class="field-group">
-        <label>Secondary / After-Hours Phone</label>
-        <input type="tel" name="secondary_phone" placeholder="(555) 000-0000"/>
-      </div>
+    <div class="field-group">
+      <label class="field-label">Website URL</label>
+      <input type="url" name="website_url" placeholder="https://yourpractice.com"/>
     </div>
-    <div class="field-row">
-      <div class="field-group">
-        <label>Your Name <span class="req">*</span></label>
-        <input type="text" name="your_name" required placeholder="Full name"/>
-      </div>
-      <div class="field-group">
-        <label>Your Email <span class="req">*</span></label>
-        <input type="email" name="your_email" required placeholder="you@yourpractice.com"/>
-      </div>
+    <div class="field-group">
+      <label class="field-label">Primary Phone <span class="req">*</span></label>
+      <input type="tel" name="primary_phone" required placeholder="(555) 000-0000"/>
     </div>
-    <div class="field-row">
-      <div class="field-group">
-        <label>Your Role <span class="req">*</span></label>
-        <input type="text" name="your_role" required placeholder="e.g. Owner, Office Manager, Front Desk"/>
-      </div>
-      <div class="field-group">
-        <label>Practice Address <span class="req">*</span></label>
-        <input type="text" name="practice_address" required placeholder="123 Main St, City, State, ZIP"/>
-      </div>
-    </div>
-    <div class="field-row">
-      <div class="field-group">
-        <label>Office Hours</label>
-        <input type="text" name="office_hours" placeholder="e.g. Mon–Thu 8am–5pm, Fri 8am–2pm"/>
-      </div>
-      <div class="field-group">
-        <label>Number of Dentists / Providers</label>
-        <input type="number" name="num_providers" min="1" placeholder="e.g. 2"/>
-      </div>
+    <div class="step-nav">
+      <span class="save-note">Your answers are saved automatically</span>
+      <button type="button" class="btn-next" onclick="nextStep()">Continue →</button>
     </div>
   </div>
 
-  <!-- 2. INDUSTRY FOCUS -->
-  <div class="form-section">
-    <div class="section-label">
-      <div class="section-num">2</div>
-      <div class="section-title">Industry Focus</div>
+  <!-- STEP 2 -->
+  <div class="step" data-step="2">
+    <div class="step-head">
+      <span class="step-eyebrow">About You</span>
+      <h2>Who are we working with?</h2>
+      <p>We'll use this to confirm details and get in touch.</p>
     </div>
-
     <div class="field-group">
-      <label>Practice Type <span class="req">*</span></label>
+      <label class="field-label">Your Name <span class="req">*</span></label>
+      <input type="text" name="your_name" required placeholder="Full name"/>
+    </div>
+    <div class="field-group">
+      <label class="field-label">Your Email <span class="req">*</span></label>
+      <input type="email" name="your_email" required placeholder="you@yourpractice.com"/>
+    </div>
+    <div class="field-group">
+      <label class="field-label">Your Role <span class="req">*</span></label>
+      <input type="text" name="your_role" required placeholder="e.g. Owner, Office Manager, Front Desk Lead"/>
+    </div>
+    <div class="step-nav">
+      <button type="button" class="btn-back" onclick="prevStep()">← Back</button>
+      <button type="button" class="btn-next" onclick="nextStep()">Continue →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step" data-step="3">
+    <div class="step-head">
+      <span class="step-eyebrow">Practice Location</span>
+      <h2>Where is your practice located?</h2>
+    </div>
+    <div class="field-group">
+      <label class="field-label">Practice Address <span class="req">*</span></label>
+      <input type="text" name="practice_address" required placeholder="123 Main St, City, State, ZIP"/>
+    </div>
+    <div class="field-row">
+      <div class="field-group">
+        <label class="field-label">After-Hours / Secondary Phone</label>
+        <input type="tel" name="secondary_phone" placeholder="(555) 000-0000"/>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Office Hours</label>
+        <input type="text" name="office_hours" placeholder="e.g. Mon–Thu 8am–5pm, Fri 8am–2pm"/>
+      </div>
+    </div>
+    <div class="step-nav">
+      <button type="button" class="btn-back" onclick="prevStep()">← Back</button>
+      <button type="button" class="btn-next" onclick="nextStep()">Continue →</button>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step" data-step="4">
+    <div class="step-head">
+      <span class="step-eyebrow">Practice Type</span>
+      <h2>What kind of dental practice are you?</h2>
+      <p>This shapes the terminology, tone, and knowledge base for your AI.</p>
+    </div>
+    <div class="field-group">
+      <label class="field-label">Practice Type <span class="req">*</span></label>
       <select name="practice_type" required>
         <option value="" disabled selected>Select your practice type</option>
         <option>General Dentistry</option>
@@ -181,143 +234,160 @@
         <option>Other</option>
       </select>
     </div>
-
-    <div class="field-group">
-      <label>Services Offered (check all that apply)</label>
-      <div class="check-group" style="flex-direction:row;flex-wrap:wrap;gap:12px;">
-        <label class="check-item"><input type="checkbox" name="svc_cleanings" value="Yes"/><span class="check-box"></span><span>Cleanings & Hygiene</span></label>
-        <label class="check-item"><input type="checkbox" name="svc_xrays" value="Yes"/><span class="check-box"></span><span>X-Rays & Exams</span></label>
-        <label class="check-item"><input type="checkbox" name="svc_fillings" value="Yes"/><span class="check-box"></span><span>Fillings</span></label>
-        <label class="check-item"><input type="checkbox" name="svc_crowns" value="Yes"/><span class="check-box"></span><span>Crowns & Bridges</span></label>
-        <label class="check-item"><input type="checkbox" name="svc_implants" value="Yes"/><span class="check-box"></span><span>Dental Implants</span></label>
-        <label class="check-item"><input type="checkbox" name="svc_invisalign" value="Yes"/><span class="check-box"></span><span>Invisalign / Ortho</span></label>
-        <label class="check-item"><input type="checkbox" name="svc_whitening" value="Yes"/><span class="check-box"></span><span>Teeth Whitening</span></label>
-        <label class="check-item"><input type="checkbox" name="svc_veneers" value="Yes"/><span class="check-box"></span><span>Veneers</span></label>
-        <label class="check-item"><input type="checkbox" name="svc_rootcanal" value="Yes"/><span class="check-box"></span><span>Root Canals</span></label>
-        <label class="check-item"><input type="checkbox" name="svc_extractions" value="Yes"/><span class="check-box"></span><span>Extractions</span></label>
-        <label class="check-item"><input type="checkbox" name="svc_dentures" value="Yes"/><span class="check-box"></span><span>Dentures</span></label>
-        <label class="check-item"><input type="checkbox" name="svc_emergency" value="Yes"/><span class="check-box"></span><span>Emergency Dental Care</span></label>
+    <div class="field-row">
+      <div class="field-group">
+        <label class="field-label">Number of Dentists / Providers</label>
+        <input type="number" name="num_providers" min="1" placeholder="e.g. 2"/>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Practice Management Software</label>
+        <select name="practice_software">
+          <option value="" disabled selected>Select software</option>
+          <option>Dentrix</option>
+          <option>Eaglesoft</option>
+          <option>Open Dental</option>
+          <option>Carestream</option>
+          <option>Curve Dental</option>
+          <option>Practice-Web</option>
+          <option>Orthotrac</option>
+          <option>Dolphin</option>
+          <option>Other</option>
+          <option>None</option>
+        </select>
       </div>
     </div>
-
-    <div class="field-group">
-      <label>Other Services or Specialties</label>
-      <input type="text" name="other_services" placeholder="Any additional services not listed above..."/>
+    <div class="step-nav">
+      <button type="button" class="btn-back" onclick="prevStep()">← Back</button>
+      <button type="button" class="btn-next" onclick="nextStep()">Continue →</button>
     </div>
+  </div>
 
+  <!-- STEP 5 -->
+  <div class="step" data-step="5">
+    <div class="step-head">
+      <span class="step-eyebrow">Services</span>
+      <h2>What services do you offer?</h2>
+      <p>Check everything that applies — your AI will be trained on these.</p>
+    </div>
     <div class="field-group">
-      <label>Procedures You Refer Out</label>
+      <label class="field-label">Services Offered</label>
+      <div class="check-grid">
+        <label class="check-item"><input type="checkbox" name="svc_cleanings" value="Yes"/><span class="check-box"></span><span class="check-label">Cleanings & Hygiene</span></label>
+        <label class="check-item"><input type="checkbox" name="svc_xrays" value="Yes"/><span class="check-box"></span><span class="check-label">X-Rays & Exams</span></label>
+        <label class="check-item"><input type="checkbox" name="svc_fillings" value="Yes"/><span class="check-box"></span><span class="check-label">Fillings</span></label>
+        <label class="check-item"><input type="checkbox" name="svc_crowns" value="Yes"/><span class="check-box"></span><span class="check-label">Crowns & Bridges</span></label>
+        <label class="check-item"><input type="checkbox" name="svc_implants" value="Yes"/><span class="check-box"></span><span class="check-label">Dental Implants</span></label>
+        <label class="check-item"><input type="checkbox" name="svc_invisalign" value="Yes"/><span class="check-box"></span><span class="check-label">Invisalign / Ortho</span></label>
+        <label class="check-item"><input type="checkbox" name="svc_whitening" value="Yes"/><span class="check-box"></span><span class="check-label">Teeth Whitening</span></label>
+        <label class="check-item"><input type="checkbox" name="svc_veneers" value="Yes"/><span class="check-box"></span><span class="check-label">Veneers</span></label>
+        <label class="check-item"><input type="checkbox" name="svc_rootcanal" value="Yes"/><span class="check-box"></span><span class="check-label">Root Canals</span></label>
+        <label class="check-item"><input type="checkbox" name="svc_extractions" value="Yes"/><span class="check-box"></span><span class="check-label">Extractions</span></label>
+        <label class="check-item"><input type="checkbox" name="svc_dentures" value="Yes"/><span class="check-box"></span><span class="check-label">Dentures</span></label>
+        <label class="check-item"><input type="checkbox" name="svc_emergency" value="Yes"/><span class="check-box"></span><span class="check-label">Emergency Dental Care</span></label>
+        <label class="check-item"><input type="checkbox" name="svc_sedation" value="Yes"/><span class="check-box"></span><span class="check-label">Sedation Dentistry</span></label>
+        <label class="check-item"><input type="checkbox" name="svc_kids" value="Yes"/><span class="check-box"></span><span class="check-label">Pediatric / Kids</span></label>
+      </div>
+    </div>
+    <div class="field-group">
+      <label class="field-label">Other Services or Specialties</label>
+      <input type="text" name="other_services" placeholder="Anything not listed above..."/>
+    </div>
+    <div class="field-group">
+      <label class="field-label">Procedures You Refer Out</label>
       <input type="text" name="refer_out" placeholder="e.g. Oral surgery, Orthodontics — we refer to specialists"/>
     </div>
-
-    <div class="field-group">
-      <label>Practice Management Software</label>
-      <select name="practice_software">
-        <option value="" disabled selected>Select your software</option>
-        <option>Dentrix</option>
-        <option>Eaglesoft</option>
-        <option>Open Dental</option>
-        <option>Carestream</option>
-        <option>Curve Dental</option>
-        <option>Practice-Web</option>
-        <option>Orthotrac</option>
-        <option>Dolphin</option>
-        <option>Other</option>
-        <option>None</option>
-      </select>
+    <div class="step-nav">
+      <button type="button" class="btn-back" onclick="prevStep()">← Back</button>
+      <button type="button" class="btn-next" onclick="nextStep()">Continue →</button>
     </div>
   </div>
 
-  <!-- 3. CALL ACTIONS -->
-  <div class="form-section">
-    <div class="section-label">
-      <div class="section-num">3</div>
-      <div class="section-title">Call Actions</div>
+  <!-- STEP 6 -->
+  <div class="step" data-step="6">
+    <div class="step-head">
+      <span class="step-eyebrow">Call Actions</span>
+      <h2>What should your AI do on calls?</h2>
+      <p>These settings control how your AI handles every inbound patient call.</p>
     </div>
-
-    <p style="font-size:.88rem;color:var(--dim);margin-bottom:20px;line-height:1.6;">Tell us what you want your AI to do on each call. These settings control how your AI handles inbound patient inquiries.</p>
-
     <div class="field-row">
       <div class="field-group">
-        <label>Pencil In Appointments?</label>
+        <label class="field-label">Pencil In Appointments?</label>
         <div class="yn-group">
-          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="action_appointments" value="Yes"/><span class="yn-btn" style="display:block">Yes</span></label>
-          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="action_appointments" value="No"/><span class="yn-btn" style="display:block">No</span></label>
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="action_appointments" value="Yes"/><span class="yn-btn">Yes</span></label>
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="action_appointments" value="No"/><span class="yn-btn">No</span></label>
         </div>
       </div>
       <div class="field-group">
-        <label>Handle New Patient Inquiries?</label>
+        <label class="field-label">Handle New Patient Inquiries?</label>
         <div class="yn-group">
-          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="action_new_patients" value="Yes"/><span class="yn-btn" style="display:block">Yes</span></label>
-          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="action_new_patients" value="No"/><span class="yn-btn" style="display:block">No</span></label>
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="action_new_patients" value="Yes"/><span class="yn-btn">Yes</span></label>
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="action_new_patients" value="No"/><span class="yn-btn">No</span></label>
         </div>
       </div>
     </div>
-
     <div class="field-row">
       <div class="field-group">
-        <label>Answer Insurance Questions?</label>
+        <label class="field-label">Answer Insurance Questions?</label>
         <div class="yn-group">
-          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="action_insurance" value="Yes"/><span class="yn-btn" style="display:block">Yes</span></label>
-          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="action_insurance" value="No"/><span class="yn-btn" style="display:block">No</span></label>
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="action_insurance" value="Yes"/><span class="yn-btn">Yes</span></label>
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="action_insurance" value="No"/><span class="yn-btn">No</span></label>
         </div>
       </div>
       <div class="field-group">
-        <label>Answer Treatment FAQs?</label>
+        <label class="field-label">Answer Treatment FAQs?</label>
         <div class="yn-group">
-          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="action_faqs" value="Yes"/><span class="yn-btn" style="display:block">Yes</span></label>
-          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="action_faqs" value="No"/><span class="yn-btn" style="display:block">No</span></label>
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="action_faqs" value="Yes"/><span class="yn-btn">Yes</span></label>
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="action_faqs" value="No"/><span class="yn-btn">No</span></label>
         </div>
       </div>
     </div>
-
     <div class="field-row">
       <div class="field-group">
-        <label>Collect Patient Information?</label>
+        <label class="field-label">Collect Patient Information?</label>
         <div class="yn-group">
-          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="action_collect_info" value="Yes"/><span class="yn-btn" style="display:block">Yes</span></label>
-          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="action_collect_info" value="No"/><span class="yn-btn" style="display:block">No</span></label>
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="action_collect_info" value="Yes"/><span class="yn-btn">Yes</span></label>
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="action_collect_info" value="No"/><span class="yn-btn">No</span></label>
         </div>
       </div>
       <div class="field-group">
-        <label>Handle Appointment Cancellations?</label>
+        <label class="field-label">Handle Cancellations?</label>
         <div class="yn-group">
-          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="action_cancellations" value="Yes"/><span class="yn-btn" style="display:block">Yes</span></label>
-          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="action_cancellations" value="No"/><span class="yn-btn" style="display:block">No</span></label>
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="action_cancellations" value="Yes"/><span class="yn-btn">Yes</span></label>
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="action_cancellations" value="No"/><span class="yn-btn">No</span></label>
         </div>
       </div>
     </div>
-
-    <div class="field-group">
-      <label>Other Call Actions or Instructions</label>
-      <textarea name="other_call_actions" placeholder="Anything specific you want your AI to do or say on calls..."></textarea>
+    <div class="step-nav">
+      <button type="button" class="btn-back" onclick="prevStep()">← Back</button>
+      <button type="button" class="btn-next" onclick="nextStep()">Continue →</button>
     </div>
   </div>
 
-  <!-- 4. BENEFITS & BRAND -->
-  <div class="form-section">
-    <div class="section-label">
-      <div class="section-num">4</div>
-      <div class="section-title">Benefits & Brand</div>
+  <!-- STEP 7 -->
+  <div class="step" data-step="7">
+    <div class="step-head">
+      <span class="step-eyebrow">Call Instructions</span>
+      <h2>Any other call instructions?</h2>
     </div>
-
     <div class="field-group">
-      <label>What Makes Your Practice Stand Out?</label>
-      <textarea name="differentiators" placeholder="e.g. Same-day crowns, sedation dentistry, extended hours, multilingual staff, family-friendly environment..."></textarea>
+      <label class="field-label">Other Call Actions or Instructions</label>
+      <textarea name="other_call_actions" placeholder="Anything specific you want your AI to do or avoid on patient calls..."></textarea>
     </div>
-
-    <div class="field-group">
-      <label>Key Points to Always Mention</label>
-      <textarea name="always_mention" placeholder="Things the AI should always bring up when relevant — special offers, unique services, awards, etc."></textarea>
+    <div class="step-nav">
+      <button type="button" class="btn-back" onclick="prevStep()">← Back</button>
+      <button type="button" class="btn-next" onclick="nextStep()">Continue →</button>
     </div>
+  </div>
 
-    <div class="field-group">
-      <label>Topics or Questions to Avoid</label>
-      <textarea name="avoid_topics" placeholder="Topics, pricing details, or sensitive areas the AI should NOT discuss..."></textarea>
+  <!-- STEP 8 -->
+  <div class="step" data-step="8">
+    <div class="step-head">
+      <span class="step-eyebrow">Your Brand</span>
+      <h2>What should your AI sound like?</h2>
+      <p>How patients experience your AI is how they experience your practice.</p>
     </div>
-
     <div class="field-group">
-      <label>AI Tone</label>
+      <label class="field-label">AI Tone</label>
       <select name="ai_tone">
         <option value="" disabled selected>Select a tone</option>
         <option>Warm & Reassuring</option>
@@ -326,179 +396,240 @@
         <option>Clinical & Precise</option>
       </select>
     </div>
+    <div class="field-group">
+      <label class="field-label">AI Name Preference</label>
+      <input type="text" name="ai_name" placeholder="What should your AI be called? e.g. 'Alex', 'your front desk team'"/>
+    </div>
+    <div class="field-group">
+      <label class="field-label">What Makes Your Practice Stand Out?</label>
+      <textarea name="differentiators" placeholder="e.g. Same-day crowns, sedation dentistry, extended hours, multilingual staff, family-friendly..."></textarea>
+    </div>
+    <div class="step-nav">
+      <button type="button" class="btn-back" onclick="prevStep()">← Back</button>
+      <button type="button" class="btn-next" onclick="nextStep()">Continue →</button>
+    </div>
   </div>
 
-  <!-- 5. APPOINTMENTS -->
-  <div class="form-section">
-    <div class="section-label">
-      <div class="section-num">5</div>
-      <div class="section-title">Appointments</div>
+  <!-- STEP 9 -->
+  <div class="step" data-step="9">
+    <div class="step-head">
+      <span class="step-eyebrow">Brand Voice</span>
+      <h2>What should your AI say — and not say?</h2>
     </div>
-
     <div class="field-group">
-      <label>Appointment Types Offered (check all that apply)</label>
-      <div class="check-group" style="flex-direction:row;flex-wrap:wrap;gap:12px;">
-        <label class="check-item"><input type="checkbox" name="appt_new_patient_exam" value="Yes"/><span class="check-box"></span><span>New Patient Exam</span></label>
-        <label class="check-item"><input type="checkbox" name="appt_cleaning" value="Yes"/><span class="check-box"></span><span>Cleaning / Hygiene</span></label>
-        <label class="check-item"><input type="checkbox" name="appt_emergency" value="Yes"/><span class="check-box"></span><span>Emergency Visit</span></label>
-        <label class="check-item"><input type="checkbox" name="appt_consult_cosmetic" value="Yes"/><span class="check-box"></span><span>Cosmetic Consult</span></label>
-        <label class="check-item"><input type="checkbox" name="appt_consult_invisalign" value="Yes"/><span class="check-box"></span><span>Invisalign Consult</span></label>
-        <label class="check-item"><input type="checkbox" name="appt_consult_implant" value="Yes"/><span class="check-box"></span><span>Implant Consult</span></label>
-        <label class="check-item"><input type="checkbox" name="appt_followup" value="Yes"/><span class="check-box"></span><span>Follow-Up Visit</span></label>
-        <label class="check-item"><input type="checkbox" name="appt_xray" value="Yes"/><span class="check-box"></span><span>X-Rays Only</span></label>
+      <label class="field-label">Always Mention</label>
+      <textarea name="always_mention" placeholder="Points the AI should always bring up when relevant — special offers, awards, unique services, etc."></textarea>
+    </div>
+    <div class="field-group">
+      <label class="field-label">Topics or Questions to Avoid</label>
+      <textarea name="avoid_topics" placeholder="Topics, pricing details, or sensitive areas the AI should NOT discuss or speculate about..."></textarea>
+    </div>
+    <div class="step-nav">
+      <button type="button" class="btn-back" onclick="prevStep()">← Back</button>
+      <button type="button" class="btn-next" onclick="nextStep()">Continue →</button>
+    </div>
+  </div>
+
+  <!-- STEP 10 -->
+  <div class="step" data-step="10">
+    <div class="step-head">
+      <span class="step-eyebrow">Appointments</span>
+      <h2>What appointment types do you offer?</h2>
+    </div>
+    <div class="field-group">
+      <label class="field-label">Appointment Types (check all that apply)</label>
+      <div class="check-grid">
+        <label class="check-item"><input type="checkbox" name="appt_new_patient_exam" value="Yes"/><span class="check-box"></span><span class="check-label">New Patient Exam</span></label>
+        <label class="check-item"><input type="checkbox" name="appt_cleaning" value="Yes"/><span class="check-box"></span><span class="check-label">Cleaning / Hygiene</span></label>
+        <label class="check-item"><input type="checkbox" name="appt_emergency" value="Yes"/><span class="check-box"></span><span class="check-label">Emergency Visit</span></label>
+        <label class="check-item"><input type="checkbox" name="appt_consult_cosmetic" value="Yes"/><span class="check-box"></span><span class="check-label">Cosmetic Consult</span></label>
+        <label class="check-item"><input type="checkbox" name="appt_consult_invisalign" value="Yes"/><span class="check-box"></span><span class="check-label">Invisalign Consult</span></label>
+        <label class="check-item"><input type="checkbox" name="appt_consult_implant" value="Yes"/><span class="check-box"></span><span class="check-label">Implant Consult</span></label>
+        <label class="check-item"><input type="checkbox" name="appt_followup" value="Yes"/><span class="check-box"></span><span class="check-label">Follow-Up Visit</span></label>
+        <label class="check-item"><input type="checkbox" name="appt_xray" value="Yes"/><span class="check-box"></span><span class="check-label">X-Rays Only</span></label>
       </div>
     </div>
-
     <div class="field-row">
       <div class="field-group">
-        <label>Walk-Ins Accepted?</label>
+        <label class="field-label">Walk-Ins Accepted?</label>
         <div class="yn-group">
-          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="walk_ins" value="Yes"/><span class="yn-btn" style="display:block">Yes</span></label>
-          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="walk_ins" value="No"/><span class="yn-btn" style="display:block">No</span></label>
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="walk_ins" value="Yes"/><span class="yn-btn">Yes</span></label>
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="walk_ins" value="No"/><span class="yn-btn">No</span></label>
         </div>
       </div>
       <div class="field-group">
-        <label>Advance Notice Required</label>
-        <input type="text" name="advance_notice" placeholder="e.g. 24 hours, 48 hours, same day OK"/>
+        <label class="field-label">Advance Notice Required</label>
+        <input type="text" name="advance_notice" placeholder="e.g. 24 hours, same day OK"/>
       </div>
     </div>
+    <div class="step-nav">
+      <button type="button" class="btn-back" onclick="prevStep()">← Back</button>
+      <button type="button" class="btn-next" onclick="nextStep()">Continue →</button>
+    </div>
+  </div>
 
+  <!-- STEP 11 -->
+  <div class="step" data-step="11">
+    <div class="step-head">
+      <span class="step-eyebrow">Booking Details</span>
+      <h2>How should appointments be booked?</h2>
+    </div>
     <div class="field-group">
-      <label>How Should Appointments Be Booked?</label>
+      <label class="field-label">Booking Method</label>
       <select name="booking_method">
         <option value="" disabled selected>Select booking method</option>
         <option>AI pencils in — staff confirms</option>
         <option>AI collects info — staff calls back to schedule</option>
         <option>Direct to online booking link</option>
-        <option>Other (describe below)</option>
+        <option>Other (describe in instructions)</option>
       </select>
     </div>
-
     <div class="field-group">
-      <label>Online Booking Link (if applicable)</label>
+      <label class="field-label">Online Booking Link (if applicable)</label>
       <input type="url" name="booking_link" placeholder="https://your-booking-link.com"/>
     </div>
-
     <div class="field-group">
-      <label>Cancellation Policy</label>
-      <textarea name="cancellation_policy" placeholder="e.g. 24-hour notice required, $50 no-show fee, etc."></textarea>
+      <label class="field-label">Cancellation Policy</label>
+      <textarea name="cancellation_policy" placeholder="e.g. 24-hour notice required, $50 no-show fee applies..."></textarea>
     </div>
-
     <div class="field-group">
-      <label>What Should New Patients Bring?</label>
+      <label class="field-label">What Should New Patients Bring?</label>
       <textarea name="new_patient_requirements" placeholder="e.g. Insurance card, photo ID, completed forms, arrive 15 min early..."></textarea>
     </div>
-  </div>
-
-  <!-- 6. KNOWLEDGE BASE -->
-  <div class="form-section">
-    <div class="section-label">
-      <div class="section-num">6</div>
-      <div class="section-title">Knowledge Base</div>
-    </div>
-
-    <p style="font-size:.88rem;color:var(--dim);margin-bottom:20px;line-height:1.6;">This section helps us train your AI to answer patient questions accurately and consistently.</p>
-
-    <div class="field-group">
-      <label>Insurance Plans Accepted</label>
-      <textarea name="insurance_plans" placeholder="List the insurance plans you accept, or paste your full list. Include any notable exceptions."></textarea>
-    </div>
-
-    <div class="field-row">
-      <div class="field-group">
-        <label>Accept Credit Cards?</label>
-        <div class="yn-group">
-          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="accept_credit_card" value="Yes"/><span class="yn-btn" style="display:block">Yes</span></label>
-          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="accept_credit_card" value="No"/><span class="yn-btn" style="display:block">No</span></label>
-        </div>
-      </div>
-      <div class="field-group">
-        <label>Accept CareCredit / Financing?</label>
-        <div class="yn-group">
-          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="accept_carecredit" value="Yes"/><span class="yn-btn" style="display:block">Yes</span></label>
-          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="accept_carecredit" value="No"/><span class="yn-btn" style="display:block">No</span></label>
-        </div>
-      </div>
-    </div>
-
-    <div class="field-row">
-      <div class="field-group">
-        <label>In-House Payment Plan?</label>
-        <div class="yn-group">
-          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="payment_plan" value="Yes"/><span class="yn-btn" style="display:block">Yes</span></label>
-          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="payment_plan" value="No"/><span class="yn-btn" style="display:block">No</span></label>
-        </div>
-      </div>
-      <div class="field-group">
-        <label>Free Consultation Offered?</label>
-        <div class="yn-group">
-          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="free_consult" value="Yes"/><span class="yn-btn" style="display:block">Yes</span></label>
-          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="free_consult" value="No"/><span class="yn-btn" style="display:block">No</span></label>
-        </div>
-      </div>
-    </div>
-
-    <div class="field-group">
-      <label>Most Common Patient Questions</label>
-      <textarea name="common_questions" placeholder="What do patients ask most often? e.g. How much does an implant cost? Do you accept Delta Dental? How long does Invisalign take?"></textarea>
-    </div>
-
-    <div class="field-group">
-      <label>Key Facts Your AI Should Always Know</label>
-      <textarea name="key_facts" placeholder="Parking info, ADA accessibility, languages spoken, years in practice, awards, special equipment, etc."></textarea>
+    <div class="step-nav">
+      <button type="button" class="btn-back" onclick="prevStep()">← Back</button>
+      <button type="button" class="btn-next" onclick="nextStep()">Continue →</button>
     </div>
   </div>
 
-  <!-- 7. EMERGENCY HANDLING -->
-  <div class="form-section">
-    <div class="section-label">
-      <div class="section-num">7</div>
-      <div class="section-title">Emergency Handling</div>
+  <!-- STEP 12 -->
+  <div class="step" data-step="12">
+    <div class="step-head">
+      <span class="step-eyebrow">Insurance & Payments</span>
+      <h2>How do patients pay?</h2>
+      <p>Your AI will answer these questions dozens of times a week.</p>
     </div>
-
     <div class="field-group">
-      <label>What Counts as a Dental Emergency?</label>
-      <textarea name="emergency_definition" placeholder="e.g. Severe tooth pain, knocked-out tooth, broken tooth with bleeding, swelling, lost crown or filling causing pain..."></textarea>
+      <label class="field-label">Insurance Plans Accepted</label>
+      <textarea name="insurance_plans" placeholder="List insurance plans you accept. Include notable exceptions. Or: 'We are out-of-network — we accept all and provide superbills.'"></textarea>
     </div>
-
-    <div class="field-group">
-      <label>Do You Offer Same-Day Emergency Appointments?</label>
-      <div class="yn-group">
-        <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="same_day_emergency" value="Yes"/><span class="yn-btn" style="display:block">Yes</span></label>
-        <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="same_day_emergency" value="No"/><span class="yn-btn" style="display:block">No</span></label>
+    <div class="field-row">
+      <div class="field-group">
+        <label class="field-label">Accept Credit Cards?</label>
+        <div class="yn-group">
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="accept_credit_card" value="Yes"/><span class="yn-btn">Yes</span></label>
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="accept_credit_card" value="No"/><span class="yn-btn">No</span></label>
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Accept CareCredit / Financing?</label>
+        <div class="yn-group">
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="accept_carecredit" value="Yes"/><span class="yn-btn">Yes</span></label>
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="accept_carecredit" value="No"/><span class="yn-btn">No</span></label>
+        </div>
       </div>
     </div>
-
-    <div class="field-group">
-      <label>After-Hours Emergency Action</label>
-      <select name="after_hours_action">
-        <option value="" disabled selected>What should the AI do for after-hours emergencies?</option>
-        <option>Escalate immediately — call on-call provider</option>
-        <option>Take a message — follow up next business day</option>
-        <option>Provide on-call contact number</option>
-        <option>Direct to nearest emergency dentist / ER if severe</option>
-        <option>Other (describe below)</option>
-      </select>
+    <div class="field-row">
+      <div class="field-group">
+        <label class="field-label">In-House Payment Plan?</label>
+        <div class="yn-group">
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="payment_plan" value="Yes"/><span class="yn-btn">Yes</span></label>
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="payment_plan" value="No"/><span class="yn-btn">No</span></label>
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Free Consultation?</label>
+        <div class="yn-group">
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="free_consult" value="Yes"/><span class="yn-btn">Yes</span></label>
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="free_consult" value="No"/><span class="yn-btn">No</span></label>
+        </div>
+      </div>
     </div>
+    <div class="step-nav">
+      <button type="button" class="btn-back" onclick="prevStep()">← Back</button>
+      <button type="button" class="btn-next" onclick="nextStep()">Continue →</button>
+    </div>
+  </div>
 
+  <!-- STEP 13 -->
+  <div class="step" data-step="13">
+    <div class="step-head">
+      <span class="step-eyebrow">Knowledge Base</span>
+      <h2>What do patients ask about most?</h2>
+      <p>This trains your AI to answer questions accurately with your practice's voice.</p>
+    </div>
     <div class="field-group">
-      <label>After-Hours Instructions</label>
+      <label class="field-label">Most Common Patient Questions</label>
+      <textarea name="common_questions" placeholder="e.g. How much does an implant cost? Do you accept Delta Dental? How long does Invisalign take? Do you offer same-day crowns?"></textarea>
+    </div>
+    <div class="field-group">
+      <label class="field-label">Key Facts Your AI Should Always Know</label>
+      <textarea name="key_facts" placeholder="Parking info, ADA accessibility, languages spoken, years in practice, awards, special equipment, same-day availability, etc."></textarea>
+    </div>
+    <div class="step-nav">
+      <button type="button" class="btn-back" onclick="prevStep()">← Back</button>
+      <button type="button" class="btn-next" onclick="nextStep()">Continue →</button>
+    </div>
+  </div>
+
+  <!-- STEP 14 -->
+  <div class="step" data-step="14">
+    <div class="step-head">
+      <span class="step-eyebrow">Emergency Handling</span>
+      <h2>How do you handle dental emergencies?</h2>
+    </div>
+    <div class="field-group">
+      <label class="field-label">What Counts as a Dental Emergency?</label>
+      <textarea name="emergency_definition" placeholder="e.g. Severe tooth pain, knocked-out tooth, broken tooth with bleeding, swelling, lost crown causing pain..."></textarea>
+    </div>
+    <div class="field-row">
+      <div class="field-group">
+        <label class="field-label">Same-Day Emergency Appointments?</label>
+        <div class="yn-group">
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="same_day_emergency" value="Yes"/><span class="yn-btn">Yes</span></label>
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="same_day_emergency" value="No"/><span class="yn-btn">No</span></label>
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">After-Hours Emergency Action</label>
+        <select name="after_hours_action">
+          <option value="" disabled selected>Select action</option>
+          <option>Escalate immediately — call on-call provider</option>
+          <option>Take a message — follow up next business day</option>
+          <option>Provide on-call contact number</option>
+          <option>Direct to nearest emergency dentist / ER if severe</option>
+          <option>Other (describe below)</option>
+        </select>
+      </div>
+    </div>
+    <div class="field-group">
+      <label class="field-label">After-Hours Instructions</label>
       <textarea name="after_hours_instructions" placeholder="Detailed instructions for how your AI should handle after-hours and weekend calls..."></textarea>
     </div>
+    <div class="step-nav">
+      <button type="button" class="btn-back" onclick="prevStep()">← Back</button>
+      <button type="button" class="btn-next" onclick="nextStep()">Continue →</button>
+    </div>
+  </div>
 
+  <!-- STEP 15 -->
+  <div class="step" data-step="15">
+    <div class="step-head">
+      <span class="step-eyebrow">Emergency Contact</span>
+      <h2>Who handles after-hours emergencies?</h2>
+    </div>
     <div class="field-row">
       <div class="field-group">
-        <label>Emergency Contact Name</label>
+        <label class="field-label">Emergency Contact Name</label>
         <input type="text" name="emergency_contact_name" placeholder="Doctor or staff member on-call"/>
       </div>
       <div class="field-group">
-        <label>Emergency Contact Phone</label>
+        <label class="field-label">Emergency Contact Phone</label>
         <input type="tel" name="emergency_contact_phone" placeholder="(555) 000-0000"/>
       </div>
     </div>
-
     <div class="field-group">
-      <label>Emergency Escalation Method</label>
+      <label class="field-label">Escalation Method</label>
       <select name="emergency_escalation_method">
         <option value="" disabled selected>How should emergencies be escalated?</option>
         <option>Call</option>
@@ -507,37 +638,39 @@
         <option>Call and Text</option>
       </select>
     </div>
+    <div class="step-nav">
+      <button type="button" class="btn-back" onclick="prevStep()">← Back</button>
+      <button type="button" class="btn-next" onclick="nextStep()">Continue →</button>
+    </div>
   </div>
 
-  <!-- 8. NOTIFICATIONS -->
-  <div class="form-section">
-    <div class="section-label">
-      <div class="section-num">8</div>
-      <div class="section-title">Notifications</div>
+  <!-- STEP 16 -->
+  <div class="step" data-step="16">
+    <div class="step-head">
+      <span class="step-eyebrow">Notifications</span>
+      <h2>How should we notify your team?</h2>
     </div>
-
     <div class="field-row">
       <div class="field-group">
-        <label>Daily Report Email</label>
+        <label class="field-label">Daily Report Email</label>
         <input type="email" name="daily_report_email" placeholder="who@yourpractice.com"/>
       </div>
       <div class="field-group">
-        <label>Call Summary Delivery</label>
+        <label class="field-label">Call Summary Delivery</label>
         <select name="call_summary_delivery">
-          <option value="" disabled selected>When to send summaries</option>
+          <option value="" disabled selected>When to send</option>
           <option>Immediately after each call</option>
           <option>Daily digest</option>
         </select>
       </div>
     </div>
-
     <div class="field-row">
       <div class="field-group">
-        <label>Who Gets Urgent Call Alerts?</label>
+        <label class="field-label">Urgent Alert Contact</label>
         <input type="text" name="urgent_alert_contact" placeholder="Name and phone or email"/>
       </div>
       <div class="field-group">
-        <label>Preferred Alert Method</label>
+        <label class="field-label">Preferred Alert Method</label>
         <select name="alert_method">
           <option value="" disabled selected>Select method</option>
           <option>Text</option>
@@ -547,58 +680,55 @@
         </select>
       </div>
     </div>
-
-    <div class="field-group">
-      <label>Additional Notification Recipients</label>
-      <input type="text" name="additional_recipients" placeholder="Other staff members or managers who should receive reports..."/>
+    <div class="step-nav">
+      <button type="button" class="btn-back" onclick="prevStep()">← Back</button>
+      <button type="button" class="btn-next" onclick="nextStep()">Continue →</button>
     </div>
   </div>
 
-  <!-- 9. COMPLIANCE -->
-  <div class="form-section">
-    <div class="section-label">
-      <div class="section-num">9</div>
-      <div class="section-title">Compliance</div>
+  <!-- STEP 17 -->
+  <div class="step" data-step="17">
+    <div class="step-head">
+      <span class="step-eyebrow">Compliance</span>
+      <h2>HIPAA & compliance</h2>
+      <p>Company Periscope handles all patient data with full HIPAA compliance.</p>
     </div>
-
-    <p style="font-size:.88rem;color:var(--dim);margin-bottom:20px;line-height:1.6;">Company Periscope handles all patient data with full HIPAA compliance. Please review and confirm the items below.</p>
-
     <div class="field-group">
-      <label>HIPAA Acknowledgment <span class="req">*</span></label>
-      <div class="check-group">
-        <label class="check-item"><input type="checkbox" name="hipaa_acknowledged" value="Yes" required/><span class="check-box"></span><span>I understand that all patient information collected through this AI system will be handled in accordance with HIPAA requirements.</span></label>
-      </div>
+      <label class="field-label">HIPAA Acknowledgment <span class="req">*</span></label>
+      <label class="check-item" style="align-items:flex-start;gap:14px;">
+        <input type="checkbox" name="hipaa_acknowledged" value="Yes" required/>
+        <span class="check-box" style="margin-top:2px;flex-shrink:0;"></span>
+        <span class="check-label" style="font-size:.9rem;line-height:1.5;">I understand that all patient information collected through this AI system will be handled in accordance with HIPAA requirements.</span>
+      </label>
     </div>
-
-    <div class="field-group">
-      <label>Business Associate Agreement (BAA) Required?</label>
-      <div class="yn-group">
-        <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="baa_required" value="Yes"/><span class="yn-btn" style="display:block">Yes</span></label>
-        <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="baa_required" value="No"/><span class="yn-btn" style="display:block">No</span></label>
-      </div>
-    </div>
-
-    <div class="field-group">
-      <label>Compliance Contact (if different from above)</label>
-      <input type="text" name="compliance_contact" placeholder="Name and email of your compliance officer or privacy contact"/>
-    </div>
-
-    <div class="field-group">
-      <label>Special Compliance Notes</label>
-      <textarea name="compliance_notes" placeholder="Any specific data handling requirements, state-level regulations, or internal policies your AI should be aware of..."></textarea>
-    </div>
-  </div>
-
-  <!-- 10. PREFERENCES -->
-  <div class="form-section">
-    <div class="section-label">
-      <div class="section-num">10</div>
-      <div class="section-title">Preferences & Anything Else</div>
-    </div>
-
     <div class="field-row">
       <div class="field-group">
-        <label>Call Forwarding Type</label>
+        <label class="field-label">BAA Required?</label>
+        <div class="yn-group">
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="baa_required" value="Yes"/><span class="yn-btn">Yes</span></label>
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="baa_required" value="No"/><span class="yn-btn">No</span></label>
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Compliance Contact (if different)</label>
+        <input type="text" name="compliance_contact" placeholder="Name and email"/>
+      </div>
+    </div>
+    <div class="step-nav">
+      <button type="button" class="btn-back" onclick="prevStep()">← Back</button>
+      <button type="button" class="btn-next" onclick="nextStep()">Continue →</button>
+    </div>
+  </div>
+
+  <!-- STEP 18 -->
+  <div class="step" data-step="18">
+    <div class="step-head">
+      <span class="step-eyebrow">Final Setup</span>
+      <h2>Last few things and you're done</h2>
+    </div>
+    <div class="field-row">
+      <div class="field-group">
+        <label class="field-label">Call Forwarding Type</label>
         <select name="call_forwarding_type">
           <option value="" disabled selected>Select type</option>
           <option>All Calls</option>
@@ -607,49 +737,39 @@
         </select>
       </div>
       <div class="field-group">
-        <label>Rings Before Forwarding</label>
+        <label class="field-label">Rings Before Forwarding</label>
         <input type="number" name="rings_before_forward" min="1" max="10" placeholder="e.g. 4"/>
       </div>
     </div>
-
     <div class="field-row">
       <div class="field-group">
-        <label>Multilingual Support Needed?</label>
+        <label class="field-label">Multilingual Support Needed?</label>
         <div class="yn-group">
-          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="multilingual" value="Yes"/><span class="yn-btn" style="display:block">Yes</span></label>
-          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="multilingual" value="No"/><span class="yn-btn" style="display:block">No</span></label>
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="multilingual" value="Yes"/><span class="yn-btn">Yes</span></label>
+          <label style="all:unset;cursor:pointer;flex:1"><input type="radio" name="multilingual" value="No"/><span class="yn-btn">No</span></label>
         </div>
       </div>
       <div class="field-group">
-        <label>Languages Spoken at Practice</label>
+        <label class="field-label">Languages Spoken at Practice</label>
         <input type="text" name="languages" placeholder="e.g. English, Spanish, Mandarin"/>
       </div>
     </div>
-
     <div class="field-group">
-      <label>AI Name Preference</label>
-      <input type="text" name="ai_name" placeholder="What should your AI receptionist be called? e.g. 'Alex' or 'your AI assistant'"/>
-    </div>
-
-    <div class="field-group">
-      <label>Common Challenges or Pain Points</label>
+      <label class="field-label">Common Challenges or Pain Points</label>
       <textarea name="common_challenges" placeholder="What problems are you trying to solve? What frustrates you about your current phone situation?"></textarea>
     </div>
-
     <div class="field-group">
-      <label>What Does Success Look Like?</label>
+      <label class="field-label">What Does Success Look Like?</label>
       <textarea name="success_looks_like" placeholder="Describe what a successful AI receptionist looks like for your dental practice..."></textarea>
     </div>
-
     <div class="field-group">
-      <label>Additional Information</label>
-      <textarea name="additional_information" placeholder="Anything else you'd like our team to know before we configure your AI..."></textarea>
+      <label class="field-label">Anything Else We Should Know?</label>
+      <textarea name="additional_information" placeholder="Anything that will help us configure your AI perfectly from day one..."></textarea>
     </div>
-  </div>
-
-  <div class="submit-bar">
-    <button type="submit" class="submit-btn">Submit Dental Onboarding Form →</button>
-    <p class="submit-note">Your account manager will review and be in touch within 1 business day.</p>
+    <div class="step-nav">
+      <button type="button" class="btn-back" onclick="prevStep()">← Back</button>
+      <button type="submit" class="btn-submit">Submit & Finish →</button>
+    </div>
   </div>
 
 </form>
@@ -665,5 +785,109 @@
   </div>
 </footer>
 
+<script>
+  const TOTAL = 18;
+  const KEY = 'cp_dental_v1';
+  let cur = 1;
+
+  const stepLabels = [
+    '', 'Your Practice', 'About You', 'Location', 'Practice Type',
+    'Services', 'Call Actions', 'Call Instructions', 'Your Brand',
+    'Brand Voice', 'Appointment Types', 'Booking Details',
+    'Insurance & Payments', 'Knowledge Base', 'Emergency Handling',
+    'Emergency Contact', 'Notifications', 'Compliance', 'Final Setup'
+  ];
+
+  function showStep(n) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.querySelector(`.step[data-step="${n}"]`).classList.add('active');
+    document.getElementById('prog-fill').style.width = (n / TOTAL * 100) + '%';
+    document.getElementById('prog-label').textContent = stepLabels[n] || 'Step ' + n;
+    document.getElementById('prog-count').textContent = 'Step ' + n + ' of ' + TOTAL;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function fireSonar() {
+    const stage = document.getElementById('sonar-stage');
+    for (let i = 0; i < 3; i++) {
+      const r = document.createElement('div');
+      r.className = 'sonar-ring';
+      r.style.animationDelay = (i * 0.12) + 's';
+      stage.appendChild(r);
+      setTimeout(() => r.remove(), 900);
+    }
+  }
+
+  function validateCur() {
+    const step = document.querySelector(`.step[data-step="${cur}"]`);
+    const reqs = step.querySelectorAll('[required]');
+    let ok = true;
+    reqs.forEach(el => {
+      el.classList.remove('err');
+      if (el.type === 'checkbox') {
+        if (!el.checked) { el.closest('.check-item').querySelector('.check-box').style.borderColor = 'rgba(255,80,80,.6)'; ok = false; }
+        else { el.closest('.check-item').querySelector('.check-box').style.borderColor = ''; }
+      } else if (!el.value.trim()) {
+        el.classList.add('err'); ok = false;
+      }
+    });
+    return ok;
+  }
+
+  function nextStep() {
+    if (!validateCur()) return;
+    save();
+    fireSonar();
+    setTimeout(() => { cur++; showStep(cur); }, 380);
+  }
+
+  function prevStep() {
+    if (cur > 1) { cur--; showStep(cur); }
+  }
+
+  function save() {
+    const form = document.querySelector('form');
+    const d = {};
+    form.querySelectorAll('input[type="text"],input[type="email"],input[type="tel"],input[type="url"],input[type="number"],select,textarea').forEach(el => {
+      if (el.name) d[el.name] = el.value;
+    });
+    const seen = new Set();
+    form.querySelectorAll('input[type="radio"]').forEach(r => {
+      if (!seen.has(r.name)) {
+        seen.add(r.name);
+        const c = form.querySelector(`input[type="radio"][name="${r.name}"]:checked`);
+        d[r.name] = c ? c.value : '';
+      }
+    });
+    form.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+      if (cb.name !== 'form-name') d[cb.name] = cb.checked;
+    });
+    try { localStorage.setItem(KEY, JSON.stringify(d)); } catch(e) {}
+  }
+
+  function load() {
+    let saved;
+    try { saved = localStorage.getItem(KEY); } catch(e) {}
+    if (!saved) return;
+    const d = JSON.parse(saved);
+    const form = document.querySelector('form');
+    Object.entries(d).forEach(([name, val]) => {
+      form.querySelectorAll(`[name="${name}"]`).forEach(el => {
+        if (el.type === 'radio') { if (el.value === val) el.checked = true; }
+        else if (el.type === 'checkbox') { el.checked = (val === true || val === 'true'); }
+        else { el.value = val || ''; }
+      });
+    });
+  }
+
+  document.querySelector('form').addEventListener('submit', () => {
+    try { localStorage.removeItem(KEY); } catch(e) {}
+  });
+
+  document.addEventListener('change', save);
+  document.addEventListener('input', save);
+
+  window.addEventListener('DOMContentLoaded', () => { load(); showStep(1); });
+</script>
 </body>
 </html>
