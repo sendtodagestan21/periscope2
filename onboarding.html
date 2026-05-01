@@ -140,7 +140,7 @@
 </div>
 
 <div class="form-wrap">
-<form name="general-onboarding" method="POST" data-netlify="true" action="form-success.html">
+<form name="general-onboarding" method="POST" data-netlify="true" action="/form-success.html">
   <input type="hidden" name="form-name" value="general-onboarding"/>
 
   <!-- STEP 1 -->
@@ -392,12 +392,8 @@
   <!-- STEP 10 -->
   <div class="step" data-step="10">
     <div class="step-head">
-      <span class="step-eyebrow">Payments & Insurance</span>
+      <span class="step-eyebrow">Payments</span>
       <h2>How do customers pay?</h2>
-    </div>
-    <div class="field-group">
-      <label class="field-label">Insurance Accepted</label>
-      <input type="text" name="accept_insurance" placeholder="Which plans? Or 'We do not accept insurance'"/>
     </div>
     <div class="field-row">
       <div class="field-group">
@@ -441,8 +437,8 @@
       <h2>What happens after you close?</h2>
     </div>
     <div class="field-group">
-      <label class="field-label">Emergency Services Offered</label>
-      <input type="text" name="emergency_services" placeholder="Describe any emergency or urgent-care services..."/>
+      <label class="field-label">Urgent or After-Hours Services</label>
+      <input type="text" name="emergency_services" placeholder="e.g. Emergency repairs, on-call availability, 24-hr response — or leave blank if none"/>
     </div>
     <div class="field-group">
       <label class="field-label">After-Hours Action</label>
@@ -451,7 +447,7 @@
         <option>Take a message — notify team next business day</option>
         <option>Escalate urgent calls immediately</option>
         <option>Provide on-call contact number</option>
-        <option>Direct to emergency services if needed</option>
+        <option>Direct to an emergency contact or on-call staff</option>
         <option>Other (describe below)</option>
       </select>
     </div>
